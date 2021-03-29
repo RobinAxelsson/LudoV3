@@ -7,4 +7,12 @@
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="UI\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LudoAPI\LudoAPI.csproj" />
+    </ItemGroup>
+
 </Project>

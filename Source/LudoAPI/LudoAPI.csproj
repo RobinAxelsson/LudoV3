@@ -6,4 +6,14 @@
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="DbModel\connection.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="DbModel\connection.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
