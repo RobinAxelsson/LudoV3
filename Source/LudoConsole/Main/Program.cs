@@ -1,10 +1,9 @@
-﻿using GameEngine.DbModel;
-using System;
-using System.Globalization;
+﻿using System.Globalization;
+using GameEngine.DbModel;
 
-namespace LudoConsole
+namespace LudoConsole.Main
 {
-    class Program
+    internal static class Program
     {
         static Program()
         {
