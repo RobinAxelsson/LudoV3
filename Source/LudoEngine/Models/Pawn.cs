@@ -9,7 +9,6 @@ namespace LudoEngine.Models
         [ForeignKey("Game")]
         public virtual Game GameID { get; set; }
         public TeamColor Color { get; set; }
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
+        public int SquareIndex { get; set; }
     }
 }
