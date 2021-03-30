@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="UI\" />
+      <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GameEngine\GameEngine.csproj" />
+      <Folder Include="UI\" />
     </ItemGroup>
 
 </Project>
