@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoConsole", "LudoConsole\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoTest", "LudoTest\LudoTest.csproj", "{F5D79691-5E97-4384-BF76-2A2102292DCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{694E79EC-5554-462C-A1AE-10A3ECA68156}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AnyCPU|Any CPU = AnyCPU|Any CPU
@@ -28,12 +26,6 @@ Global
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.AnyCPU|Any CPU.ActiveCfg = AnyCPU|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.AnyCPU|Any CPU.Build.0 = AnyCPU|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{694E79EC-5554-462C-A1AE-10A3ECA68156}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
