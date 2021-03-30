@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoAPI", "LudoAPI\LudoAPI.csproj", "{B2E9F5FA-90F7-437B-A936-6F8167C5AE12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEngine", "LudoAPI\GameEngine.csproj", "{B2E9F5FA-90F7-437B-A936-6F8167C5AE12}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoConsole", "LudoConsole\LudoConsole.csproj", "{ABAABB49-4AF9-4661-8D1F-9E26268496D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LudoTest", "LudoTest\LudoTest.csproj", "{F5D79691-5E97-4384-BF76-2A2102292DCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoTest", "LudoTest\LudoTest.csproj", "{F5D79691-5E97-4384-BF76-2A2102292DCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

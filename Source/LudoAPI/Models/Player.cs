@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameEngine.Enum
+namespace GameEngine.Models
 {
-   public enum TeamColor
+    public class Player
     {
-        Blue,
-        Red,
-        Yellow,
-        Green
+        public int Id { get; set; }
+        public string PlayerName { get; set; }
     }
 }
