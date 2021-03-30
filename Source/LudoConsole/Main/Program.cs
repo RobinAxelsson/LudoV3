@@ -2,7 +2,6 @@
 using System.Globalization;
 using LudoEngine;
 using LudoEngine.DbModel;
-
 namespace LudoConsole.Main
 {
     internal static class Program
