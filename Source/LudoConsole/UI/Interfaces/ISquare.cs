@@ -9,10 +9,9 @@ namespace LudoConsole.UI.Interfaces
 {
     public interface ISquare
     {
-        public int Index { get; set; }
+        //public int Index { get; set; }
         public (int X, int Y) UpperLeft { get; set; }
         public List<IDrawable> Drawables { get; set; }
         public List<Pawn> Pawns { get; set; }
-        public List<IDrawable> UpdatePawns();
     }
 }

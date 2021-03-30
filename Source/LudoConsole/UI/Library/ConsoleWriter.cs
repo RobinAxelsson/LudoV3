@@ -15,6 +15,15 @@ namespace LudoConsole.UI
             return false;
         }
 
+        public static void WriteXYs(List<(int X, int Y)> positions) //for test
+        {
+            foreach (var pos in positions)
+            {
+                Console.SetCursorPosition(pos.X, pos.Y);
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.Write(" ");
+            }
+        }
         public static void TryAppend(IDrawable tryUnit)
         {
             if (IsInScreenMemory(tryUnit)) return;
