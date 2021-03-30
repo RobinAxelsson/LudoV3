@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using GameEngine.DbModel;
+﻿using System;
+using System.Globalization;
+using LudoEngine.DbModel;
 
 namespace LudoConsole.Main
 {
@@ -13,7 +14,7 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-
+            Console.WriteLine(DatabaseManagement.ConnectionString);
         }
     }
 }

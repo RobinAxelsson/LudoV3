@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoConsole", "LudoConsole\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LudoTest", "LudoTest\LudoTest.csproj", "{F5D79691-5E97-4384-BF76-2A2102292DCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LudoEngine", "LudoEngine\LudoEngine.csproj", "{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AnyCPU|Any CPU = AnyCPU|Any CPU
@@ -26,6 +28,12 @@ Global
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D79691-5E97-4384-BF76-2A2102292DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.AnyCPU|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.AnyCPU|Any CPU.Build.0 = Debug|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE7BF46-DA11-4D6A-AC40-4C45E033C8A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GameEngine\GameEngine.csproj" />
+      <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
     </ItemGroup>
 
 </Project>
