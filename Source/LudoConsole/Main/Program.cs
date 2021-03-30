@@ -11,7 +11,8 @@ namespace LudoConsole
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             DatabaseManagement.ReadConnectionString(@"DbModel/connection.txt"); //add connectionstring at this path and exact name to work with git ignore
         }
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
 
         }

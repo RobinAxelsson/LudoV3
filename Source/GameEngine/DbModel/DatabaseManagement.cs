@@ -11,6 +11,5 @@ namespace GameEngine.DbModel
     {
         private static string ConnectionString { get; set; }
         public static void ReadConnectionString(string filepath) => ConnectionString = File.ReadAllText(filepath);
-
     }
 }
