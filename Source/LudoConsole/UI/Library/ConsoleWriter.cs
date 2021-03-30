@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace StarWarsTerminal.UI
+namespace LudoConsole.UI
 {
     public static class ConsoleWriter
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StarWarsTerminal.UI
+namespace LudoConsole.UI
 {
     public class SelectionList<T>
     {

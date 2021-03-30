@@ -1,4 +1,4 @@
-﻿using GameEngine.Models;
+﻿using LudoEngine.Models;
 using System.Collections.Generic;
 
 namespace LudoConsole.UI.Interfaces

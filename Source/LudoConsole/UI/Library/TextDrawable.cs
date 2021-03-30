@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarWarsTerminal.UI
+namespace LudoConsole.UI
 {
     public class TextDrawable : IDrawable
     {
