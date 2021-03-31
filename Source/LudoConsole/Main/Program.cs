@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
 namespace LudoConsole.Main
 {
@@ -13,7 +14,9 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            Console.WriteLine(DatabaseManagement.ConnectionString);
+            //Console.WriteLine(DatabaseManagement.ConnectionString);
+            string selected = Menu.ShowMenu("Your turn \n", new string[] { "Roll Dice" });
+            Menu.SelectedOptions(selected);
         }
     }
 }
