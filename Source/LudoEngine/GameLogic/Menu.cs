@@ -8,7 +8,7 @@ namespace LudoEngine.GameLogic
 {
     public class Menu
     {
-        public static string ShowMenu(string info, string[] options)
+        public static int ShowMenu(string info, string[] options)
         {
             Console.CursorVisible = false;
             int selected = 0;
@@ -33,7 +33,7 @@ namespace LudoEngine.GameLogic
                 key = Console.ReadKey().Key;
             }
 
-            return options[selected];
+            return selected;
 
         }
 
@@ -63,9 +63,9 @@ namespace LudoEngine.GameLogic
             }
         }
 
-        public static void SelectedOptions(string selected)
+        public static void SelectedOptions(int selected)
         {
-            if (selected == "Roll Dice")
+            if (selected == 0)
             {
                 int diceNumber = Dice.RollDice();
 
