@@ -31,6 +31,7 @@ namespace LudoEngine.GameLogic
                 }
             }
         }
+        /*
         public static void MovePawn(int dieRoll, Pawn pawn)
         {
 
@@ -46,6 +47,7 @@ namespace LudoEngine.GameLogic
             }
 
         }
+        */
         public static void KnockedHomePawn(Pawn knocker, Pawn knockedOut)
         {
             // Move knockedOut to Homebase

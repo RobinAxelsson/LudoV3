@@ -19,7 +19,7 @@ namespace LudoEngine.Board.Classes
                color == TeamColor.Red ? BoardSquares.Find(x => x.BoardX == redStart.X && x.BoardY == redStart.Y) :
                color == TeamColor.Green ? BoardSquares.Find(x => x.BoardX == greenStart.X && x.BoardY == greenStart.Y) :
                 BoardSquares.Find(x => x.BoardX == yellowStart.X && x.BoardY == yellowStart.Y);
-        public static void Init()
+        static BoardHolder()
         {
             var boardSquares = new List<IGameSquare>();
             boardSquares.AddRange(CreateStandardSquares((6,9), (6,14), BoardDirection.Up)); //Longer rows of squares created in lines

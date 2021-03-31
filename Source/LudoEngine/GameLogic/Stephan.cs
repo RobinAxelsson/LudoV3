@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using LudoEngine.Board.Classes;
 using LudoEngine.Board.Intefaces;
 using LudoEngine.Enum;
@@ -12,7 +13,7 @@ namespace LudoEngine.GameLogic
         public TeamColor StephanColor { get; set; }
         public IGameSquare TakeOutSquare { get; set; }
         public IGameSquare FarTakeOutSquare { get; set; }
-        public List<Pawn> StephanPawnsOut { get; set; }
+        public List<Pawn> StephanPawns { get; set; }
         public Stephan()
         {
             if (StephanColor == null)
@@ -27,97 +28,144 @@ namespace LudoEngine.GameLogic
 
         public void Play()
         {
-    
-        }
-        
-        private string CalculatePlay(int dice)
-        {
-            string command = "";
-            if (StephanPawnsOut.Count > 0)
+            int rolled = Dice.RollDice();
+            var CalcInfo = CalculatePlay(rolled);
+            if (CalcInfo.pawnToMove != null && !CalcInfo.pass && !CalcInfo.takeout)
             {
-                foreach (var piece in StephanPawnsOut)
+                if (rolled == 6)
                 {
-                    if (CheckForPossibleEradication(piece, dice).CanEradicate)
+                    StephanMove(CalcInfo.pawnToMove, rolled);
+                    Play(); //Spela igen!
+                }
+            }
+            else if(CalcInfo.takeout)
+            {
+                if (rolled == 6)
+                {
+                    if (CalcInfo.takeoutCount == 2)
                     {
-                        //Move eradicationPawn!
+                        for (var i = 0; i <= CalcInfo.takeoutCount; i++)
+                        {
+                            foreach (var pawn in StephanPawns)
+                            {
+                                if (pawn.Based)
+                                {
+                                    pawn.Based = false;
+                                    TakeOutSquare.Pawns.Add(pawn);
+                                }
+                            }
+                   
+                        }
+                    }
+                    else if (CalcInfo.takeoutCount == 1)
+                    {
+                        foreach (var pawn in StephanPawns)
+                        {
+                            if (pawn.Based)
+                            {
+                                pawn.Based = false;
+                                FarTakeOutSquare.Pawns.Add(pawn);
+                                Play(); //Do another turn!
+                            }
+                        }
+                    }
+                }
+                else if (rolled == 1)
+                {
+                    foreach (var pawn in StephanPawns)
+                    {
+                        if (pawn.Based)
+                        {
+                            pawn.Based = false;
+                            FarTakeOutSquare.Pawns.Add(pawn);
+                        }
+                    } 
+                }
+            }
+            else if (CalcInfo.pass)
+            {
+                //Passera omgång
+            }
+
+        }
+
+        private void StephanMove(Pawn pawn, int dice)
+        {
+            pawn.Move(dice);
+        }
+        private (Pawn pawnToMove, bool pass, bool takeout, int takeoutCount) CalculatePlay(int dice)
+        {
+            if (StephanPawns.Count > 0)
+            {
+                foreach (var piece in StephanPawns)
+                {
+                    var eradicationInfo = CheckForPossibleEradication(piece, dice);
+                    if (eradicationInfo.CanEradicate)
+                    {
+                        return (eradicationInfo.PawnToEradicateWith, false, false, 0); //Returnar en pawn. Han vet att han kommer slå ut en annan
+
                     }
                 }
                 if (dice == 6)
                 {
-                    if (StephanPawnsOut.Count <= 2)
+                    if (StephanPawns.Count <= 2)
                     {
-                        //Returnera ta ut 2 stycken!
+                        return (null, false, true, 2); //Tar ut 2
                     }
-                    else if(StephanPawnsOut.Count == 3)
+                    else if(StephanPawns.Count == 3)
                     {
-                        //Returnera ta ut en
+                        return (null, false, true, 1); //Tar ut 1
                     }
                     else
                     {
-                        //PawnToMove = CalculateWhatPieceToMove(PiecesOut, dice,GoalPosition,StartPosition);
-                        CalculateWhatPieceToMove(StephanPawnsOut, dice);
-                        //Returnera move this pawn!
+                        return (CalculateWhatPieceToMove(StephanPawns, dice), false, false, 0); //Returnar en pawn
                     }
                 }
                 else if (dice == 1)
                 {
-                    if (StephanPawnsOut.Count < 4)
+                    if (StephanPawns.Count < 4)
                     {
-                        //Returnera ta ut en
+                        return (null, false, true, 1); //Tar ut 1
                     }
                     else
                     {
-                        //PawnToMove = CalculateWhatPieceToMove(PiecesOut, dice,GoalPosition,StartPosition);
-                        CalculateWhatPieceToMove(StephanPawnsOut, dice);
-                        //Returnera gå fram med tempMovePiece
+                        return (CalculateWhatPieceToMove(StephanPawns, dice), false, false, 0); //Returnar en pawn
                     }
                 }
                 else
                 {
-                    if (StephanPawnsOut.Count > 0)
-                    {
-                        //Returnera gå fram
-                    }
-                    else
-                    {
-                        //Returnera stå kvar ett kast
-                    }
+                    return (CalculateWhatPieceToMove(StephanPawns, dice), false, false, 0); //Returnar en pawn
                 }
             }
             else
             {
                 if (dice == 6)
                 {
-                    if (StephanPawnsOut.Count <= 2)
+                    if (StephanPawns.Count <= 2)
                     {
-                        //Returnera ta ut 2 stycken!
+                        return (null, false, true, 2); //Tar ut 2
                     }
-                    else if(StephanPawnsOut.Count == 3)
+                    else if(StephanPawns.Count == 3)
                     {
-                        //Returnera ta ut en
+                        return (null, false, true, 1); //Tar ut 1
                     }
                 }
                 else if (dice == 1)
                 {
-                    //Returnera ta ut en
-                }
-                else
-                {
-                    //Returnera stå över ett kast
+                    return (null, false, true, 1); //Tar ut 1
                 }
             }
+            return (null, true, false, 0); //Passar tur
         }
 
         private Pawn CalculateWhatPieceToMove(List<Pawn> PiecesOut, int dice)
         {
-            var gameSquares = new List<IGameSquare>();
             foreach (var piece in PiecesOut)
             {
-                var SquarePosition = gameSquares.Find(square =>
-                    piece.PositionX == square.BoardX && piece.PositionY == square.BoardY);
+                var SquarePosition = BoardHolder.BoardSquares.Find(square => square == piece.CurrentSquare);
                 for (var i = 0; i <= dice; i++)
                 {
-                    SquarePosition = BoardUtils.GetNext(gameSquares, SquarePosition, StephanColor);
+                    SquarePosition = BoardHolder.GetNext(BoardHolder.BoardSquares, SquarePosition, StephanColor);
                     if (SquarePosition.GetType() == typeof(GoalSquare))
                     {
                         return SquarePosition.Pawns.Find(pawn => pawn.Color == StephanColor);
@@ -139,17 +187,15 @@ namespace LudoEngine.GameLogic
 
         private Pawn GetFarthestPawn()
         {
-            var gameSquares = new List<IGameSquare>();
-            var gameSquare = TakeOutSquare;
-            var pawn = gameSquare.Pawns.Find(p => p.Color == StephanColor);
-            //1 lap = 56 coords, 54 = 2 behind to get last square before gate
-            for (var i = 0; i <= 54; i++)
+            var pawn = new Pawn(); 
+            foreach (var square in BoardHolder.TeamSquares(StephanColor))
             {
-                gameSquare = BoardUtils.GetNext(gameSquares, gameSquare, StephanColor);
-                var tempPawn = gameSquare.Pawns.Find(p => p.Color == StephanColor);
-                if (tempPawn != null)
+                foreach (var p in square.Pawns)
                 {
-                    pawn = tempPawn;
+                    if (p.Color == StephanColor)
+                    {
+                        pawn = p;
+                    }
                 }
             }
             return pawn;
@@ -169,10 +215,10 @@ namespace LudoEngine.GameLogic
                         {
                             var gameSquares = new List<IGameSquare>();
                             var SquarePosition = gameSquares.Find(square =>
-                                friendlyPawn.PositionX == square.BoardX && friendlyPawn.PositionY == square.BoardY);
+                                friendlyPawn.CurrentSquare == square);
                             for (var i = 0; i <= dice; i++)
                             {
-                                SquarePosition = BoardUtils.GetNext(gameSquares, SquarePosition, StephanColor);
+                                SquarePosition = BoardHolder.GetNext(gameSquares, SquarePosition, StephanColor);
                             }
                             if (SquarePosition.Pawns.Contains(enemyPawn))
                             {
