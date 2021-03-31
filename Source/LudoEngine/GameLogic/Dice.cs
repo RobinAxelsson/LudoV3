@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace LudoEngine.GameLogic
 {
-    class Dice
+    public class Dice
     {
-        public int RollDice()
+        public static int RollDice()
         {
-            int Number = Convert.ToInt16(new Random(6));
+            Random rnd = new Random();
+            int number = rnd.Next(1, 6);
 
-            return Number;
+            return number;
         }
     }
 }
