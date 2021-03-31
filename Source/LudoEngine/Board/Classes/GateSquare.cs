@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace LudoEngine.Board.Classes
 {
-    public class ColorSquare : IGameSquare
+    public class ExitSquare : IGameSquare
     {
-        public ColorSquare((int X, int Y) boardCoord, TeamColor color)
+        public ExitSquare(int boardX, int boardY, TeamColor color)
         {
-            BoardX = boardCoord.X;
-            BoardY = boardCoord.Y;
+            BoardX = boardX;
+            BoardY = boardY;
             Color = color;
         }
         public int BoardX { get; set; }
@@ -30,5 +30,10 @@ namespace LudoEngine.Board.Classes
             else
                 return DefaultDirection;
         }
+    }
+
+    public static class BoardReader
+    {
+       
     }
 }

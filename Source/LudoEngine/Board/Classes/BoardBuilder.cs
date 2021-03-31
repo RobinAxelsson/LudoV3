@@ -9,20 +9,41 @@ namespace LudoEngine.Board.Classes
     public static class BoardBuilder
     {
         public static List<(int X, int Y)> Positions = new List<(int X, int Y)>();
-        private static readonly (int X, int Y) UpLeft = (0, 0);
-        private static readonly (int X, int Y) DownRight = (14, 14);
         static BoardBuilder()
         {
-            Positions = Rectangle(UpLeft, DownRight);
-            Remove(Rectangle(UpLeft, (5, 5))); //upleft
-            Remove(Rectangle((9, 0), (14, 5))); //upright
-            Remove(Rectangle((9, 9), (DownRight))); //downright
-            Remove(Rectangle((0, 9), (5, 14))); //downleft
-            Remove(Rectangle((6, 6), (8, 8))); //center
-
-
-            var squares = new List<IGameSquare>();
+            var boardSquares = new List<IGameSquare>();
+            boardSquares.AddRange(CreateSquares((6,9), (6,14), BoardDirection.Up));
+            boardSquares.AddRange(CreateSquares((6,6), (6,1), BoardDirection.Up));
+            boardSquares.AddRange(CreateSquares((0,6), (5,6), BoardDirection.Right));
+            boardSquares.AddRange(CreateSquares((8,6), (13,6), BoardDirection.Right));
+            boardSquares.AddRange(CreateSquares((8,6), (13,6), BoardDirection.Down));
+            boardSquares.AddRange(CreateSquares((8,0), (8,5), BoardDirection.Down));
+            boardSquares.AddRange(CreateSquares((9,8), (14,8), BoardDirection.Left));
+            boardSquares.AddRange(CreateSquares((1,8), (6,8), BoardDirection.Left));
+            
+            boardSquares.Add(new GoalSquare(7, 7));
+            boardSquares.Add(new GateSquare(0, 7, TeamColor.Blue));
+            boardSquares.Add(new ColorSquare((7, 0));
+            boardSquares.Add(new ColorSquare((7, 7));
+            boardSquares.Add(new ColorSquare((7, 7));
         }
+        static List<IGameSquare> CreateSquares((int X, int Y) coord1, (int X, int Y) coord2, BoardDirection direction)
+        {
+            var XYs = Rectangle(coord1, coord2);
+            var squares = new List<IGameSquare>();
+            foreach (var pos in XYs)
+                squares.Add(new StandardSquare(pos.X, pos.Y, direction));
+            return squares;
+        }
+        static List<IGameSquare> CreateStandardSquares((int X, int Y) coord1, (int X, int Y)coord2, BoardDirection direction)
+        {
+            var XYs = Rectangle(coord1, coord2);
+            var squares = new List<IGameSquare>();
+            foreach (var pos in XYs)
+                squares.Add(new StandardSquare(pos.X, pos.Y, direction));
+            return squares;
+        }
+
         private static void Remove(List<(int X, int Y)> positions)
         {
             Positions = Positions.Except(positions).ToList();
@@ -39,9 +60,6 @@ namespace LudoEngine.Board.Classes
             }
             return positions;
         }
-        public static BoardDirection FlipDirection(BoardDirection direction)
-            => direction == BoardDirection.Down ? BoardDirection.Up :
-               direction == BoardDirection.Up ? BoardDirection.Down :
-               direction == BoardDirection.Left ? BoardDirection.Right : BoardDirection.Left;
+
     }
 }
