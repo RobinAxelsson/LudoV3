@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LudoEngine.Board.Classes
 {
-    public static class Board
+    public static class BoardHolder
     {
         private static (int X, int Y) greenStart { get; set; } = (13,8);
         private static (int X, int Y) blueStart { get; set; } = (1,6);
