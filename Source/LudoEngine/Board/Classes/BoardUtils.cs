@@ -33,6 +33,19 @@ namespace LudoEngine.Board.Classes
             var diff = NextDiff(square.DirectionNext(color));
             return squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y);
         }
+        public static List<IGameSquare> ReachableSquares(List<IGameSquare> squares, IGameSquare start, TeamColor color)
+        {
+            Type GoalType = null;
+            var squaresToGoal = new List<IGameSquare>();
+            squaresToGoal.Add(start);
+            var temp = start;
+            while (GoalType != typeof(GoalSquare))
+            {
+                temp = GetNext(squares, temp, color);
+                squaresToGoal.Add(temp);
+            }
+            return squaresToGoal;
+        }
         public static BoardDirection FlipDirection(BoardDirection direction)
             => direction == BoardDirection.Down ? BoardDirection.Up :
                direction == BoardDirection.Up ? BoardDirection.Down :

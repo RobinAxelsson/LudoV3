@@ -20,7 +20,7 @@ namespace LudoEngine.Board.Classes
         public BoardDirection DefaultDirection { get; set; }
         public BoardDirection DirectionNext(TeamColor Color)
         {
-            if (Color == Color)
+            if (this.Color == Color)
             {
                 return
                     Color == TeamColor.Yellow ? BoardDirection.Up :

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LudoEngine.Board.Classes
 {
-    public class SafezoneSquare : IGameSquare
+    public class SafezoneSquare : IOneDirectionSquare
     {
         public SafezoneSquare(int boardX, int boardY, BoardDirection direction)
         {

@@ -22,10 +22,14 @@ namespace LudoEngine.Board.Classes
             boardSquares.AddRange(CreateSquares((1,8), (6,8), BoardDirection.Left));
             
             boardSquares.Add(new GoalSquare(7, 7));
-            //boardSquares.Add(new GateSquare());
-            //boardSquares.Add(new ColorSquare((7, 0));
-            //boardSquares.Add(new ColorSquare((7, 7));
-            //boardSquares.Add(new ColorSquare((7, 7));
+
+            boardSquares.Add(new ExitSquare(0,7, TeamColor.Blue));
+            boardSquares.Add(new ExitSquare(7,0, TeamColor.Red));
+            boardSquares.Add(new ExitSquare(14, 7, TeamColor.Green));
+            boardSquares.Add(new ExitSquare(7, 14, TeamColor.Yellow));
+
+
+
         }
         static List<IGameSquare> CreateSquares((int X, int Y) coord1, (int X, int Y) coord2, BoardDirection direction)
         {
@@ -35,10 +39,10 @@ namespace LudoEngine.Board.Classes
                 squares.Add(new StandardSquare(pos.X, pos.Y, direction));
             return squares;
         }
-        static List<IGameSquare> CreateStandardSquares((int X, int Y) coord1, (int X, int Y)coord2, BoardDirection direction)
+        static List<IOneDirectionSquare> CreateStandardSquares<T>((int X, int Y) coord1, (int X, int Y)coord2, BoardDirection direction)
         {
             var XYs = Rectangle(coord1, coord2);
-            var squares = new List<IGameSquare>();
+            var squares = new List<IOneDirectionSquare>();
             foreach (var pos in XYs)
                 squares.Add(new StandardSquare(pos.X, pos.Y, direction));
             return squares;
