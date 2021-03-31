@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using LudoConsole.UI;
-using LudoConsole.UI.Tools;
+using LudoEngine.Board.Classes;
 using LudoEngine.DbModel;
 
 namespace LudoConsole.Main
@@ -15,7 +15,7 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            ConsoleWriter.WriteXYs(BoardPositions.Positions);
+            ConsoleWriter.WriteXYs(BoardBuilder.Positions);
             Console.ReadLine();
         }
     }
