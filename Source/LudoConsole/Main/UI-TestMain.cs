@@ -6,14 +6,14 @@ using LudoEngine.DbModel;
 
 namespace LudoConsole.Main
 {
-    internal static class UITestMain
+    internal static partial class UITestMain
     {
         static UITestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
-        private static void Main33(string[] args)
+        private static void Main(string[] args)
         {
             ConsoleWriter.WriteXYs(BoardPositions.Positions);
             Console.ReadLine();

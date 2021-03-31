@@ -12,7 +12,7 @@ namespace LudoConsole.Main
             DatabaseManagement.ReadConnectionString(@"DbModel/connection.txt"); //add connectionstring at this path and exact name to work with git ignore
         }
 
-        private static void Main(string[] args)
+        private static void Main33(string[] args)
         {
             Console.WriteLine(DatabaseManagement.ConnectionString);
         }

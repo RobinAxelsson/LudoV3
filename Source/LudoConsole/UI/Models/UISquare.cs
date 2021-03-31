@@ -1,13 +1,9 @@
 ﻿using LudoEngine.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoConsole.UI.Interfaces
 {
-    public interface ISquare
+    public class UISquare : IUISquare
     {
         //public int Index { get; set; }
         public (int X, int Y) UpperLeft { get; set; }
