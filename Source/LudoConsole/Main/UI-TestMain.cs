@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using LudoConsole.UI;
 using LudoEngine.Board.Classes;
-using LudoEngine.DbModel;
+using LudoEngine.Enum;
 
 namespace LudoConsole.Main
 {
@@ -15,7 +16,13 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            ConsoleWriter.WriteXYs(BoardHolder.Positions);
+            var red = BoardHolder.TeamPath(TeamColor.Red);
+            var green = BoardHolder.TeamPath(TeamColor.Green);
+            var blue = BoardHolder.TeamPath(TeamColor.Blue);
+            var yellow = BoardHolder.TeamPath(TeamColor.Yellow);
+
+            var xys = green.Select(x => (x.BoardX, x.BoardY)).ToList();
+            ConsoleWriter.WriteXYs(xys, ConsoleColor.Green);
             Console.ReadLine();
         }
     }
