@@ -15,7 +15,7 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            ConsoleWriter.WriteXYs(BoardBuilder.Positions);
+            ConsoleWriter.WriteXYs(Board.Positions);
             Console.ReadLine();
         }
     }
