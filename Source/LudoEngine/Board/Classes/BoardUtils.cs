@@ -28,9 +28,9 @@ namespace LudoEngine.Board.Classes
                     return (0, 0);
             }
         }
-        public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, Pawn pawn)
+        public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
         {
-            var diff = NextDiff(square.DirectionNext(pawn));
+            var diff = NextDiff(square.DirectionNext(color));
             return squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y);
         }
         public static BoardDirection FlipDirection(BoardDirection direction)

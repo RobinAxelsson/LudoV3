@@ -22,10 +22,10 @@ namespace LudoEngine.Board.Classes
             boardSquares.AddRange(CreateSquares((1,8), (6,8), BoardDirection.Left));
             
             boardSquares.Add(new GoalSquare(7, 7));
-            boardSquares.Add(new GateSquare(0, 7, TeamColor.Blue));
-            boardSquares.Add(new ColorSquare((7, 0));
-            boardSquares.Add(new ColorSquare((7, 7));
-            boardSquares.Add(new ColorSquare((7, 7));
+            //boardSquares.Add(new GateSquare());
+            //boardSquares.Add(new ColorSquare((7, 0));
+            //boardSquares.Add(new ColorSquare((7, 7));
+            //boardSquares.Add(new ColorSquare((7, 7));
         }
         static List<IGameSquare> CreateSquares((int X, int Y) coord1, (int X, int Y) coord2, BoardDirection direction)
         {

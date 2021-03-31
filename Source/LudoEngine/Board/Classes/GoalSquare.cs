@@ -16,12 +16,12 @@ namespace LudoEngine.Board.Classes
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(Pawn pawn)
+        public BoardDirection DirectionNext(TeamColor Color)
         {
                 return
-                    pawn.Color == TeamColor.Yellow ? BoardDirection.Down :
-                    pawn.Color == TeamColor.Blue ? BoardDirection.Left :
-                    pawn.Color == TeamColor.Red ? BoardDirection.Up : BoardDirection.Right;
+                   Color == TeamColor.Yellow ? BoardDirection.Down :
+                   Color == TeamColor.Blue ? BoardDirection.Left :
+                   Color == TeamColor.Red ? BoardDirection.Up : BoardDirection.Right;
         }
     }
 }

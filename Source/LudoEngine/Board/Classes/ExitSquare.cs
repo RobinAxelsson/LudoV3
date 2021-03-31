@@ -18,14 +18,14 @@ namespace LudoEngine.Board.Classes
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         private TeamColor Color { get; set; }
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(Pawn pawn)
+        public BoardDirection DirectionNext(TeamColor Color)
         {
-            if (Color == pawn.Color)
+            if (Color == Color)
             {
                 return
-                    pawn.Color == TeamColor.Yellow ? BoardDirection.Up :
-                    pawn.Color == TeamColor.Blue ? BoardDirection.Right :
-                    pawn.Color == TeamColor.Red ? BoardDirection.Down : BoardDirection.Left;
+                    Color == TeamColor.Yellow ? BoardDirection.Up :
+                    Color == TeamColor.Blue ? BoardDirection.Right :
+                    Color == TeamColor.Red ? BoardDirection.Down : BoardDirection.Left;
             }
             else
                 return DefaultDirection;
