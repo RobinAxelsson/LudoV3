@@ -11,4 +11,5 @@ namespace LudoEngine.DbModel
             ConnectionString = File.ReadAllText(filepath);
         }
     }
+
 }
