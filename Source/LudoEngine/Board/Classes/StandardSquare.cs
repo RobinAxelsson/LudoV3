@@ -17,6 +17,6 @@ namespace LudoEngine.Board.Classes
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(Pawn pawn) => DefaultDirection;
+        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
     }
 }
