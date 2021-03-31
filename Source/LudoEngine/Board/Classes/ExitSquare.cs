@@ -7,11 +7,12 @@ namespace LudoEngine.Board.Classes
 {
     public class ExitSquare : IGameSquare
     {
-        public ExitSquare(int boardX, int boardY, TeamColor color)
+        public ExitSquare(int boardX, int boardY, TeamColor color, BoardDirection defaultDirection)
         {
             BoardX = boardX;
             BoardY = boardY;
             Color = color;
+            DefaultDirection = defaultDirection;
         }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
@@ -30,10 +31,5 @@ namespace LudoEngine.Board.Classes
             else
                 return DefaultDirection;
         }
-    }
-
-    public static class BoardReader
-    {
-       
     }
 }
