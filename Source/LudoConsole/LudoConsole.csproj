@@ -8,6 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="UI\Map\square.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="UI\Map\square.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
     </ItemGroup>
 

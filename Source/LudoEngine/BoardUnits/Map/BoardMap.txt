@@ -1,18 +1,20 @@
-﻿      1e2
-      0ar
-      0a2
-      0a2
-      0a2
-      0a2
-1l11110a1111112
-fbbbbbbsddddddh
-0333333c23333n3
-      0c2
-      0c2
-      0c2
-      0c2
-      yc2
-      0g3
+﻿      11e12
+      0 a r
+      0 a 2
+      0 a 2
+      0 a 2
+      0 a 2
+1l11110 a 1111112
+0       a       2
+fbbbbbbbsdddddddh
+0       c       2
+0333333 c 23333n3
+      0 c 2
+      0 c 2
+      0 c 2
+      0 c 2
+      y c 2
+      03g33
 /*
 
 0-up

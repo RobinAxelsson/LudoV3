@@ -1,25 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoConsole.UI.Models
 {
-    public class LudoDrawable : IDrawable
+    public class PawnDrawable : IDrawable
     {
-        public LudoDrawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor)
+        public PawnDrawable(int x, int y, ConsoleColor backgroundColor, ConsoleColor foregroundColor, char chr = '¤')
         {
-            CoordinateX = coord.X;
-            CoordinateY = coord.Y;
+            CoordinateX = x;
+            CoordinateY = y;
             BackgroundColor = backgroundColor;
+            ForegroundColor = foregroundColor;
             Chars = chr.ToString();
         }
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }
         public ConsoleColor BackgroundColor { get; set; }
-        public ConsoleColor ForegroundColor { get; set; } = ConsoleColor.Black;
+        public ConsoleColor ForegroundColor { get; set; }
         public bool IsDrawn { get; set; }
         public bool Erase { get; set; }
 
