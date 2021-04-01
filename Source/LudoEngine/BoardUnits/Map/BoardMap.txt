@@ -1,0 +1,38 @@
+﻿      1e2
+      0ar
+      0a2
+      0a2
+      0a2
+      0a2
+1l11110a1111112
+fbbbbbbsddddddh
+0333333c23333n3
+      0c2
+      0c2
+      0c2
+      0c2
+      yc2
+      0g3
+/*
+
+0-up
+1-right
+2-down
+3-left
+
+a - red safe zone, down
+b - blue safe zone, right
+c - yellow safe zone, up
+d - green safe zone, left
+
+e - red exit, right
+f - blue exit, up
+g - yellow exit, left
+h - green exit, down
+
+r - red start, down
+l - blue start, right
+y - yellow start, up
+n - green start, left
+
+s - finish

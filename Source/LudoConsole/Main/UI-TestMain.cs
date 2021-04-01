@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using LudoConsole.UI;
-using LudoEngine.Board.Classes;
+using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 
 namespace LudoConsole.Main
@@ -16,13 +16,15 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            var red = BoardHolder.TeamPath(TeamColor.Red);
-            var green = BoardHolder.TeamPath(TeamColor.Green);
-            var blue = BoardHolder.TeamPath(TeamColor.Blue);
-            var yellow = BoardHolder.TeamPath(TeamColor.Yellow);
+            var squares = Board.BoardSquares;
+            var red = Board.TeamPath(TeamColor.Red);
+            var green = Board.TeamPath(TeamColor.Green);
+            var blue = Board.TeamPath(TeamColor.Blue);
+            var yellow = Board.TeamPath(TeamColor.Yellow);
 
-            var xys = green.Select(x => (x.BoardX, x.BoardY)).ToList();
-            ConsoleWriter.WriteXYs(xys, ConsoleColor.Green);
+
+            var xys = blue.Select(x => (x.BoardX, x.BoardY)).ToList();
+            ConsoleWriter.WriteXYs(xys, ConsoleColor.Blue);
             Console.ReadLine();
         }
     }

@@ -1,18 +1,20 @@
-﻿using LudoEngine.Board.Intefaces;
+﻿using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 using System.Collections.Generic;
 
-namespace LudoEngine.Board.Classes
+namespace LudoEngine.BoardUnits.Main
 {
-    public class StandardSquare : IOneDirectionSquare
+    public class StartSquare : IGameSquare
     {
-        public StandardSquare(int boardX, int boardY, BoardDirection direction)
+        public StartSquare(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
+            Color = color;
             BoardX = boardX;
             BoardY = boardY;
             DefaultDirection = direction;
         }
+        public TeamColor? Color { get; set; }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
