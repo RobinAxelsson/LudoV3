@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using LudoConsole.UI;
 using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
@@ -15,23 +15,17 @@ namespace LudoConsole.Main
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
-
+        public static List<SquareDrawable> DrawSquares = SquareDrawable.ConvertAllSquares(Board.BoardSquares);
         private static void Main(string[] args)
         {
             Console.WindowWidth = 89;
             Console.WindowHeight = 38;
             Console.CursorVisible = false;
 
-            var squares = Board.BoardSquares;
-            var drawSquares = SquareDrawable.ConvertAllSquares(squares);
-            ConsoleWriter.TryAppend(drawSquares);
-            ConsoleWriter.Update();
-            Console.ReadLine();
-            var pawn = new Pawn();
-            pawn.Color = TeamColor.Blue;
-            squares[0].Pawns.Add(pawn);
-            ConsoleWriter.UpdateDrawSquares(drawSquares);
-            ConsoleWriter.Update();
+            var pawn0 = new Pawn();
+            pawn0.Color = TeamColor.Blue;
+            DrawSquares[0].Square.Pawns.Add(pawn0);
+            ConsoleWriter.Update(DrawSquares);
             Console.ReadLine();
         }
     }

@@ -4,13 +4,13 @@ namespace LudoConsole.UI.Models
 {
     public class PawnDrawable : IDrawable
     {
-        public PawnDrawable(int x, int y, ConsoleColor backgroundColor, ConsoleColor foregroundColor, char chr = '¤')
+        public PawnDrawable((int x, int y) coords, ConsoleColor pawnColor, ConsoleColor squareColor, char chr = ' ')
         {
-            CoordinateX = x;
-            CoordinateY = y;
-            BackgroundColor = backgroundColor;
-            ForegroundColor = foregroundColor;
-            Chars = chr.ToString();
+            CoordinateX = coords.x;
+            CoordinateY = coords.y;
+            BackgroundColor = pawnColor == squareColor ? ConsoleColor.White : pawnColor;
+            ForegroundColor = pawnColor == squareColor ? pawnColor : ConsoleColor.Black;
+            Chars = pawnColor == squareColor ? "x" : chr.ToString();
         }
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
