@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using LudoEngine.DbModel;
+using LudoEngine.Enum;
 
 namespace LudoConsole.Main
 {
@@ -14,7 +15,9 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            Console.WriteLine(DatabaseManagement.ConnectionString);
+            DatabaseManagement.SavePlayer("eshag");
         }
+
+
     }
 }

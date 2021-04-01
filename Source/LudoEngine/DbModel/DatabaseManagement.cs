@@ -1,4 +1,10 @@
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using LudoEngine.Models;
+using LudoEngine.Enum;
+using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace LudoEngine.DbModel
 {
@@ -9,6 +15,66 @@ namespace LudoEngine.DbModel
         public static void ReadConnectionString(string filepath)
         {
             ConnectionString = File.ReadAllText(filepath);
+        }
+
+        public static void SavePlayer(string Name)
+        {
+            using var db = new LudoContext();
+
+            var game = db.Games.Find(1);
+            var player = new Player { PlayerName = Name};
+            game.Players.Add(player);
+            db.SaveChanges();
+
+
+        }
+
+        public static void SavePawn(TeamColor color, int xPosition , int  yPosition, int gameID)
+        {
+            using var db = new LudoContext();
+
+            var pawn = new Pawn { Color = color, XPosition = xPosition, YPosition = yPosition, GameID = gameID};
+
+            db.Add(pawn);
+            db.SaveChanges();
+        }
+
+        public static void SaveGame(string currentTurn, int firstplace, int secondPlace, int thirdPlace, int fourthPlace)
+        {
+            using var db = new LudoContext();
+
+            var game = new Game { CurrentTurn = currentTurn, FirstPlace = firstplace, SecondPlace = secondPlace, ThirdPlace = thirdPlace, FourthPlace = fourthPlace };
+
+            db.Add(game);
+            db.SaveChanges();
+        }
+
+        public static void GetGame(int id)
+        {
+            using var db = new LudoContext();
+
+            var game = db.Games
+                .Select(x => x)
+                .Where(x => x.Id == id);
+
+            foreach (var item in game)
+            {
+                System.Console.WriteLine($"ID: {item.Id}, FirstPlace: {item.FirstPlace}, CurrentTurn: {item.CurrentTurn}");
+            }
+        }
+
+        public static void GetPlayers(int gameId)
+        {
+            using var db = new LudoContext();
+
+            var players = db.Games
+                .Where(g => g.Id == gameId)
+                .SelectMany(p => p.Player);
+
+            foreach (var item in players)
+            {
+                Console.WriteLine(item.PlayerName);
+            }
         }
     }
 }

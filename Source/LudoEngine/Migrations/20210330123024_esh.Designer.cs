@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LudoEngine.Migrations
 {
-    [DbContext(typeof(StarWarsContext))]
+    [DbContext(typeof(LudoContext))]
     [Migration("20210330123024_esh")]
     partial class esh
     {
