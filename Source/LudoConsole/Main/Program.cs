@@ -15,7 +15,8 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            DatabaseManagement.SavePlayer("eshag");
+            //DatabaseManagement.SavePlayer("eshag");
+            DatabaseManagement.GetPlayers(1);
         }
 
 

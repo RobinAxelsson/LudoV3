@@ -5,6 +5,8 @@ using LudoEngine.Enum;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace LudoEngine.DbModel
 {
@@ -23,7 +25,8 @@ namespace LudoEngine.DbModel
 
             var game = db.Games.Find(1);
             var player = new Player { PlayerName = Name};
-            game.Players.Add(player);
+            db.Players.Add(player);
+            
             db.SaveChanges();
 
 
@@ -65,16 +68,7 @@ namespace LudoEngine.DbModel
 
         public static void GetPlayers(int gameId)
         {
-            using var db = new LudoContext();
-
-            var players = db.Games
-                .Where(g => g.Id == gameId)
-                .SelectMany(p => p.Player);
-
-            foreach (var item in players)
-            {
-                Console.WriteLine(item.PlayerName);
-            }
+           
         }
     }
 }
