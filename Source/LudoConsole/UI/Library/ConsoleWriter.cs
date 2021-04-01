@@ -1,12 +1,28 @@
-﻿using System;
+﻿using LudoConsole.UI.Interfaces;
+using LudoConsole.UI.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LudoConsole.UI
 {
     public static class ConsoleWriter
     {
-        private static readonly List<IDrawable> ScreenMemory = new();
-
+        private static List<IDrawable> ScreenMemory = new List<IDrawable>();
+        public static void TryAppend(List<SquareDrawable> squares)
+        {
+           var drawables = (squares.Select(x => x.Memory).SelectMany(x => x));
+            TryAppend(drawables.ToList());
+        }
+        public static void UpdateDrawSquares(List<SquareDrawable> drawSquares)
+        {
+            foreach (var drawSquare in drawSquares)
+            {
+                var newPawns = drawSquare.DrawPawns();
+                if (newPawns.Count != 0)
+                    newPawns.ForEach(x => TryAppend(x));
+            }
+        }
         public static bool IsInScreenMemory(IDrawable drawable)
         {
             foreach (var item in ScreenMemory)
@@ -14,7 +30,6 @@ namespace LudoConsole.UI
                     return true;
             return false;
         }
-
         public static void WriteXYs(List<(int X, int Y)> positions, ConsoleColor color) //for test
         {
             foreach (var pos in positions)
@@ -59,7 +74,7 @@ namespace LudoConsole.UI
             toRemove.ForEach(x => ScreenMemory.Remove(x));
         }
 
-        public static void Write(IDrawable drawable)
+        private static void Write(IDrawable drawable)
         {
             Console.ForegroundColor = drawable.ForegroundColor;
             Console.BackgroundColor = drawable.BackgroundColor;
@@ -70,7 +85,7 @@ namespace LudoConsole.UI
             Console.BackgroundColor = ConsoleColor.Black;
         }
 
-        public static void Erase(IDrawable drawable)
+        private static void Erase(IDrawable drawable)
         {
             Console.BackgroundColor = ConsoleColor.Black;
             Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);

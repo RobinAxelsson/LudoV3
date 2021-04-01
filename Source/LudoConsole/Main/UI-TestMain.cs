@@ -2,8 +2,10 @@
 using System.Globalization;
 using System.Linq;
 using LudoConsole.UI;
+using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
+using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
@@ -16,15 +18,20 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
+            Console.WindowWidth = 89;
+            Console.WindowHeight = 38;
+            Console.CursorVisible = false;
+
             var squares = Board.BoardSquares;
-            var red = Board.TeamPath(TeamColor.Red);
-            var green = Board.TeamPath(TeamColor.Green);
-            var blue = Board.TeamPath(TeamColor.Blue);
-            var yellow = Board.TeamPath(TeamColor.Yellow);
-
-
-            var xys = blue.Select(x => (x.BoardX, x.BoardY)).ToList();
-            ConsoleWriter.WriteXYs(xys, ConsoleColor.Blue);
+            var drawSquares = SquareDrawable.ConvertAllSquares(squares);
+            ConsoleWriter.TryAppend(drawSquares);
+            ConsoleWriter.Update();
+            Console.ReadLine();
+            var pawn = new Pawn();
+            pawn.Color = TeamColor.Blue;
+            squares[0].Pawns.Add(pawn);
+            ConsoleWriter.UpdateDrawSquares(drawSquares);
+            ConsoleWriter.Update();
             Console.ReadLine();
         }
     }
