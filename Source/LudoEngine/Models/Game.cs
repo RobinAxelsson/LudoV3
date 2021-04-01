@@ -6,7 +6,7 @@ namespace LudoEngine.Models
     public class Game
     {
         public int Id { get; set; }
-        public Player Player { get; set; }
+        public ICollection<Player> Player { get; set; }
         public string CurrentTurn { get; set; }
         public int FirstPlace { get; set; }
         public int SecondPlace { get; set; }
@@ -18,18 +18,15 @@ namespace LudoEngine.Models
     {
         public int Id { get; set; }
         public string PlayerName { get; set; }
-        public Game Game { get; set; }
+        public ICollection<Game> Game { get; set; }
     }
 
     public class PlayerGame
-    { 
-     //   [Key] 
-     //   public int PlayerId { get; set; }
-        public Player Player { get; set; }
-        
-  //      [Key]
-  //      public int GameId { get; set; }
-        public Game Game { get; set; }
+    {
+        public int PlayerId { get; set; }
+        public ICollection<Player> Player { get; set; }
+        public int GameId { get; set; }
+        public ICollection<Game> Game { get; set; }
      
     }
 }

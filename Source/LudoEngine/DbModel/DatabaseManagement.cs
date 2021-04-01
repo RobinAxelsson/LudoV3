@@ -62,13 +62,21 @@ namespace LudoEngine.DbModel
 
             foreach (var item in game)
             {
-                System.Console.WriteLine($"ID: {item.Id}, FirstPlace: {item.FirstPlace}, CurrentTurn: {item.CurrentTurn}");
+                Console.WriteLine($"ID: {item.Id}, FirstPlace: {item.FirstPlace}, CurrentTurn: {item.CurrentTurn}");
             }
         }
 
-        public static void GetPlayers(int gameId)
+        public static void GetPlayersInGame(int gameId)
         {
-           
+            using var db = new LudoContext();
+
+            //var players = db.Players
+            //    .Where(x => x == gameId).ToList();
+
+            //foreach (var item in players)
+            //{
+            //    Console.WriteLine(item.);
+            //}
         }
     }
 }

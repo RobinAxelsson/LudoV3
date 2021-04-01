@@ -18,5 +18,11 @@ namespace LudoEngine.DbModel
             DatabaseManagement.ReadConnectionString(@"DbModel/connection.txt");
             optionsbuilder.UseSqlServer(DatabaseManagement.ConnectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayerGame>()
+                .HasKey(x => new { x.GameId, x.PlayerId });
+        }
     }
 }

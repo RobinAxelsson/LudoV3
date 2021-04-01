@@ -4,14 +4,16 @@ using LudoEngine.DbModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LudoEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    partial class StarWarsContextModelSnapshot : ModelSnapshot
+    [Migration("20210401114950_TestJoinTable")]
+    partial class TestJoinTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
