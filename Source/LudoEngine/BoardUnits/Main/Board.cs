@@ -77,6 +77,11 @@ namespace LudoEngine.BoardUnits.Main
                         chr == 'y' ? new StartSquare(x, y, TeamColor.Yellow, BoardDirection.Up) :
                         chr == 'n' ? new StartSquare(x, y, TeamColor.Green, BoardDirection.Left) :
 
+                        chr == '4' ? new BaseSquare(x, y, TeamColor.Red, BoardDirection.Left) :
+                        chr == '5' ? new BaseSquare(x, y, TeamColor.Blue, BoardDirection.Down) :
+                        chr == '6' ? new BaseSquare(x, y, TeamColor.Yellow, BoardDirection.Right) :
+                        chr == '7' ? new BaseSquare(x, y, TeamColor.Green, BoardDirection.Up) :
+
                         chr == 's' ? new GoalSquare(x, y) : throw new NullReferenceException();
 
                     squares.Add(newSquare);

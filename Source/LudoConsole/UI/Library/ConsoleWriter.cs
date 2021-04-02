@@ -1,4 +1,6 @@
 ﻿using LudoConsole.UI.Models;
+using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Main;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ namespace LudoConsole.UI
     public static class ConsoleWriter
     {
         private static List<IDrawable> ScreenMemory = new List<IDrawable>();
-        public static void TryAppend(List<SquareDrawable> squares)
+        public static void TryAppend(List<ISquareDrawable> squares)
         {
             var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
             TryAppend(drawables.ToList());
@@ -21,6 +23,14 @@ namespace LudoConsole.UI
                 Console.BackgroundColor = color;
                 Console.Write(" ");
             }
+        }
+        public static List<ISquareDrawable> ConvertAllSquares(List<IGameSquare> squares)
+        {
+            var squareDraws = squares.Where(x => x.GetType() != typeof(BaseSquare)).Select(x => new SquareDrawable(x));
+            var x = squareDraws.Select(x => x.MaxCoord()).Max(x => x.X);
+            var y = squareDraws.Select(x => x.MaxCoord()).Max(x => x.Y);
+            var baseDraws = squares.Where(x => x.GetType() == typeof(BaseSquare)).Select(square => new BaseDrawable(square, (x, y))).Select(x => (ISquareDrawable)x);
+            return squareDraws.Concat(baseDraws).ToList();
         }
         public static void TryAppend(IDrawable tryUnit)
         {
@@ -38,7 +48,7 @@ namespace LudoConsole.UI
         {
             drawables.ForEach(x => TryAppend(x));
         }
-        public static void Update(List<SquareDrawable> squareDrawables)
+        public static void Update(List<ISquareDrawable> squareDrawables)
         {
             TryAppend(squareDrawables);
             update();

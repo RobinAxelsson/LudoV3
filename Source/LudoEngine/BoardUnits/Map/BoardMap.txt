@@ -1,19 +1,19 @@
 ﻿      11e12
-      0 a r
+      0 a r4
       0 a 2
       0 a 2
       0 a 2
-      0 a 2
+ 5    0 a 2
 1l11110 a 1111112
 0       a       2
 fbbbbbbbsdddddddh
 0       c       2
 0333333 c 23333n3
+      0 c 2    7
       0 c 2
       0 c 2
       0 c 2
-      0 c 2
-      y c 2
+     6y c 2
       03g33
 /*
 
@@ -36,5 +36,10 @@ r - red start, down
 l - blue start, right
 y - yellow start, up
 n - green start, left
+
+4 - red base
+5 - blue base
+6 - yellow base
+7 - green base
 
 s - finish
