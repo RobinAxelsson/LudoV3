@@ -2,29 +2,26 @@
 using System.Collections.Generic;
 using System.Globalization;
 using LudoConsole.UI;
+using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
+using LudoConsole.UI.Screens;
 using LudoEngine.BoardUnits.Main;
 
 namespace LudoConsole.Main
 {
     internal static partial class UITestMain
     {
+        public static List<ISquareDrawable> DrawSquares;
         static UITestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
+            PawnKing.GameSetUp(Board.BoardSquares, players: 4);
+            UiControl.SetDefault();
         }
-        public static List<ISquareDrawable> DrawSquares = ConsoleWriter.ConvertAllSquares(Board.BoardSquares);
         private static void Main(string[] args)
         {
-            //Console.WindowWidth = 89;
-            //Console.WindowHeight = 38;
-            Console.BufferWidth = 160;
-            Console.CursorVisible = false;
-            var drawSquares = DrawSquares;
-            //var pawn0 = new Pawn();
-            //pawn0.Color = TeamColor.Blue;
-            //DrawSquares[0].Square.Pawns.Add(pawn0);
-            ConsoleWriter.Update(drawSquares);
+            ConsoleWriter.UpdateBoard(DrawSquares);
             Console.ReadLine();
         }
     }

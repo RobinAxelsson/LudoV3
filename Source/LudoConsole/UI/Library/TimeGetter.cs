@@ -23,7 +23,7 @@
 //        public double GetMinutes(SpaceShip ship)
 //        {
 //            Console.CursorVisible = false;
-//            Console.ForegroundColor = ConsoleColor.Green;
+//            Console.ForegroundColor = UiControl.DefaultForegroundColor;
 //            var hoursSelected = HoursSelected;
 //            var price = Price;
 

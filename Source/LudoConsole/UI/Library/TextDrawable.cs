@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LudoConsole.UI.Controls;
+using System;
 
 namespace LudoConsole.UI
 {
@@ -7,8 +8,8 @@ namespace LudoConsole.UI
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }
-        public ConsoleColor BackgroundColor { get; set; } = ConsoleColor.Black;
-        public ConsoleColor ForegroundColor { get; set; } = ConsoleColor.White;
+        public ConsoleColor BackgroundColor { get; set; } = UiControl.DefaultBackgroundColor;
+        public ConsoleColor ForegroundColor { get; set; } = UiControl.DefaultForegroundColor;
         public bool IsDrawn { get; set; }
         public bool Erase { get; set; }
 

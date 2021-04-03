@@ -1,4 +1,5 @@
-﻿using LudoEngine.BoardUnits.Intefaces;
+﻿using LudoConsole.UI.Controls;
+using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.Enum;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace LudoConsole.UI.Models
         }
         private (int X, int Y) TrueUpLeft { get; set; }
         private List<(int X, int Y)> PawnCoords { get; set; } = new List<(int X, int Y)>();
+        public object UiControls { get; private set; }
+
         public List<IDrawable> Refresh()
         {
             var toRefresh = new List<IDrawable>();
@@ -52,7 +55,7 @@ namespace LudoConsole.UI.Models
             if (pawnCount < 0 || pawnCount > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
-            var pawnColor = TranslateColor(Square.Pawns[0].Color);
+            var pawnColor = UiControl.TranslateColor(Square.Pawns[0].Color);
             for (int i = 0; i < pawnCount; i++)
             {
                 var newPawn = new PawnDrawable(PawnCoords[i], pawnColor, ThisBackgroundColor());
@@ -101,11 +104,7 @@ namespace LudoConsole.UI.Models
             }
             return charCoords;
         }
-        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? TranslateColor((TeamColor)Square.Color) : ConsoleColor.White;
-        private ConsoleColor TranslateColor(TeamColor color) =>
-            color == TeamColor.Blue ? ConsoleColor.DarkBlue :
-            color == TeamColor.Green ? ConsoleColor.Green :
-            color == TeamColor.Red ? ConsoleColor.Red :
-            color == TeamColor.Yellow ? ConsoleColor.Yellow : ConsoleColor.White;
+        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiControl.TranslateColor((TeamColor)Square.Color) : UiControl.LightAccent;
+       
     }
 }

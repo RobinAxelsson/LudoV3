@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LudoConsole.UI.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +7,7 @@ namespace LudoConsole.UI
 {
     public static class TextEditor
     {
-        private static ConsoleColor ForegroundColor { get; } = ConsoleColor.Green;
+        private static ConsoleColor ForegroundColor { get; } = UiControl.DefaultForegroundColor;
 
         public static class Center
         {
