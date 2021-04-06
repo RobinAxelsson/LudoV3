@@ -17,13 +17,13 @@ namespace LudoEngine.Models
         [ForeignKey("Game")]
         public virtual Game GameID { get; set; }
         public TeamColor Color { get; set; }
-        public IGameSquare CurrentSquare { get; set; }
+        public IGameSquare CurrentSquare() => Board.BoardSquares.Find(x => x.Pawns.Contains(this));
         public bool Based { get; set; } //Kolla om Pawn ligger i basen
         public void Move(int dice)
         {
             var gameSquares = Board.BoardSquares;
-            var tempSquare = CurrentSquare;
-            CurrentSquare.Pawns.Remove(this);
+            var tempSquare = CurrentSquare();
+            tempSquare.Pawns.Remove(this);
             for (var i = 0; i <= dice; i++)
             {
                 tempSquare = Board.GetNext(gameSquares, tempSquare, Color);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LudoEngine.GameLogic
 {
-    public class Dice
+    public static class Dice
     {
         public static int RollDice()
         {

@@ -7,6 +7,7 @@ using LudoConsole.UI.Models;
 using LudoConsole.UI.Screens;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
+using LudoEngine.GameLogic;
 using LudoEngine.Models;
 
 namespace LudoConsole.Main
@@ -18,16 +19,25 @@ namespace LudoConsole.Main
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
-            PawnKing.GameSetUp(Board.BoardSquares, players: 4);
+            GameSetup.NewGame(Board.BoardSquares, players: 4);
             UiControl.SetDefault();
         }
         private static void Main(string[] args)
         {
-
             ConsoleWriter.UpdateBoard(DrawSquares);
 
-            Console.ReadLine();
+            while (true)
+            {
+                
+                var color = ActivePlayer.CurrentTeam();
+                int dieRoll = 1;//Dice.RollDice();
+                var pawnsToMove = GameRules.SelectablePawns(color, dieRoll);
+                if(pawnsToMove.Count > 0)
+                    ActivePlayer.MovePawn(pawnsToMove[0]);
+                ActivePlayer.NextTeam();
+                ConsoleWriter.UpdateBoard(DrawSquares);
+            }
         }
-       
+
     }
 }

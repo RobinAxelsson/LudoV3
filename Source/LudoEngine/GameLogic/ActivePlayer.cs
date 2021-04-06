@@ -1,4 +1,4 @@
-﻿using LudoEngine.BoardUnits.Intefaces;
+﻿using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 using System;
@@ -7,40 +7,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LudoEngine.BoardUnits.Main
+namespace LudoEngine.GameLogic
 {
     public static class ActivePlayer
     {
+        static ActivePlayer()
+        {
+            iCurrentTeam = 0;
+        }
         private static List<TeamColor> OrderOfTeams = new List<TeamColor>
         {
             TeamColor.Blue,
-            TeamColor.Green,
             TeamColor.Red,
+            TeamColor.Green,
             TeamColor.Yellow
         };
         public static TeamColor CurrentTeam() => OrderOfTeams[iCurrentTeam];
         private static int iCurrentTeam { get; set; }
         private static Pawn SelectedPawn { get; set; }
         private static int DiceNumber { get; set; }
-        public static void FirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
+        public static void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
         public static void NextTeam()
         {
             iCurrentTeam++;
             if (iCurrentTeam % 4 == 0) iCurrentTeam = 0;
         }
-        public static void RollDice() { } //DiceNumber
-        public static Pawn SelectPawn(int index)
+        public static List<Pawn> RollDice()
         {
-            var pawns = Board.TeamPawns(CurrentTeam());
-            if (pawns.Count <= index) throw new Exception("index cant be higher then amount of pawns");
-            if (index < 0) throw new Exception("index cant be lower then zero");
-            var pawn = pawns[index];
-            return SelectedPawn = pawn;
+            var moveablePawns = new List<Pawn>();
+            DiceNumber = Dice.RollDice();
+            return GameRules.SelectablePawns(CurrentTeam(), DiceNumber);
         }
-
-        public static void MovePawn()
-        {
-            //pawn move dicenumber. SelectedPawn.Move(DiceNumber)
-        }
+        public static void MovePawn(Pawn pawn) => pawn.Move(DiceNumber);
     }
 }

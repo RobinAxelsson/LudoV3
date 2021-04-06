@@ -161,7 +161,7 @@ namespace LudoEngine.GameLogic
         {
             foreach (var piece in PiecesOut)
             {
-                var SquarePosition = Board.BoardSquares.Find(square => square == piece.CurrentSquare);
+                var SquarePosition = Board.BoardSquares.Find(square => square == piece.CurrentSquare());
                 for (var i = 0; i <= dice; i++)
                 {
                     SquarePosition = Board.GetNext(Board.BoardSquares, SquarePosition, StephanColor);
@@ -214,7 +214,7 @@ namespace LudoEngine.GameLogic
                         {
                             var gameSquares = new List<IGameSquare>();
                             var SquarePosition = gameSquares.Find(square =>
-                                friendlyPawn.CurrentSquare == square);
+                                friendlyPawn.CurrentSquare() == square);
                             for (var i = 0; i <= dice; i++)
                             {
                                 SquarePosition = Board.GetNext(gameSquares, SquarePosition, StephanColor);
