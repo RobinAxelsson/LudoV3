@@ -1,28 +1,20 @@
-﻿using System;
+﻿using LudoConsole.UI.Controls;
+using LudoConsole.UI.Models;
+using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Main;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LudoConsole.UI
 {
     public static class ConsoleWriter
     {
-        private static readonly List<IDrawable> ScreenMemory = new();
-
-        public static bool IsInScreenMemory(IDrawable drawable)
+        private static List<IDrawable> ScreenMemory = new List<IDrawable>();
+        public static void TryAppend(List<ISquareDrawable> squares)
         {
-            foreach (var item in ScreenMemory)
-                if (drawable.IsSame(item))
-                    return true;
-            return false;
-        }
-
-        public static void WriteXYs(List<(int X, int Y)> positions) //for test
-        {
-            foreach (var pos in positions)
-            {
-                Console.SetCursorPosition(pos.X, pos.Y);
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.Write(" ");
-            }
+            var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
+            TryAppend(drawables.ToList());
         }
         public static void TryAppend(IDrawable tryUnit)
         {
@@ -36,12 +28,15 @@ namespace LudoConsole.UI
 
             ScreenMemory.Add(tryUnit);
         }
-
         public static void TryAppend(List<IDrawable> drawables)
         {
             drawables.ForEach(x => TryAppend(x));
         }
-
+        public static void UpdateBoard(List<ISquareDrawable> squareDrawables)
+        {
+            TryAppend(squareDrawables);
+            Update();
+        }
         public static void Update()
         {
             var toRemove = new List<IDrawable>();
@@ -58,32 +53,37 @@ namespace LudoConsole.UI
 
             toRemove.ForEach(x => ScreenMemory.Remove(x));
         }
-
-        public static void Write(IDrawable drawable)
+        public static void ClearScreen()
+        {
+            ScreenMemory.Clear();
+            Console.Clear();
+        }
+        public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.Erase = true);
+        private static bool IsInScreenMemory(IDrawable drawable)
+        {
+            foreach (var item in ScreenMemory)
+                if (drawable.IsSame(item))
+                    return true;
+            return false;
+        }
+        private static void Write(IDrawable drawable)
         {
             Console.ForegroundColor = drawable.ForegroundColor;
             Console.BackgroundColor = drawable.BackgroundColor;
             Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
             Console.Write(drawable.Chars);
             drawable.IsDrawn = true;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = UiControl.DefaultForegroundColor;
+            Console.BackgroundColor = UiControl.DefaultBackgroundColor;
         }
-
-        public static void Erase(IDrawable drawable)
+        private static void Erase(IDrawable drawable)
         {
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = UiControl.DefaultBackgroundColor;
             Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
             Console.Write(" ");
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ForegroundColor = UiControl.DefaultForegroundColor;
             drawable.IsDrawn = false;
             drawable.Erase = false;
-        }
-
-        public static void ClearScreen()
-        {
-            ScreenMemory.Clear();
-            Console.Clear();
         }
     }
 }

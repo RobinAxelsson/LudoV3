@@ -2,7 +2,7 @@
 using LudoEngine.Models;
 using System.Collections.Generic;
 
-namespace LudoEngine.Board.Intefaces
+namespace LudoEngine.BoardUnits.Intefaces
 {
     public interface IGameSquare
     {
@@ -10,6 +10,7 @@ namespace LudoEngine.Board.Intefaces
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; }
         public BoardDirection DefaultDirection { get; set; }
+        public TeamColor? Color { get; set; }
         public BoardDirection DirectionNext(TeamColor Color);
     }
 }

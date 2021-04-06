@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LudoConsole.UI.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,14 @@ namespace LudoConsole.UI.Models
 {
     public class LudoDrawable : IDrawable
     {
+        public LudoDrawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor, ConsoleColor foreGroundColor = UiControl.DefaultBoardChars)
+        {
+            CoordinateX = coord.X;
+            CoordinateY = coord.Y;
+            BackgroundColor = backgroundColor;
+            ForegroundColor = foreGroundColor;
+            Chars = chr.ToString();
+        }
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }

@@ -1,15 +1,23 @@
 ﻿using LudoConsole.UI.Controls;
 using System;
 
-namespace LudoConsole.UI
+namespace LudoConsole.UI.Models
 {
-    public class TextDrawable : IDrawable
+    public class PawnDrawable : IDrawable
     {
+        public PawnDrawable((int x, int y) coords, ConsoleColor pawnColor, ConsoleColor? squareColor, char chr = ' ')
+        {
+            CoordinateX = coords.x;
+            CoordinateY = coords.y;
+            BackgroundColor = pawnColor == squareColor ? UiControl.PawnInverseColor : pawnColor;
+            ForegroundColor = pawnColor == squareColor ? pawnColor : UiControl.DarkAccent;
+            Chars = pawnColor == squareColor ? "x" : chr.ToString();
+        }
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }
-        public ConsoleColor BackgroundColor { get; set; } = UiControl.DefaultBackgroundColor;
-        public ConsoleColor ForegroundColor { get; set; } = UiControl.DefaultForegroundColor;
+        public ConsoleColor BackgroundColor { get; set; }
+        public ConsoleColor ForegroundColor { get; set; }
         public bool IsDrawn { get; set; }
         public bool Erase { get; set; }
 

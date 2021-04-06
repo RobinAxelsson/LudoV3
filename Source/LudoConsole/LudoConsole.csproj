@@ -8,6 +8,32 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="UI\Map\1.1 Menu.txt" />
+      <None Remove="UI\Map\1.2 ChoosePlayers.txt" />
+      <None Remove="UI\Map\1.3 Bot.txt" />
+      <None Remove="UI\Map\Base.txt" />
+      <None Remove="UI\Map\square.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="UI\Map\1.1 Menu.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="UI\Map\1.2 ChoosePlayers.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="UI\Map\base.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="UI\Map\1.3 Bot.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="UI\Map\square.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
     </ItemGroup>
 

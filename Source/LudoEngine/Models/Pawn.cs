@@ -9,6 +9,10 @@ namespace LudoEngine.Models
 {
     public class Pawn
     {
+        public Pawn(TeamColor color)
+        {
+            Color = color;
+        }
         public int ID { get; set; }
         [ForeignKey("Game")]
         public virtual Game GameID { get; set; }
