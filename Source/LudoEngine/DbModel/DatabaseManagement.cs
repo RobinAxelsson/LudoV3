@@ -19,14 +19,16 @@ namespace LudoEngine.DbModel
             ConnectionString = File.ReadAllText(filepath);
         }
 
-        public static void SavePlayer(string Name)
+        public static void SavePlayer(string Name, int gameId)
         {
             using var db = new LudoContext();
 
-            var game = db.Games.Find(1);
+            var game = db.Games.Where(x => x.Id == gameId);
             var player = new Player { PlayerName = Name};
             db.Players.Add(player);
-            
+
+            var playerGame = new PlayerGame { GameId = gameId, PlayerId = player.Id};
+
             db.SaveChanges();
 
 
@@ -70,13 +72,30 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-            //var players = db.Players
-            //    .Where(x => x == gameId).ToList();
 
-            //foreach (var item in players)
-            //{
-            //    Console.WriteLine(item.);
-            //}
+            var player = db.Players;
+            var gamePlayers = db.GamePlayers;
+
+            var players = player
+                .Join(
+                gamePlayers,
+                player => player.Id,
+                gamePlayers => gamePlayers.PlayerId,
+                (player, gamePlayers) => new
+                {
+                    Id = player.Id,
+                    PlayerName = player.PlayerName,
+                    GameId = gamePlayers.GameId
+                })
+                .Where(x => x.GameId == gameId);
+
+            foreach (var item in players)
+            {
+                Console.WriteLine(item.PlayerName);
+            }
+                
+
+            
         }
     }
 }

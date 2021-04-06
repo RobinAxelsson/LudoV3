@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LudoEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    partial class StarWarsContextModelSnapshot : ModelSnapshot
+    partial class LudoContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,21 +18,6 @@ namespace LudoEngine.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "6.0.0-preview.2.21154.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("GamePlayer", b =>
-                {
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GameId", "PlayerId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("GamePlayer");
-                });
 
             modelBuilder.Entity("LudoEngine.Models.Game", b =>
                 {
@@ -130,21 +115,6 @@ namespace LudoEngine.Migrations
                     b.HasKey("GameId", "PlayerId");
 
                     b.ToTable("GamePlayers");
-                });
-
-            modelBuilder.Entity("GamePlayer", b =>
-                {
-                    b.HasOne("LudoEngine.Models.Game", null)
-                        .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LudoEngine.Models.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Game", b =>
