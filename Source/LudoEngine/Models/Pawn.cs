@@ -13,6 +13,7 @@ namespace LudoEngine.Models
         {
             Color = color;
         }
+        public bool IsSelected { get; set; }
         public int ID { get; set; }
         [ForeignKey("Game")]
         public virtual Game GameID { get; set; }
@@ -24,7 +25,7 @@ namespace LudoEngine.Models
             var gameSquares = Board.BoardSquares;
             var tempSquare = CurrentSquare();
             tempSquare.Pawns.Remove(this);
-            for (var i = 0; i <= dice; i++)
+            for (var i = 1; i <= dice; i++)
             {
                 tempSquare = Board.GetNext(gameSquares, tempSquare, Color);
             }

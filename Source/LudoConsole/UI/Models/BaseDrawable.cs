@@ -1,6 +1,7 @@
 ﻿using LudoConsole.UI.Controls;
 using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.Enum;
+using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,23 +33,27 @@ namespace LudoConsole.UI.Models
             int pawnCount = Square.Pawns.Count;
             if (pawnCount > 0)
             {
-                var pawnDraws = DrawPawns(pawnCount);
+                var pawnDraws = DrawPawns(Square.Pawns);
                 var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
                 int count = toRefresh.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
-                if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
+                //if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
                 toRefresh.AddRange(pawnDraws);
             }
             return toRefresh;
         }
-        private List<IDrawable> DrawPawns(int pawnCount)
+        private List<IDrawable> DrawPawns(List<Pawn> pawns)
         {
-            if (pawnCount < 0 || pawnCount > 4) throw new Exception("Pawns can only be 0-4");
+            if (pawns.Count < 0 || pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
             var pawnColor = UiControl.TranslateColor(Square.Pawns[0].Color);
-            for (int i = 0; i < pawnCount; i++)
+            for (int i = 0; i < pawns.Count; i++)
             {
-                var newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
+                PawnDrawable newPawn = null;
+                if (pawns[i].IsSelected == true)
+                    newPawn = new PawnDrawable(PawnCoords[i], (ConsoleColor)new Random().Next(0, 15), ThisBackgroundColor());
+                else
+                    newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiControl.LightAccent, UiControl.DropShadow);
                 drawPawns.Add(newPawn);
                 drawPawns.Add(dropShadow);

@@ -27,7 +27,7 @@ namespace LudoEngine.GameLogic
 
         public void Play()
         {
-            int rolled = Dice.RollDice();
+            int rolled = ActivePlayer.RollDice();
             var CalcInfo = CalculatePlay(rolled);
             if (CalcInfo.pawnToMove != null && !CalcInfo.pass && !CalcInfo.takeout)
             {

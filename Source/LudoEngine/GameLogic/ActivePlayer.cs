@@ -15,6 +15,7 @@ namespace LudoEngine.GameLogic
         {
             iCurrentTeam = 0;
         }
+        private static Random random = new Random();
         private static List<TeamColor> OrderOfTeams = new List<TeamColor>
         {
             TeamColor.Blue,
@@ -22,22 +23,27 @@ namespace LudoEngine.GameLogic
             TeamColor.Green,
             TeamColor.Yellow
         };
+        public static void SelectPawn(Pawn pawn)
+        {
+            Board.BoardSquares.SelectMany(x => x.Pawns).ToList().ForEach(x => x.IsSelected = false);
+            pawn.IsSelected = true;
+            SelectedPawn = pawn;
+        }
         public static TeamColor CurrentTeam() => OrderOfTeams[iCurrentTeam];
         private static int iCurrentTeam { get; set; }
-        private static Pawn SelectedPawn { get; set; }
-        private static int DiceNumber { get; set; }
+        public static Pawn SelectedPawn { get; set; }
         public static void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
         public static void NextTeam()
         {
             iCurrentTeam++;
             if (iCurrentTeam % 4 == 0) iCurrentTeam = 0;
         }
-        public static List<Pawn> RollDice()
+        public static int RollDice() => random.Next(1, 6);
+        public static List<Pawn> SelectablePawns(int rollDie) => GameRules.SelectablePawns(CurrentTeam(), rollDie);
+        public static void MoveSelectedPawn(int dieRoll) 
         {
-            var moveablePawns = new List<Pawn>();
-            DiceNumber = Dice.RollDice();
-            return GameRules.SelectablePawns(CurrentTeam(), DiceNumber);
+            if (SelectedPawn == null) return;
+            SelectedPawn.Move(dieRoll); 
         }
-        public static void MovePawn(Pawn pawn) => pawn.Move(DiceNumber);
     }
 }

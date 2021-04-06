@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading;
 using LudoConsole.UI;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
@@ -24,18 +26,39 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            ConsoleWriter.UpdateBoard(DrawSquares);
+            var writerThread = new Thread(new ThreadStart(() => {
+                while (true) { 
+                    ConsoleWriter.UpdateBoard(DrawSquares); 
+                    Thread.Sleep(300); 
+                } }));
+
+            writerThread.Start();
 
             while (true)
             {
-                
-                var color = ActivePlayer.CurrentTeam();
-                int dieRoll = 1;//Dice.RollDice();
-                var pawnsToMove = GameRules.SelectablePawns(color, dieRoll);
-                if(pawnsToMove.Count > 0)
-                    ActivePlayer.MovePawn(pawnsToMove[0]);
+                int dieRoll = ActivePlayer.RollDice();
+                var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                int selection = 0;
+
+                var key = new ConsoleKeyInfo().Key;
+
+                while (key != ConsoleKey.Enter && pawnsToMove.Count > 0)
+                {
+                    ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                    key = Console.ReadKey(true).Key;
+
+                    if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
+                        selection++;
+
+                    if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
+                        selection--;
+
+                    selection =
+                        selection > pawnsToMove.Count - 1 ? 0 :
+                        selection < 0 ? pawnsToMove.Count - 1 : selection;
+                }
+                ActivePlayer.MoveSelectedPawn(dieRoll);
                 ActivePlayer.NextTeam();
-                ConsoleWriter.UpdateBoard(DrawSquares);
             }
         }
 
