@@ -19,12 +19,30 @@ namespace LudoEngine.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0-preview.2.21154.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GamePlayer", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameId", "PlayerId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("GamePlayer");
+                });
+
             modelBuilder.Entity("LudoEngine.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CurrentTurn")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FirstPlace")
                         .HasColumnType("int");
@@ -40,37 +58,7 @@ namespace LudoEngine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameResults");
-                });
-
-            modelBuilder.Entity("LudoEngine.Models.GameState", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CurrentPlayer")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PawnID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PawnID");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("GameStates");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Pawn", b =>
@@ -83,7 +71,7 @@ namespace LudoEngine.Migrations
                     b.Property<int>("Color")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerID")
+                    b.Property<int?>("Game")
                         .HasColumnType("int");
 
                     b.Property<int>("XPosition")
@@ -94,7 +82,9 @@ namespace LudoEngine.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Pawn");
+                    b.HasIndex("Game");
+
+                    b.ToTable("Pawns");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Player", b =>
@@ -112,25 +102,28 @@ namespace LudoEngine.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("LudoEngine.Models.GameState", b =>
+            modelBuilder.Entity("GamePlayer", b =>
                 {
-                    b.HasOne("LudoEngine.Models.Game", "Game")
+                    b.HasOne("LudoEngine.Models.Game", null)
                         .WithMany()
-                        .HasForeignKey("GameId");
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("LudoEngine.Models.Pawn", "Pawn")
+                    b.HasOne("LudoEngine.Models.Player", null)
                         .WithMany()
-                        .HasForeignKey("PawnID");
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.HasOne("LudoEngine.Models.Player", "Player")
+            modelBuilder.Entity("LudoEngine.Models.Pawn", b =>
+                {
+                    b.HasOne("LudoEngine.Models.Game", "GameID")
                         .WithMany()
-                        .HasForeignKey("PlayerId");
+                        .HasForeignKey("Game");
 
-                    b.Navigation("Game");
-
-                    b.Navigation("Pawn");
-
-                    b.Navigation("Player");
+                    b.Navigation("GameID");
                 });
 #pragma warning restore 612, 618
         }

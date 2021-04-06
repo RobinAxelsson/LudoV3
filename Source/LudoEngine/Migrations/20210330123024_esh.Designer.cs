@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LudoEngine.Migrations
 {
     [DbContext(typeof(StarWarsContext))]
-    [Migration("20210330093102_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20210330123024_esh")]
+    partial class esh
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,42 +20,30 @@ namespace LudoEngine.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0-preview.2.21154.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GameStatePawn", b =>
+            modelBuilder.Entity("GamePlayer", b =>
                 {
-                    b.Property<int>("GameStatesId")
+                    b.Property<int>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PawnsID")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.HasKey("GameStatesId", "PawnsID");
+                    b.HasKey("GameId", "PlayerId");
 
-                    b.HasIndex("PawnsID");
+                    b.HasIndex("PlayerId");
 
-                    b.ToTable("GameStatePawn");
+                    b.ToTable("GamePlayer");
                 });
 
-            modelBuilder.Entity("GameStatePlayer", b =>
-                {
-                    b.Property<int>("GameStatesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GameStatesId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("GameStatePlayer");
-                });
-
-            modelBuilder.Entity("LudoEngine.Models.GameResult", b =>
+            modelBuilder.Entity("LudoEngine.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CurrentTurn")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FirstPlace")
                         .HasColumnType("int");
@@ -71,22 +59,7 @@ namespace LudoEngine.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameResults");
-                });
-
-            modelBuilder.Entity("LudoEngine.Models.GameState", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CurrentPlayer")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GameStates");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Pawn", b =>
@@ -99,7 +72,7 @@ namespace LudoEngine.Migrations
                     b.Property<int>("Color")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayerID")
+                    b.Property<int>("GameID")
                         .HasColumnType("int");
 
                     b.Property<int>("XPosition")
@@ -110,7 +83,7 @@ namespace LudoEngine.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Pawn");
+                    b.ToTable("Pawns");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Player", b =>
@@ -128,32 +101,17 @@ namespace LudoEngine.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("GameStatePawn", b =>
+            modelBuilder.Entity("GamePlayer", b =>
                 {
-                    b.HasOne("LudoEngine.Models.GameState", null)
+                    b.HasOne("LudoEngine.Models.Game", null)
                         .WithMany()
-                        .HasForeignKey("GameStatesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LudoEngine.Models.Pawn", null)
-                        .WithMany()
-                        .HasForeignKey("PawnsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GameStatePlayer", b =>
-                {
-                    b.HasOne("LudoEngine.Models.GameState", null)
-                        .WithMany()
-                        .HasForeignKey("GameStatesId")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LudoEngine.Models.Player", null)
                         .WithMany()
-                        .HasForeignKey("PlayersId")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

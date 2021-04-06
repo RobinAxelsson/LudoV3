@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
-
 namespace LudoConsole.Main
 {
     internal static class Program
@@ -14,7 +14,9 @@ namespace LudoConsole.Main
 
         private static void Main33(string[] args)
         {
-            Console.WriteLine(DatabaseManagement.ConnectionString);
+            //Console.WriteLine(DatabaseManagement.ConnectionString);
+            int selected = Menu.ShowMenu("Your turn \n", new string[] { "Roll Dice" });
+            Menu.SelectedOptions(selected);
         }
     }
 }

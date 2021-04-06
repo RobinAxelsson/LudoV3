@@ -6,8 +6,8 @@ namespace LudoEngine.DbModel
     public class StarWarsContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
-        public DbSet<GameState> GameStates { get; set; }
-        public DbSet<Game> GameResults { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Pawn> Pawns { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsbuilder)
         {
