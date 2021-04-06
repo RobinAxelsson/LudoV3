@@ -12,7 +12,6 @@ namespace LudoEngine.Models
         public int SecondPlace { get; set; }
         public int ThirdPlace { get; set; }
         public int FourthPlace { get; set; }
-        public virtual Pawn pawn { get; set; }
     }
     public class Player
     {

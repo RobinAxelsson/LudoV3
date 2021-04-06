@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
+using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
@@ -16,7 +18,7 @@ namespace LudoConsole.Main
         private static void Main(string[] args)
         {
             //DatabaseManagement.SavePlayer("eshag");
-            DatabaseManagement.SavePlayer("Kristian", 1);
+            DatabaseManagement.GetPlayersInGame(1);
         }
 
 

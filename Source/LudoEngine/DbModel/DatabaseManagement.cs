@@ -23,24 +23,27 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-            var game = db.Games.Where(x => x.Id == gameId);
             var player = new Player { PlayerName = Name};
             db.Players.Add(player);
 
+            db.SaveChanges();
+
+
             var playerGame = new PlayerGame { GameId = gameId, PlayerId = player.Id};
+            db.GamePlayers.Add(playerGame);
 
             db.SaveChanges();
 
 
         }
 
-        public static void SavePawn(TeamColor color, int xPosition , int  yPosition, int gameID)
+        public static void SavePawn(TeamColor color, int xPosition , int  yPosition, Game gameID)
         {
             using var db = new LudoContext();
 
-            var pawn = new Pawn { Color = color, XPosition = xPosition, YPosition = yPosition, GameID = gameID};
+            var pawn = new Pawn { Color = color, XPosition = xPosition, YPosition = yPosition, Game = gameID};
 
-            db.Add(pawn);
+            db.Update(pawn);
             db.SaveChanges();
         }
 
@@ -83,9 +86,9 @@ namespace LudoEngine.DbModel
                 gamePlayers => gamePlayers.PlayerId,
                 (player, gamePlayers) => new
                 {
-                    Id = player.Id,
-                    PlayerName = player.PlayerName,
-                    GameId = gamePlayers.GameId
+                    player.Id,
+                    player.PlayerName,
+                    gamePlayers.GameId
                 })
                 .Where(x => x.GameId == gameId);
 
@@ -93,9 +96,34 @@ namespace LudoEngine.DbModel
             {
                 Console.WriteLine(item.PlayerName);
             }
-                
+        }
 
-            
+        public static void GetPawnsInGame(Game gameId)
+        {
+            using var db = new LudoContext();
+
+            var pawns = db.Pawns
+                .Where(x => x.Game == gameId);
+
+            foreach (var pawn in pawns)
+            {
+                Console.WriteLine($"Color: {pawn.Color} Xpos: {pawn.XPosition} Ypos: {pawn.YPosition}");
+            }
+        }
+
+        public static List<Game> GetGameId(int playerId)
+        {
+            using var db = new LudoContext();
+
+            var gameId = db.GamePlayers
+                .Where(x => x.PlayerId == playerId)
+                .Select(x => x.GameId).ToList();
+
+            return ( from item in gameId
+                     from game in db.Games
+                     where game.Id == item
+                     select game
+                     ).ToList();
         }
     }
 }
