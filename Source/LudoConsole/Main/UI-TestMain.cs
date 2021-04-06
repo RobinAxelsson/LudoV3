@@ -6,6 +6,8 @@ using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
 using LudoConsole.UI.Screens;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.Enum;
+using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
@@ -21,8 +23,11 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
+
             ConsoleWriter.UpdateBoard(DrawSquares);
+
             Console.ReadLine();
         }
+       
     }
 }

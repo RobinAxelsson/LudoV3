@@ -1,20 +1,16 @@
-﻿      11e12
-      0 a r4
-      0 a 2
-      0 a 2
-      0 a 2
- 5    0 a 2
-1l11110 a 1111112
-0       a       2
-fbbbbbbbsdddddddh
-0       c       2
-0333333 c 23333n3
-      0 c 2    7
-      0 c 2
-      0 c 2
-      0 c 2
-     6y c 2
-      03g33
+﻿    11e12
+    0 a r4
+    0 a 2
+ 5  0 a 2
+1l110 a 11112
+0     a     2
+fbbbbbsdddddh
+0     c     2
+03333 c 233n3
+    0 c 2  7
+    0 c 2
+   6y c 2
+    03g33
 /*
 
 0-up

@@ -1,5 +1,6 @@
 ﻿using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.Enum;
+using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,7 @@ namespace LudoEngine.BoardUnits.Main
 {
     public static class Board
     {
+        public static List<Pawn> TeamPawns(TeamColor color) => BoardSquares.SelectMany(x => x.Pawns).ToList().FindAll(x => x.Color == color);
         public static List<IGameSquare> BoardSquares { get; set; }
         public static IGameSquare StartSquare(TeamColor color)
             => BoardSquares.Find(x => x.GetType() == typeof(StartSquare) && x.Color == color);

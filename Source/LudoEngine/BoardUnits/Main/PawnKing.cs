@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LudoEngine.BoardUnits.Main
 {
     public static class PawnKing
-    {
+    { 
         public static void GameSetUp(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
