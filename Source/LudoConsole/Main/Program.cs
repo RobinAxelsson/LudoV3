@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.Models;
@@ -15,10 +16,11 @@ namespace LudoConsole.Main
             DatabaseManagement.ReadConnectionString(@"DbModel/connection.txt"); //add connectionstring at this path and exact name to work with git ignore
         }
 
-        private static void Main(string[] args)
+        private static void Main33(string[] args)
         {
-            //DatabaseManagement.SavePlayer("eshag");
-            DatabaseManagement.GetPlayersInGame(1);
+            //Console.WriteLine(DatabaseManagement.ConnectionString);
+            int selected = Menu.ShowMenu("Your turn \n", new string[] { "Roll Dice" });
+            Menu.SelectedOptions(selected);
         }
 
 
