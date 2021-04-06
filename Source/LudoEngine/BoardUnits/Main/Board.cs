@@ -36,7 +36,7 @@ namespace LudoEngine.BoardUnits.Main
                 direction == BoardDirection.Down ? (0, 1) :
                 direction == BoardDirection.Left ? (-1, 0) : (0, 0);
 
-        private static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
+        public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
         {
             var diff = NextDiff(square.DirectionNext(color));
             var nextSquare = squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y) ?? throw new NullReferenceException();

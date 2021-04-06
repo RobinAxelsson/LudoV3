@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using LudoEngine.Board.Classes;
-using LudoEngine.Board.Intefaces;
+using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 
@@ -162,10 +161,10 @@ namespace LudoEngine.GameLogic
         {
             foreach (var piece in PiecesOut)
             {
-                var SquarePosition = BoardHolder.BoardSquares.Find(square => square == piece.CurrentSquare);
+                var SquarePosition = Board.BoardSquares.Find(square => square == piece.CurrentSquare);
                 for (var i = 0; i <= dice; i++)
                 {
-                    SquarePosition = BoardHolder.GetNext(BoardHolder.BoardSquares, SquarePosition, StephanColor);
+                    SquarePosition = Board.GetNext(Board.BoardSquares, SquarePosition, StephanColor);
                     if (SquarePosition.GetType() == typeof(GoalSquare))
                     {
                         return SquarePosition.Pawns.Find(pawn => pawn.Color == StephanColor);
@@ -187,8 +186,8 @@ namespace LudoEngine.GameLogic
 
         private Pawn GetFarthestPawn()
         {
-            var pawn = new Pawn(); 
-            foreach (var square in BoardHolder.TeamSquares(StephanColor))
+            var pawn = new Pawn(StephanColor); 
+            foreach (var square in Board.TeamPath(StephanColor))
             {
                 foreach (var p in square.Pawns)
                 {
@@ -203,7 +202,7 @@ namespace LudoEngine.GameLogic
         private (bool CanEradicate, Pawn PawnToEradicateWith) CheckForPossibleEradication(Pawn inputPawn, int dice)
         {
             var eradication = false;
-            var eradicationPawn = new Pawn();
+            var eradicationPawn = new Pawn(StephanColor);
             var playerPawns = new Pawn[16];
             foreach (var enemyPawn in playerPawns)
             {
@@ -218,7 +217,7 @@ namespace LudoEngine.GameLogic
                                 friendlyPawn.CurrentSquare == square);
                             for (var i = 0; i <= dice; i++)
                             {
-                                SquarePosition = BoardHolder.GetNext(gameSquares, SquarePosition, StephanColor);
+                                SquarePosition = Board.GetNext(gameSquares, SquarePosition, StephanColor);
                             }
                             if (SquarePosition.Pawns.Contains(enemyPawn))
                             {

@@ -2,8 +2,8 @@
 using LudoEngine.Enum;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using LudoEngine.Board.Classes;
-using LudoEngine.Board.Intefaces;
+using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Main;
 
 namespace LudoEngine.Models
 {
@@ -21,12 +21,12 @@ namespace LudoEngine.Models
         public bool Based { get; set; } //Kolla om Pawn ligger i basen
         public void Move(int dice)
         {
-            var gameSquares = BoardHolder.BoardSquares;
+            var gameSquares = Board.BoardSquares;
             var tempSquare = CurrentSquare;
             CurrentSquare.Pawns.Remove(this);
             for (var i = 0; i <= dice; i++)
             {
-                tempSquare = BoardHolder.GetNext(gameSquares, tempSquare, Color);
+                tempSquare = Board.GetNext(gameSquares, tempSquare, Color);
             }
             foreach (var pawn in tempSquare.Pawns.Where(pawn => pawn.Color != Color))
             {
