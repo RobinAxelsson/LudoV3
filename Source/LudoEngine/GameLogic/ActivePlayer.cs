@@ -11,10 +11,8 @@ namespace LudoEngine.GameLogic
 {
     public static class ActivePlayer
     {
-        static ActivePlayer()
-        {
-            iCurrentTeam = 0;
-        }
+        static ActivePlayer() => iCurrentTeam = 0;
+
         private static Random random = new Random();
         private static List<TeamColor> OrderOfTeams = new List<TeamColor>
         {

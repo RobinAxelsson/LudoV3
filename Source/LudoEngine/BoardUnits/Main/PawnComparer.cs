@@ -1,4 +1,5 @@
 ﻿using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class GameSquareComparer : IEqualityComparer<IGameSquare>
+    public class PawnComparer : IEqualityComparer<Pawn>
     {
-        public bool Equals(IGameSquare x, IGameSquare y) => x.BoardX == y.BoardX && x.BoardY == y.BoardY;
-        public int GetHashCode(IGameSquare obj) => obj.GetHashCode();
+        public bool Equals(Pawn x, Pawn y) => x.Id == y.Id;
+        public int GetHashCode(Pawn obj) => obj.GetHashCode();
     }
 }

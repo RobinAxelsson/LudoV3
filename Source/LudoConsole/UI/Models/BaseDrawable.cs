@@ -36,7 +36,7 @@ namespace LudoConsole.UI.Models
                 var pawnDraws = DrawPawns(Square.Pawns);
                 var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
                 int count = toRefresh.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
-                //if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
+                if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
                 toRefresh.AddRange(pawnDraws);
             }
             return toRefresh;
@@ -51,7 +51,7 @@ namespace LudoConsole.UI.Models
             {
                 PawnDrawable newPawn = null;
                 if (pawns[i].IsSelected == true)
-                    newPawn = new PawnDrawable(PawnCoords[i], (ConsoleColor)new Random().Next(0, 15), ThisBackgroundColor());
+                    newPawn = new PawnDrawable(PawnCoords[i], UiControl.RandomColor(), ThisBackgroundColor());
                 else
                     newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiControl.LightAccent, UiControl.DropShadow);

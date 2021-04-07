@@ -29,14 +29,19 @@ namespace LudoConsole.Main
             var writerThread = new Thread(new ThreadStart(() => {
                 while (true) { 
                     ConsoleWriter.UpdateBoard(DrawSquares); 
-                    Thread.Sleep(300); 
+                    Thread.Sleep(300);
                 } }));
 
             writerThread.Start();
+            var diceLine = new LineData((0, 9));
 
             while (true)
             {
+                Thread.Sleep(200);
+                //diceLine.Update("Rolling dice...");
                 int dieRoll = ActivePlayer.RollDice();
+                //diceLine.Update("You got a: " + dieRoll);
+                //Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
                 int selection = 0;
 

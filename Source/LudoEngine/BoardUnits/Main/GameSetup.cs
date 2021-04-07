@@ -14,9 +14,7 @@ namespace LudoEngine.BoardUnits.Main
         public static void Load(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
-            {
                 gameSquares.Find(x => x.BoardX == teamCoord.position.X && x.BoardY == teamCoord.position.Y).Pawns.Add(new Pawn(teamCoord.color));
-            }
         }
         public static void NewGame(List<IGameSquare> gameSquares, int players)
         {

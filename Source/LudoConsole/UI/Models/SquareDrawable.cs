@@ -61,7 +61,7 @@ namespace LudoConsole.UI.Models
             { 
                 PawnDrawable newPawn = null;
                 if (pawns[i].IsSelected == true)
-                    newPawn = new PawnDrawable(PawnCoords[i], (ConsoleColor)new Random().Next(0, 15), ThisBackgroundColor());
+                    newPawn = new PawnDrawable(PawnCoords[i], UiControl.RandomColor(), ThisBackgroundColor());
                 else
                     newPawn = new PawnDrawable(PawnCoords[i], pawnColor, ThisBackgroundColor());
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), ThisBackgroundColor());

@@ -47,9 +47,8 @@ namespace LudoEngine.GameLogic
                         {
                             foreach (var pawn in StephanPawns)
                             {
-                                if (pawn.Based)
+                                if (pawn.Based())
                                 {
-                                    pawn.Based = false;
                                     TakeOutSquare.Pawns.Add(pawn);
                                 }
                             }
@@ -60,9 +59,8 @@ namespace LudoEngine.GameLogic
                     {
                         foreach (var pawn in StephanPawns)
                         {
-                            if (pawn.Based)
+                            if (pawn.Based())
                             {
-                                pawn.Based = false;
                                 FarTakeOutSquare.Pawns.Add(pawn);
                                 Play(); //Do another turn!
                             }
@@ -73,9 +71,8 @@ namespace LudoEngine.GameLogic
                 {
                     foreach (var pawn in StephanPawns)
                     {
-                        if (pawn.Based)
+                        if (pawn.Based())
                         {
-                            pawn.Based = false;
                             FarTakeOutSquare.Pawns.Add(pawn);
                         }
                     } 
