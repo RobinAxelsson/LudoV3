@@ -39,6 +39,7 @@ namespace LudoEngine.Models
                 tempSquare.Pawns.Clear();
             }
             tempSquare.Pawns.Add(this);
+            this.IsSelected = false;
         }
     }
 }

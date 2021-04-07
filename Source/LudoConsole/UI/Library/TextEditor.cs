@@ -105,13 +105,7 @@ namespace LudoConsole.UI
                     {
                         if (chr != ' ')
                         {
-                            var drawable = new TextDrawable
-                            {
-                                CoordinateX = x,
-                                CoordinateY = y,
-                                ForegroundColor = ForegroundColor,
-                                Chars = chr.ToString()
-                            };
+                            var drawable = new TextDrawable(x, y, chr);
                             drawables.Add(drawable);
                         }
 
