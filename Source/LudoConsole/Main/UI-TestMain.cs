@@ -26,6 +26,10 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
+            var stephan = new Stephan();
+            stephan.StephanColor = TeamColor.Red;
+            stephan.TakeOutSquare = Board.StartSquare(TeamColor.Red);
+            
             var writerThread = new Thread(new ThreadStart(() =>
             {
                 while (true)
@@ -37,13 +41,13 @@ namespace LudoConsole.Main
 
             writerThread.Start();
             var diceLine = new LineData(0, 9);
-            bool humanPlayer = true;
+            var humanPlayer = ActivePlayer.CurrentTeam() != stephan.StephanColor;
 
             while (true)
             {
                 diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
                 Thread.Sleep(500);
-                int dieRoll = 6;//ActivePlayer.RollDice();
+                int dieRoll = ActivePlayer.RollDice();
                 diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
                 Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
@@ -52,7 +56,7 @@ namespace LudoConsole.Main
                 int selection = 0;
 
                 var key = new ConsoleKeyInfo().Key;
-
+                
                 if (humanPlayer)
                 {
                     while (true)
@@ -72,7 +76,6 @@ namespace LudoConsole.Main
                                 ActivePlayer.NextTeam();
                                 break;
                             }
-
                         }
                         ActivePlayer.SelectPawn(pawnsToMove[selection]);
                         key = Console.ReadKey(true).Key;
@@ -94,6 +97,11 @@ namespace LudoConsole.Main
                             break;
                         }
                     }
+                }
+                else
+                {
+                    ActivePlayer.SelectedPawn = stephan.Play(dieRoll);
+                    ActivePlayer.NextTeam();
                 }
             }
         }
