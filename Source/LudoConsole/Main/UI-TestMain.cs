@@ -26,14 +26,18 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            var writerThread = new Thread(new ThreadStart(() => {
-                while (true) { 
-                    ConsoleWriter.UpdateBoard(DrawSquares); 
+            var writerThread = new Thread(new ThreadStart(() =>
+            {
+                while (true)
+                {
+                    ConsoleWriter.UpdateBoard(DrawSquares);
                     Thread.Sleep(300);
-                } }));
+                }
+            }));
 
             writerThread.Start();
             var diceLine = new LineData(0, 9);
+            bool humanPlayer = true;
 
             while (true)
             {
@@ -43,27 +47,54 @@ namespace LudoConsole.Main
                 diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
                 Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                bool movePawn = false;
+
                 int selection = 0;
 
                 var key = new ConsoleKeyInfo().Key;
 
-                while (key != ConsoleKey.Enter && pawnsToMove.Count > 0)
+                if (humanPlayer)
                 {
-                    ActivePlayer.SelectPawn(pawnsToMove[selection]);
-                    key = Console.ReadKey(true).Key;
+                    while (true)
+                    {
+                        if(pawnsToMove.Count == 0)
+                        {
+                            ActivePlayer.NextTeam();
+                            break;
+                        }
+                        if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
+                        {
+                            diceLine.Update("Press 'x' to take out two pawns");
+                            if (key == ConsoleKey.X)
+                            {
+                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                for (int i = 0; i < 2; i++) basePawns[i].Move(1);
+                                ActivePlayer.NextTeam();
+                                break;
+                            }
 
-                    if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
-                        selection++;
+                        }
+                        ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                        key = Console.ReadKey(true).Key;
 
-                    if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
-                        selection--;
+                        if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
+                            selection++;
 
-                    selection =
-                        selection > pawnsToMove.Count - 1 ? 0 :
-                        selection < 0 ? pawnsToMove.Count - 1 : selection;
+                        if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
+                            selection--;
+
+                        selection =
+                            selection > pawnsToMove.Count - 1 ? 0 :
+                            selection < 0 ? pawnsToMove.Count - 1 : selection;
+
+                        if (key == ConsoleKey.Enter)
+                        {
+                            ActivePlayer.MoveSelectedPawn(dieRoll);
+                            if (dieRoll != 6) ActivePlayer.NextTeam();
+                            break;
+                        }
+                    }
                 }
-                if(pawnsToMove.Count > 0) ActivePlayer.MoveSelectedPawn(dieRoll);
-                ActivePlayer.NextTeam();
             }
         }
 
