@@ -11,6 +11,7 @@ namespace LudoEngine.GameLogic
 {
     public static class ActivePlayer
     {
+        
         static ActivePlayer() => iCurrentTeam = 0;
 
         private static Random random = new Random();
@@ -44,4 +45,5 @@ namespace LudoEngine.GameLogic
             SelectedPawn.Move(dieRoll); 
         }
     }
+    
 }
