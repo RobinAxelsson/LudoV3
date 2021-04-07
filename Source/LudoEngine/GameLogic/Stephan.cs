@@ -17,10 +17,11 @@ namespace LudoEngine.GameLogic
         public Stephan()
         {
             StephanPawns = new List<Pawn>();
-            playerPawns = Board.PawnsOnBoard();
+            
         }
         public Pawn Play(int rolled)
         {
+            playerPawns = Board.PawnsOnBoard();
             var CalcInfo = CalculatePlay(rolled);
             Console.Title = "Stephan rolled: " + rolled;
             if (CalcInfo.pawnToMove != null && !CalcInfo.pass && !CalcInfo.takeout)
@@ -33,7 +34,6 @@ namespace LudoEngine.GameLogic
                 else
                 {
                     return CalcInfo.pawnToMove;
-                    ActivePlayer.NextTeam();
                 }
                
             }
@@ -47,26 +47,35 @@ namespace LudoEngine.GameLogic
                     }
                     else if (CalcInfo.takeoutCount == 1)
                     {
-                        foreach (var pawn in Board.PawnsInBase(StephanColor))
+                        if (Board.StartSquare(StephanColor).Pawns.FindAll(x => x.Color == StephanColor).Count == 0)
                         {
-                            if(Board.StartSquare(StephanColor).Pawns.Count == 0)
+                            foreach (var pawn in Board.PawnsInBase(StephanColor))
                             {
                                 StephanPawns.Add(pawn);
                                 return pawn;
                             }
-                           else
-                            {
-                                return CalculateWhatPieceToMove(StephanPawns, rolled);
-                            }
+                        }
+                        else
+                        {
+                            return CalculateWhatPieceToMove(StephanPawns, rolled);
+
                         }
                     }
                 }
                 else if (rolled == 1)
                 {
-                    foreach (var pawn in Board.PawnsInBase(StephanColor))
+                    if(Board.StartSquare(StephanColor).Pawns.FindAll(x => x.Color == StephanColor).Count == 0)
                     {
-                        StephanPawns.Add(pawn);
-                        return pawn;
+                        foreach (var pawn in Board.PawnsInBase(StephanColor))
+                        {
+                            StephanPawns.Add(pawn);
+                            return pawn;
+                        }
+                    }
+                    else
+                    {
+                        return CalculateWhatPieceToMove(StephanPawns, rolled);
+
                     }
                 }
             }
@@ -86,7 +95,6 @@ namespace LudoEngine.GameLogic
                     if (eradicationInfo.CanEradicate)
                     {
                         return (eradicationInfo.PawnToEradicateWith, false, false, 0); //Returnar en pawn. Han vet att han kommer slå ut en annan
-
                     }
                 }
                 if (dice == 6)

@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using LudoEngine.Enum;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using LudoEngine.BoardUnits.Intefaces;
+﻿using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.Enum;
+using System.Linq;
 
 namespace LudoEngine.Models
 {
@@ -24,22 +22,24 @@ namespace LudoEngine.Models
         public bool Based() => Board.PawnsInBase(Color).Contains(this, new PawnComparer()); //Kolla om Pawn ligger i basen
         public void Move(int dice)
         {
-            var gameSquares = Board.BoardSquares;
-            var tempSquare = CurrentSquare();
-            tempSquare.Pawns.Remove(this);
+                var gameSquares = Board.BoardSquares;
+                var tempSquare = CurrentSquare();
+                tempSquare.Pawns.Remove(this);
 
-            for (var i = 0; i < dice; i++)
-            {
-                tempSquare = Board.GetNext(gameSquares, tempSquare, Color);
-            }
-            if(tempSquare.Pawns.Count != 0 && tempSquare is not GoalSquare && tempSquare.Pawns[0].Color != Color)
-            {
-                var eradicateBase = Board.BaseSquare(tempSquare.Pawns[0].Color);
-                eradicateBase.Pawns.AddRange(tempSquare.Pawns);
-                tempSquare.Pawns.Clear();
-            }
-            tempSquare.Pawns.Add(this);
-            this.IsSelected = false;
+                for (var i = 0; i < dice; i++)
+                {
+                    tempSquare = Board.GetNext(gameSquares, tempSquare, Color);
+                }
+                if (tempSquare.Pawns.Count != 0 && tempSquare is not GoalSquare && tempSquare.Pawns[0].Color != Color)
+                {
+                    var eradicateBase = Board.BaseSquare(tempSquare.Pawns[0].Color);
+                    eradicateBase.Pawns.AddRange(tempSquare.Pawns);
+                    tempSquare.Pawns.Clear();
+                }
+                tempSquare.Pawns.Add(this);
+                this.IsSelected = false;
+                
+            
         }
     }
 }

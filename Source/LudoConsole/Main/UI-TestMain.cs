@@ -26,10 +26,21 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            var stephan = new Stephan();
-            stephan.StephanColor = TeamColor.Red;
-            stephan.TakeOutSquare = Board.StartSquare(TeamColor.Red);
             
+            List<TeamColor> AIColors = new List<TeamColor>();
+            AIColors.Add(TeamColor.Red);
+            AIColors.Add(TeamColor.Yellow);
+            AIColors.Add(TeamColor.Blue);
+            AIColors.Add(TeamColor.Green);
+            List<Stephan> stephans = new List<Stephan>();
+            for(var i = 0; i <= AIColors.Count - 1; i++)
+            {
+                var stephan = new Stephan();
+                stephan.StephanColor = AIColors[i];
+                stephan.TakeOutSquare = Board.StartSquare(AIColors[i]);
+                stephans.Add(stephan);
+            }
+
             var writerThread = new Thread(new ThreadStart(() =>
             {
                 while (true)
@@ -41,7 +52,7 @@ namespace LudoConsole.Main
 
             writerThread.Start();
             var diceLine = new LineData(0, 9);
-            var humanPlayer = ActivePlayer.CurrentTeam() != stephan.StephanColor;
+            
 
             while (true)
             {
@@ -52,12 +63,11 @@ namespace LudoConsole.Main
                 Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
                 bool movePawn = false;
-
                 int selection = 0;
-
+                var AIPlayer = AIColors.Contains(ActivePlayer.CurrentTeam());
                 var key = new ConsoleKeyInfo().Key;
                 
-                if (humanPlayer)
+                if (!AIPlayer)
                 {
                     while (true)
                     {
@@ -100,7 +110,11 @@ namespace LudoConsole.Main
                 }
                 else
                 {
-                    ActivePlayer.SelectedPawn = stephan.Play(dieRoll);
+                    ActivePlayer.SelectedPawn = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single().Play(dieRoll);
+                    if(ActivePlayer.SelectedPawn != null)
+                    {
+                        ActivePlayer.MoveSelectedPawn(dieRoll);
+                    }
                     ActivePlayer.NextTeam();
                 }
             }
