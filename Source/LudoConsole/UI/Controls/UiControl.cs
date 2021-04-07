@@ -20,6 +20,8 @@ namespace LudoConsole.UI.Controls
         public const ConsoleColor PawnInverseColor = ConsoleColor.White;
         public const ConsoleColor DarkAccent = ConsoleColor.Black;
 
+        public static Random random = new Random();
+        public static ConsoleColor RandomColor() => (ConsoleColor)random.Next(0, 15);
         public static void SetDefault()
         {
             Console.ForegroundColor = DefaultForegroundColor;

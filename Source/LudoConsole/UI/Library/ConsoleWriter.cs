@@ -34,6 +34,7 @@ namespace LudoConsole.UI
         }
         public static void UpdateBoard(List<ISquareDrawable> squareDrawables)
         {
+            //squareDrawables.ForEach(x => x.Refresh());
             TryAppend(squareDrawables);
             Update();
         }

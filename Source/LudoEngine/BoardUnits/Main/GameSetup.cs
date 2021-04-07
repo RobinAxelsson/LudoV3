@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public static class PawnKing
+    public static class GameSetup
     { 
-        public static void GameSetUp(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
+        public static void Load(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
-            {
                 gameSquares.Find(x => x.BoardX == teamCoord.position.X && x.BoardY == teamCoord.position.Y).Pawns.Add(new Pawn(teamCoord.color));
-            }
         }
-        public static void GameSetUp(List<IGameSquare> gameSquares, int players)
+        public static void NewGame(List<IGameSquare> gameSquares, int players)
         {
             var teamCoords = new List<(TeamColor color, (int X, int Y) position)>();
             int pawnsCount = 4 * players;

@@ -1,19 +1,25 @@
-﻿using LudoEngine.Models;
-using System;
+﻿using LudoEngine.BoardUnits.Main;
+using LudoEngine.Enum;
+using LudoEngine.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LudoEngine.DbModel;
 
 namespace LudoEngine.GameLogic
 {
-    public class GameRules
+    public static class GameRules
     {
         private static int amountOfSixesRolled = 1;
-        private static Game currentGame = new Game();
 
+        public static List<Pawn> SelectablePawns(TeamColor color, int dieRoll)
+        {
+            var pawnsInBase = Board.PawnsInBase(color);
+            var activeSquares = Board.PawnBoardSquares(color);
 
+            if (dieRoll == 1 || dieRoll == 6)
+                return activeSquares.SelectMany(x => x.Pawns).Concat(pawnsInBase).ToList();
+            else
+                return activeSquares.SelectMany(x => x.Pawns).ToList(); 
+        }
         public static void LeaveHome(int dieRoll)
         {
             if (dieRoll == 1)
@@ -56,7 +62,7 @@ namespace LudoEngine.GameLogic
         }
         public static bool RollDieAgain(int dieRoll)
         {
-            
+
             if (dieRoll == 6)
             {
                 amountOfSixesRolled++;
