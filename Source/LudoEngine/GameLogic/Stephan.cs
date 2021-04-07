@@ -19,21 +19,20 @@ namespace LudoEngine.GameLogic
             StephanPawns = new List<Pawn>();
             playerPawns = Board.PawnsOnBoard();
         }
-        public void Play()
+        public Pawn Play(int rolled)
         {
-            int rolled = ActivePlayer.RollDice();
             var CalcInfo = CalculatePlay(rolled);
             Console.Title = "Stephan rolled: " + rolled;
             if (CalcInfo.pawnToMove != null && !CalcInfo.pass && !CalcInfo.takeout)
             {
                 if (rolled == 6)
                 {
-                    StephanMove(CalcInfo.pawnToMove, rolled);
-                    Play(); //Spela igen!
+                    return CalcInfo.pawnToMove;
+                    //Spela igen
                 }
                 else
                 {
-                    StephanMove(CalcInfo.pawnToMove, rolled);
+                    return CalcInfo.pawnToMove;
                     ActivePlayer.NextTeam();
                 }
                
@@ -44,32 +43,20 @@ namespace LudoEngine.GameLogic
                 {
                     if (CalcInfo.takeoutCount == 2)
                     {
-                        for (var i = 0; i <= CalcInfo.takeoutCount; i++)
-                        {
-                            foreach (var pawn in StephanPawns)
-                            {
-                                if (pawn.Based())
-                                {
-                                    TakeOutSquare.Pawns.Add(pawn);
-                                    ActivePlayer.NextTeam();
-                                }
-                            }
-                   
-                        }
+                        //Ta ut två pjäser
                     }
                     else if (CalcInfo.takeoutCount == 1)
                     {
                         foreach (var pawn in Board.PawnsInBase(StephanColor))
                         {
-                            if (TakeOutSquare.Pawns.Count == 0)
+                            if(Board.StartSquare(StephanColor).Pawns.Count == 0)
                             {
-                                TakeOutSquare.Pawns.Add(pawn);
                                 StephanPawns.Add(pawn);
-                                ActivePlayer.NextTeam();
+                                return pawn;
                             }
-                            else
+                           else
                             {
-                                ActivePlayer.NextTeam();
+                                return CalculateWhatPieceToMove(StephanPawns, rolled);
                             }
                         }
                     }
@@ -78,29 +65,16 @@ namespace LudoEngine.GameLogic
                 {
                     foreach (var pawn in Board.PawnsInBase(StephanColor))
                     {
-                        if(TakeOutSquare.Pawns.Count == 0)
-                        {
-                            TakeOutSquare.Pawns.Add(pawn);
-                            StephanPawns.Add(pawn);
-                            ActivePlayer.NextTeam();
-                        }
-                       else
-                        {
-                            ActivePlayer.NextTeam();
-                        }
-                    } 
+                        StephanPawns.Add(pawn);
+                        return pawn;
+                    }
                 }
             }
             else if (CalcInfo.pass)
             {
-                ActivePlayer.NextTeam();
+                return null;
             }
-
-        }
-
-        private void StephanMove(Pawn pawn, int dice)
-        {
-            pawn.Move(dice);
+            return null;
         }
         private (Pawn pawnToMove, bool pass, bool takeout, int takeoutCount) CalculatePlay(int dice)
         {
