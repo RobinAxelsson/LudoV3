@@ -20,6 +20,7 @@ namespace LudoConsole.Main
         static UITestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Board.Init();
             DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
             GameSetup.NewGame(Board.BoardSquares, players: 4);
             UiControl.SetDefault();

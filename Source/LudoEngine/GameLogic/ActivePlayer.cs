@@ -4,8 +4,6 @@ using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoEngine.GameLogic
 {
@@ -31,7 +29,7 @@ namespace LudoEngine.GameLogic
         private static int iCurrentTeam { get; set; }
         public static Pawn SelectedPawn { get; set; }
         public static void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
-        public static void NextTeam()
+        public static void NextTeam() //not working with fewer players
         {
             iCurrentTeam++;
             if (iCurrentTeam % 4 == 0) iCurrentTeam = 0;

@@ -30,5 +30,19 @@ namespace LudoEngine.BoardUnits.Main
                 if (i % 4 == 0) iTeam++;
             }
         }
+        public static void NewGame(List<IGameSquare> gameSquares, TeamColor[] colors)
+        {
+            var teamCoords = new List<(TeamColor color, (int X, int Y) position)>();
+            int pawnsCount = 4 * colors.Count();
+            List<BaseSquare> bases = gameSquares.FindAll(x => x.GetType() == typeof(BaseSquare)).Select(x => (BaseSquare)x).ToList();
+
+            int iTeam = 0;
+            for (int i = 1; i <= pawnsCount; i++)
+            {
+                var teamColor = colors[iTeam];
+                bases.Find(x => x.Color == teamColor).Pawns.Add(new Pawn(teamColor));
+                if (i % 4 == 0) iTeam++;
+            }
+        }
     }
 }
