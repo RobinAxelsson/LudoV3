@@ -1,31 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LudoConsole.UI
 {
     public class LineData
     {
-        public LineData((int X, int Y) xy)
+        public LineData(int x, int y)
         {
-            XY = xy;
+            X = x;
+            Y = y;
         }
-        private string LastWritten { get; set; } = "";
-        private (int X, int Y) XY { get; }
+        private List<IDrawable> drawables { get; set; } = new List<IDrawable>();
+        private int X { get; set; }
+        private int Y { get; set; }
 
         public void Update(string newString)
         {
-            LineTools.SetCursor(XY);
-            if (LastWritten.Length > newString.Length)
+            if (drawables.Count > newString.Length)
             {
-                Console.Write(newString);
-                for (var i = 0; i < LastWritten.Length - newString.Length; i++)
-                    Console.Write(" ");
+                var iStart = newString.Length - 1;
+                var end = drawables.Count;
+                for (int i = iStart; i < end; i++)
+                {
+                    drawables[i].Erase = true;
+                }
             }
-            else
+            drawables.Clear();
+            int x = 0;
+            foreach (char chr in newString)
             {
-                Console.Write(newString);
+                drawables.Add(new TextDrawable(this.X + x, this.Y, chr));
+                x++;
             }
-
-            LastWritten = newString;
+            ConsoleWriter.TryAppend(drawables);
         }
     }
 }

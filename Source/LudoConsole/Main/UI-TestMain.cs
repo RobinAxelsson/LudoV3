@@ -33,15 +33,15 @@ namespace LudoConsole.Main
                 } }));
 
             writerThread.Start();
-            var diceLine = new LineData((0, 9));
+            var diceLine = new LineData(0, 9);
 
             while (true)
             {
-                Thread.Sleep(200);
-                //diceLine.Update("Rolling dice...");
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                Thread.Sleep(500);
                 int dieRoll = ActivePlayer.RollDice();
-                //diceLine.Update("You got a: " + dieRoll);
-                //Console.ReadKey(true);
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
                 int selection = 0;
 
@@ -62,7 +62,7 @@ namespace LudoConsole.Main
                         selection > pawnsToMove.Count - 1 ? 0 :
                         selection < 0 ? pawnsToMove.Count - 1 : selection;
                 }
-                ActivePlayer.MoveSelectedPawn(dieRoll);
+                if(pawnsToMove.Count > 0) ActivePlayer.MoveSelectedPawn(dieRoll);
                 ActivePlayer.NextTeam();
             }
         }

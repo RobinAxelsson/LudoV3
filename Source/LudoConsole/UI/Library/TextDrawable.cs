@@ -5,6 +5,12 @@ namespace LudoConsole.UI
 {
     public class TextDrawable : IDrawable
     {
+        public TextDrawable(int coordX, int coordY, char chr)
+        {
+            CoordinateX = coordX;
+            CoordinateY = coordY;
+            Chars = chr.ToString();
+        }
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }
