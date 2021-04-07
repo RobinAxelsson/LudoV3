@@ -5,7 +5,6 @@ using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.Models;
-
 namespace LudoConsole.Main
 {
     internal static class Program
@@ -22,7 +21,5 @@ namespace LudoConsole.Main
             int selected = Menu.ShowMenu("Your turn \n", new string[] { "Roll Dice" });
             Menu.SelectedOptions(selected);
         }
-
-
     }
 }

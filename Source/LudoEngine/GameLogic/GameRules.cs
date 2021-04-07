@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LudoEngine.DbModel;
 
 namespace LudoEngine.GameLogic
 {
     public class GameRules
     {
         private static int amountOfSixesRolled = 1;
+        private static Game currentGame = new Game();
 
 
         public static void LeaveHome(int dieRoll)

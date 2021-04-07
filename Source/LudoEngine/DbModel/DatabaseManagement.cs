@@ -41,7 +41,7 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-            var pawn = new Pawn { Color = color, XPosition = xPosition, YPosition = yPosition, Game = gameID};
+            var pawn = new SavePoint { Color = color, XPosition = xPosition, YPosition = yPosition, Game = gameID};
 
             db.Update(pawn);
             db.SaveChanges();
@@ -57,18 +57,16 @@ namespace LudoEngine.DbModel
             db.SaveChanges();
         }
 
-        public static void GetGame(int id)
+        public static Game GetGame(int id)
         {
             using var db = new LudoContext();
 
             var game = db.Games
                 .Select(x => x)
-                .Where(x => x.Id == id);
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
 
-            foreach (var item in game)
-            {
-                Console.WriteLine($"ID: {item.Id}, FirstPlace: {item.FirstPlace}, CurrentTurn: {item.CurrentTurn}");
-            }
+            return game;
         }
 
         public static void GetPlayersInGame(int gameId)
@@ -98,17 +96,21 @@ namespace LudoEngine.DbModel
             }
         }
 
-        public static void GetPawnsInGame(Game gameId)
+        public static List<(TeamColor color, (int X, int Y) position)> GetPawnPositionsInGame(Game gameId)
         {
             using var db = new LudoContext();
 
-            var pawns = db.Pawns
+            var savePoints = db.SavePoints
                 .Where(x => x.Game == gameId);
 
-            foreach (var pawn in pawns)
+            List<(TeamColor color, (int X, int Y) position)> savepointList = new();
+
+            foreach (var item in savePoints)
             {
-                Console.WriteLine($"Color: {pawn.Color} Xpos: {pawn.XPosition} Ypos: {pawn.YPosition}");
+                savepointList.Add((item.Color, (item.XPosition, item.YPosition)));
             }
+
+            return savepointList;
         }
 
         public static List<Game> GetGameId(int playerId)

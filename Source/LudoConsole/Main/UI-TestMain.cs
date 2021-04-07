@@ -28,6 +28,6 @@ namespace LudoConsole.Main
 
             Console.ReadLine();
         }
-       
+
     }
 }
