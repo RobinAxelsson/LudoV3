@@ -33,45 +33,37 @@ namespace LudoConsole.Main
                 } }));
 
             writerThread.Start();
-            var diceLine = new LineData((0, 9));
-            Stephan stephan = new Stephan();
-            stephan.StephanColor = TeamColor.Red;
-            stephan.TakeOutSquare = Board.StartSquare(TeamColor.Red);
+            var diceLine = new LineData(0, 9);
+
             while (true)
             {
-                Thread.Sleep(200);
-                //diceLine.Update("Rolling dice...");
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                Thread.Sleep(500);
                 int dieRoll = ActivePlayer.RollDice();
-                //diceLine.Update("You got a: " + dieRoll);
-                //Console.ReadKey(true);
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
                 int selection = 0;
 
                 var key = new ConsoleKeyInfo().Key;
-                if(ActivePlayer.CurrentTeam() != TeamColor.Red)
+
+                while (key != ConsoleKey.Enter && pawnsToMove.Count > 0)
                 {
-                    while (key != ConsoleKey.Enter && pawnsToMove.Count > 0)
-                    {
-                        ActivePlayer.SelectPawn(pawnsToMove[selection]);
-                        key = Console.ReadKey(true).Key;
+                    ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                    key = Console.ReadKey(true).Key;
 
-                        if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
-                            selection++;
+                    if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
+                        selection++;
 
-                        if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
-                            selection--;
+                    if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
+                        selection--;
 
-                        selection =
-                            selection > pawnsToMove.Count - 1 ? 0 :
-                            selection < 0 ? pawnsToMove.Count - 1 : selection;
-                    }
-                    if (pawnsToMove.Count > 0) ActivePlayer.MoveSelectedPawn(dieRoll);
-                    ActivePlayer.NextTeam();
+                    selection =
+                        selection > pawnsToMove.Count - 1 ? 0 :
+                        selection < 0 ? pawnsToMove.Count - 1 : selection;
                 }
-              else
-                {
-                    stephan.Play();
-                }
+                if(pawnsToMove.Count > 0) ActivePlayer.MoveSelectedPawn(dieRoll);
+                ActivePlayer.NextTeam();
             }
         }
 

@@ -41,17 +41,22 @@ namespace LudoConsole.UI
         public static void Update()
         {
             var toRemove = new List<IDrawable>();
-            foreach (var drawable in ScreenMemory)
+            int countedMemory = ScreenMemory.Count;
+
+            for (int i = 0; i < countedMemory; i++)
+            {
+                var drawable = ScreenMemory[i];
+
                 if (drawable.Erase == false && drawable.IsDrawn == false)
                 {
                     Write(drawable);
                 }
-                else if (drawable.Erase)
+                else if (drawable.Erase == true)
                 {
                     Erase(drawable);
                     toRemove.Add(drawable);
                 }
-
+            }
             toRemove.ForEach(x => ScreenMemory.Remove(x));
         }
         public static void ClearScreen()
@@ -62,9 +67,14 @@ namespace LudoConsole.UI
         public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.Erase = true);
         private static bool IsInScreenMemory(IDrawable drawable)
         {
-            foreach (var item in ScreenMemory)
-                if (drawable.IsSame(item))
+            int countedMemory = ScreenMemory.Count;
+
+            for (int i = 0; i < countedMemory; i++)
+            {
+                var drawableCompare = ScreenMemory[i];
+                if (drawable.IsSame(drawableCompare))
                     return true;
+            }
             return false;
         }
         private static void Write(IDrawable drawable)
