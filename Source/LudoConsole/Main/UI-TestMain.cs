@@ -26,34 +26,54 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            var writerThread = new Thread(new ThreadStart(() => {
-                while (true) { 
-                    ConsoleWriter.UpdateBoard(DrawSquares); 
+            var writerThread = new Thread(new ThreadStart(() =>
+            {
+                while (true)
+                {
+                    ConsoleWriter.UpdateBoard(DrawSquares);
                     Thread.Sleep(300);
-                } }));
+                }
+            }));
 
             writerThread.Start();
             var diceLine = new LineData(0, 9);
-            Stephan stephan = new Stephan();
-            stephan.StephanColor = TeamColor.Red;
-            stephan.TakeOutSquare = Board.StartSquare(TeamColor.Red);
-           
+            bool humanPlayer = true;
+
             while (true)
             {
-                
-                    diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
-                    Thread.Sleep(500);
-                    int dieRoll = ActivePlayer.RollDice();
-                    diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
-                    Console.ReadKey(true);
-                    var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
-                    int selection = 0;
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                Thread.Sleep(500);
+                int dieRoll = 6;//ActivePlayer.RollDice();
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                Console.ReadKey(true);
+                var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                bool movePawn = false;
 
-                    var key = new ConsoleKeyInfo().Key;
-                if(ActivePlayer.CurrentTeam() != TeamColor.Red)
+                int selection = 0;
+
+                var key = new ConsoleKeyInfo().Key;
+
+                if (humanPlayer)
                 {
-                    while (key != ConsoleKey.Enter && pawnsToMove.Count > 0)
+                    while (true)
                     {
+                        if(pawnsToMove.Count == 0)
+                        {
+                            ActivePlayer.NextTeam();
+                            break;
+                        }
+                        if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
+                        {
+                            diceLine.Update("'x' for two");
+                            if (key == ConsoleKey.X)
+                            {
+                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                for (int i = 0; i < 2; i++) basePawns[i].Move(1);
+                                ActivePlayer.NextTeam();
+                                break;
+                            }
+
+                        }
                         ActivePlayer.SelectPawn(pawnsToMove[selection]);
                         key = Console.ReadKey(true).Key;
 
@@ -66,21 +86,17 @@ namespace LudoConsole.Main
                         selection =
                             selection > pawnsToMove.Count - 1 ? 0 :
                             selection < 0 ? pawnsToMove.Count - 1 : selection;
+
+                        if (key == ConsoleKey.Enter)
+                        {
+                            ActivePlayer.MoveSelectedPawn(dieRoll);
+                            if (dieRoll != 6) ActivePlayer.NextTeam();
+                            break;
+                        }
                     }
-                   
                 }
-                   else
-                {
-                    if(pawnsToMove.Count > 0)
-                    {
-                        ActivePlayer.SelectPawn(stephan.Play(dieRoll));
-                    }
-                }
-                if (pawnsToMove.Count > 0) ActivePlayer.MoveSelectedPawn(dieRoll);
-                ActivePlayer.NextTeam();
-            }
-           
             }
         }
 
     }
+}
