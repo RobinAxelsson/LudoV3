@@ -43,7 +43,7 @@ namespace LudoConsole.Main
             {
                 diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
                 Thread.Sleep(500);
-                int dieRoll = ActivePlayer.RollDice();
+                int dieRoll = 6;//ActivePlayer.RollDice();
                 diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
                 Console.ReadKey(true);
                 var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
@@ -64,7 +64,7 @@ namespace LudoConsole.Main
                         }
                         if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
                         {
-                            diceLine.Update("Press 'x' to take out two pawns");
+                            diceLine.Update("'x' for two");
                             if (key == ConsoleKey.X)
                             {
                                 var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
