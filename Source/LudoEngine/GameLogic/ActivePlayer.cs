@@ -9,6 +9,7 @@ namespace LudoEngine.GameLogic
 {
     public static class ActivePlayer
     {
+        
         static ActivePlayer() => iCurrentTeam = 0;
 
         private static Random random = new Random();
@@ -47,4 +48,5 @@ namespace LudoEngine.GameLogic
             for (int i = 0; i < 2; i++) basePawns[0].Move(1);
         }
     }
+    
 }

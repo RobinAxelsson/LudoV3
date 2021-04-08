@@ -24,6 +24,8 @@ namespace LudoEngine.BoardUnits.Main
             BoardSquares.Find(x => x.GetType() == typeof(BaseSquare) && x.Color == color).Pawns;
         public static List<Pawn> PawnsInGoal(TeamColor color) =>
             BoardSquares.Find(x => x.GetType() == typeof(GoalSquare)).Pawns.FindAll(x => x.Color == color);
+        public static List<Pawn> PawnsOnBoard() =>
+         BoardSquares.Find(x => x.GetType() == typeof(StandardSquare)).Pawns;
         public static IGameSquare StartSquare(TeamColor color)
             => BoardSquares.Find(x => x.GetType() == typeof(StartSquare) && x.Color == color);
         public static IGameSquare BaseSquare(TeamColor color)
