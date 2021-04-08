@@ -109,12 +109,45 @@ namespace LudoConsole.Main
                 }
                 else
                 {
-                    ActivePlayer.SelectedPawn = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single().Play(dieRoll);
-                    if(ActivePlayer.SelectedPawn != null)
+                    
+                    while (true)
                     {
-                        ActivePlayer.MoveSelectedPawn(dieRoll);
+                        var CurrentStephan = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single();
+                        var StephanResult = CurrentStephan.Play(dieRoll);
+                        ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
+                        if (dieRoll == 6)
+                        {
+                            if (StephanResult.TakeOutTwo)
+                            {
+                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    CurrentStephan.StephanPawns.Add(basePawns[0]);
+                                    basePawns[0].Move(1);
+                                }
+                                ActivePlayer.NextTeam();
+                                break;
+                            }
+                            else
+                            {
+                                if (ActivePlayer.SelectedPawn != null)
+                                {
+                                    ActivePlayer.MoveSelectedPawn(dieRoll);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (ActivePlayer.SelectedPawn != null)
+                            {
+                                ActivePlayer.MoveSelectedPawn(dieRoll);
+                            }
+                            ActivePlayer.NextTeam();
+                            break;
+                        }
                     }
-                    ActivePlayer.NextTeam();
+                 
                 }
             }
         }

@@ -33,15 +33,13 @@ namespace LudoEngine.GameLogic
             LoggerMessage = $"{DateTime.Now.ToShortTimeString()}: Initializing Stephan. Color: {StephanColor}";
             WriteLogging(LoggerMessage);
             LoggerMessage = "";
-         
-            StephanPawns = new List<Pawn>();
-            
-        }
-        public Pawn Play(int rolled)
-        {
 
-            
-            LoggerMessage = $"\n\n[Method: Play] New instance\n\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Rolled: {rolled}"; 
+            StephanPawns = new List<Pawn>();
+
+        }
+        public (Pawn PlayPawn, bool TakeOutTwo) Play(int rolled)
+        {
+            LoggerMessage = $"\n\n[Method: Play] New instance\n\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Rolled: {rolled}";
             playerPawns = Board.PawnsOnBoard();
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculating play...";
             var CalcInfo = CalculatePlay(rolled);
@@ -51,26 +49,38 @@ namespace LudoEngine.GameLogic
                 if (rolled == 6)
                 {
                     WriteLogging(LoggerMessage);
-                    return CalcInfo.pawnToMove;
-
-                    //Spela igen
+                    return (CalcInfo.pawnToMove, false);
                 }
                 else
                 {
                     WriteLogging(LoggerMessage);
-                    return CalcInfo.pawnToMove;
+                    return (CalcInfo.pawnToMove, false);
                 }
-               
+
             }
-            else if(CalcInfo.takeout)
+            else if (CalcInfo.takeout)
             {
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Will take out pawn(s)";
                 if (rolled == 6)
                 {
+                    LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Making sure no pawn is at spawn location";
+
                     if (CalcInfo.takeoutCount == 2)
                     {
-                        //Ta ut två pjäser
+                        if (Board.StartSquare(StephanColor).Pawns.FindAll(x => x.Color == StephanColor).Count == 0)
+                        {
+                            LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] No pawn found";
+                            WriteLogging(LoggerMessage);
+                            return (null, true); //Ta ut två pjäser!
+                        }
+                        else
+                        {
+                            LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Piece found. Doing move calculations instead";
+                            WriteLogging(LoggerMessage);
+                            return (CalculateWhatPieceToMove(StephanPawns, rolled), false);
+                        }
                     }
+
                     else if (CalcInfo.takeoutCount == 1)
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Making sure no pawn is at spawn location";
@@ -79,15 +89,16 @@ namespace LudoEngine.GameLogic
                             foreach (var pawn in Board.PawnsInBase(StephanColor))
                             {
                                 StephanPawns.Add(pawn);
+                                LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] No pawn found";
                                 WriteLogging(LoggerMessage);
-                                return pawn;
+                                return (pawn, false);
                             }
                         }
                         else
                         {
-                            WriteLogging(LoggerMessage);
                             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Piece found. Doing move calculations instead";
-                            return CalculateWhatPieceToMove(StephanPawns, rolled);
+                            WriteLogging(LoggerMessage);
+                            return (CalculateWhatPieceToMove(StephanPawns, rolled), false);
 
                         }
                     }
@@ -102,14 +113,14 @@ namespace LudoEngine.GameLogic
                             StephanPawns.Add(pawn);
                             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] No pawn found";
                             WriteLogging(LoggerMessage);
-                            return pawn;
+                            return (pawn, false);
                         }
                     }
                     else
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Piece found. Doing move calculations instead";
                         WriteLogging(LoggerMessage);
-                        return CalculateWhatPieceToMove(StephanPawns, rolled);
+                        return (CalculateWhatPieceToMove(StephanPawns, rolled), false);
 
                     }
                 }
@@ -118,11 +129,11 @@ namespace LudoEngine.GameLogic
             {
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Passing round";
                 WriteLogging(LoggerMessage);
-                return null;
+                return (null, false);
             }
-            LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Returning null, arrived at bottom of method?";
+            LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Returning null, arrived at bottom of method. This should not happen.";
             WriteLogging(LoggerMessage);
-            return null;
+            return (null, false);
         }
         private (bool WillEndUpInEnemyStartSquare, List<Pawn> pawnsToNotMove) MakeSureNotEndingUpInEnemyStartSquare(int dice)
         {
@@ -151,13 +162,13 @@ namespace LudoEngine.GameLogic
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking how many friendly pawns is on board. Result: {StephanPawns.Count.ToString()}";
             if (StephanPawns.Count > 0)
             {
-               
+
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is more than 0";
                 var WhatAmINotGonnaMove = MakeSureNotEndingUpInEnemyStartSquare(dice);
                 var eradicationInfo = CheckForPossibleEradication(dice);
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Eradication status: {eradicationInfo.CanEradicate}";
-                    if (eradicationInfo.CanEradicate)
-                    {
+                if (eradicationInfo.CanEradicate)
+                {
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Can eradicate. Checking if eradication will result in enemy spawn position";
                     if (!WhatAmINotGonnaMove.pawnsToNotMove.Contains(eradicationInfo.PawnToEradicateWith))
                     {
@@ -168,7 +179,7 @@ namespace LudoEngine.GameLogic
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Eradication will result in enemy spawn position. Aborting move and continuing calculation";
                     }
-                    }
+                }
 
                 if (dice == 6)
                 {
@@ -178,7 +189,7 @@ namespace LudoEngine.GameLogic
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is less than two. Will attempt to pull out two pawns";
                         return (null, false, true, 2); //Tar ut 2
                     }
-                    else if(StephanPawns.Count == 3)
+                    else if (StephanPawns.Count == 3)
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is equal to three. Will attempt to pull out one pawn";
                         return (null, false, true, 1); //Tar ut 1
@@ -230,27 +241,29 @@ namespace LudoEngine.GameLogic
         }
         private Pawn CalculateWhatPieceToMove(List<Pawn> piecesOut, int dice)
         {
-            
+
             if (piecesOut == null) throw new ArgumentNullException(nameof(piecesOut));
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculateWhatPieceToMove] Looping through each friendly pawn on board";
+
             foreach (var piece in piecesOut)
             {
                 var SquarePosition = Board.BoardSquares.Find(square => square == piece.CurrentSquare());
+                var SquarePositionCalc = SquarePosition;
                 for (var i = 0; i <= dice; i++)
                 {
-                    SquarePosition = Board.GetNext(Board.BoardSquares, SquarePosition, StephanColor);
-                    if (SquarePosition.GetType() == typeof(GoalSquare))
+                    SquarePositionCalc = Board.GetNext(Board.BoardSquares, SquarePositionCalc, StephanColor);
+                    if (SquarePositionCalc.GetType() == typeof(GoalSquare))
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculateWhatPieceToMove] Can reach a Goal-square. Returning move";
                         return SquarePosition.Pawns.Find(pawn => pawn.Color == StephanColor);
                     }
-                    if (SquarePosition.GetType() == typeof(SafezoneSquare))
+                    if (SquarePositionCalc.GetType() == typeof(SafezoneSquare))
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculateWhatPieceToMove] Can reach a Safezone-square. Returning move";
                         return SquarePosition.Pawns.Find(pawn => pawn.Color == StephanColor);
                     }
                 }
-             }
+            }
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculateWhatPieceToMove] Checking if a pawn has the possibility to end up in enemy start square";
             var WillIEndUpInBase = MakeSureNotEndingUpInEnemyStartSquare(dice);
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculateWhatPieceToMove] Result: {WillIEndUpInBase.WillEndUpInEnemyStartSquare}";
@@ -269,7 +282,7 @@ namespace LudoEngine.GameLogic
             for (var i = 0; i <= Board.TeamPath(StephanColor).Count; i++)
             {
                 squarePosition = Board.GetNext(Board.BoardSquares, squarePosition, StephanColor);
-                if(squarePosition.Pawns.Contains(farthestPawn))
+                if (squarePosition.Pawns.Contains(farthestPawn))
                 {
                     furthestIndex = i;
                 }
@@ -300,7 +313,7 @@ namespace LudoEngine.GameLogic
         private Pawn GetFarthestPawn()
         {
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: GetFarthestPawn] Calculating farthest pawn";
-            var pawn = new Pawn(StephanColor); 
+            var pawn = new Pawn(StephanColor);
             foreach (var square in Board.TeamPath(StephanColor))
             {
                 foreach (var p in square.Pawns)
@@ -335,7 +348,7 @@ namespace LudoEngine.GameLogic
             return (eradication, eradicationPawn);
         }
         private void WriteLogging(string input)
-        {            
+        {
             Logger.Write(input);
             Logger.WriteLine("");
             Logger.Flush();

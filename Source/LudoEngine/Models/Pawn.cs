@@ -26,7 +26,7 @@ namespace LudoEngine.Models
                 var tempSquare = CurrentSquare();
                 tempSquare.Pawns.Remove(this);
 
-                for (var i = 0; i < dice; i++)
+            for (var i = 0; i < dice; i++)
                 {
                     tempSquare = Board.GetNext(gameSquares, tempSquare, Color);
                 }
