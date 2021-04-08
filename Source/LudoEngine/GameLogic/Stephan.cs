@@ -18,7 +18,7 @@ namespace LudoEngine.GameLogic
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage = "";
 
-        public Stephan(TeamColor color, StefanLog log = null)
+        public Stephan(TeamColor color, ILog log = null)
         {
             StephanColor = color;
             if (log != null)

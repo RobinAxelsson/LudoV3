@@ -8,7 +8,7 @@ using LudoEngine.Models;
 
 namespace LudoEngine.GameLogic
 {
-    public class StefanLog
+    public class StefanLog : ILog
     {
         private StreamWriter Logger;
         public StefanLog(TeamColor color)

@@ -22,7 +22,6 @@ namespace LudoTest.AI
             squareAi1.Pawns.Add(aiPawn1);
             squareAi2.Pawns.Add(aiPawn2);
             squareEnemy.Pawns.Add(enemyPawn);
-
         }
         [Fact]
         public void StephanRollSix_AssertTakeOutTwo()
@@ -33,6 +32,7 @@ namespace LudoTest.AI
             var stephan = new Stephan(TeamColor.Blue);
             stephan.TakeOutSquare = Board.StartSquare(TeamColor.Blue);
             var StephanResult = stephan.Play(6);
+
             ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
             var pawns = squares[1].Pawns;
             Assert.True(pawns.Count == 1);
