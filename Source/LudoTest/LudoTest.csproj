@@ -7,15 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Board\test-map-2p.txt" />
-    <None Remove="Board\test-map1.txt" />
+    <None Remove="AI\ai-test-map1.txt" />
+    <None Remove="AI\ai-test-map2.txt" />
+    <None Remove="board-pawn\test-map-2p.txt" />
+    <None Remove="board-pawn\test-map1.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Board\test-map-2p.txt">
+    <Content Include="AI\ai-test-map2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Board\test-map1.txt">
+    <Content Include="AI\ai-test-map1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="board-pawn\test-map-2p.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="board-pawn\test-map1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

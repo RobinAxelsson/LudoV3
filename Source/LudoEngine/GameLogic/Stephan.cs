@@ -13,7 +13,7 @@ namespace LudoEngine.GameLogic
         public IGameSquare TakeOutSquare { get; set; }
         public IGameSquare FarTakeOutSquare { get; set; }
         public List<Pawn> StephanPawns { get; set; }
-        public Stephan()
+        public Stephan(TeamColor blue)
         {
             if (StephanColor == null)
             {

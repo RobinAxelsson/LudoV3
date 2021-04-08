@@ -5,7 +5,7 @@ using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
 
-namespace LudoTest
+namespace LudoTest.board_pawn
 {
     public class BoardPawnTests
     {
@@ -143,6 +143,15 @@ namespace LudoTest
             var assertedSquare = Board.BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 1);
 
             Assert.True(assertedSquare == bluePawns[0].CurrentSquare());
+        }
+        [Fact]
+        public void RollSix_AssertTakeOutTwo()
+        {
+            Board.Init(@"AI/ai-test-map2.txt");
+            var squares = Board.BoardSquares;
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            ActivePlayer.SetFirstTeam(TeamColor.Blue);
+
         }
     }
 }

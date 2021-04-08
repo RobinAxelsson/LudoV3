@@ -1,7 +1,4 @@
-﻿5   0
-l12 fs
-  110
-4
+﻿111111
 /*
 
 0-up
@@ -24,9 +21,9 @@ l - blue start, right
 y - yellow start, up
 n - green start, left
 
-4 - red base
-5 - blue base
-6 - yellow base
-7 - green base
+4 - red base, left
+5 - blue base, down
+6 - yellow base, right
+7 - green base, up
 
 s - finish

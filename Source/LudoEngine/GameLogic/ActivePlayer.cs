@@ -41,5 +41,10 @@ namespace LudoEngine.GameLogic
             if (SelectedPawn == null) return;
             SelectedPawn.Move(dieRoll); 
         }
+        public static void TakeOutTwo()
+        {
+            var basePawns = Board.BaseSquare(CurrentTeam()).Pawns;
+            for (int i = 0; i < 2; i++) basePawns[0].Move(1);
+        }
     }
 }
