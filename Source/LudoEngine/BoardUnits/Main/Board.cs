@@ -11,9 +11,10 @@ namespace LudoEngine.BoardUnits.Main
     public static partial class Board
     {
         public static List<IGameSquare> BoardSquares { get; set; }
-        static Board()
+        private const string _filePath = @"BoardUnits/Map/BoardMap.txt";
+        public static void Init(string filePath = _filePath)
         {
-            BoardSquares = BoardOrm.Map();
+            BoardSquares = BoardOrm.Map(filePath);
         }
         private static List<IGameSquare> GetTeamSquares(TeamColor color) =>
         BoardSquares.FindAll(x => x.Pawns.Count > 0).FindAll(x => x.Pawns[0].Color == color);
@@ -42,6 +43,7 @@ namespace LudoEngine.BoardUnits.Main
             }
             return teamSquares;
         }
+        public static List<Pawn> GetTeamPawns(TeamColor color) => BoardSquares.SelectMany(x => x.Pawns).Where(x => x.Color == color).ToList();
         private static (int X, int Y) NextDiff(BoardDirection direction) =>
                 direction == BoardDirection.Up ? (0, -1) :
                 direction == BoardDirection.Right ? (1, 0) :

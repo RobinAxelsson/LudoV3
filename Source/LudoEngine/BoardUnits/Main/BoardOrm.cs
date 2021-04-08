@@ -9,11 +9,10 @@ namespace LudoEngine.BoardUnits.Main
 {
     public static class BoardOrm
     {
-        private const string _filePath = @"BoardUnits/Map/BoardMap.txt";
-        public static List<IGameSquare> Map(string filePath = _filePath)
+        public static List<IGameSquare> Map(string filePath)
         {
             var squares = new List<IGameSquare>();
-            var charCoords = ReadCharCoords(_filePath);
+            var charCoords = ReadCharCoords(filePath);
 
             foreach (var charCoord in charCoords)
             {

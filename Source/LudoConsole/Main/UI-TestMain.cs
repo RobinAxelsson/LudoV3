@@ -20,6 +20,7 @@ namespace LudoConsole.Main
         static UITestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Board.Init();
             DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
             GameSetup.NewGame(Board.BoardSquares, players: 4);
             UiControl.SetDefault();
@@ -80,8 +81,7 @@ namespace LudoConsole.Main
                             diceLine.Update("'x' for two");
                             if (key == ConsoleKey.X)
                             {
-                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
-                                for (int i = 0; i < 2; i++) basePawns[i].Move(1);
+                                ActivePlayer.TakeOutTwo();
                                 ActivePlayer.NextTeam();
                                 break;
                             }
