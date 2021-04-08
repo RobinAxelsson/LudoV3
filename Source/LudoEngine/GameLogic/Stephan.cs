@@ -15,21 +15,17 @@ namespace LudoEngine.GameLogic
         public IGameSquare FarTakeOutSquare { get; set; }
         public List<Pawn> StephanPawns { get; set; }
         private List<Pawn> playerPawns { get; set; }
-        private StreamWriter Logger;
+        private Action<string> WriteLogging { get; set; }
         private string LoggerMessage = "";
-        public Stephan(TeamColor color)
+
+        public Stephan(TeamColor color, StefanLog log = null)
         {
             StephanColor = color;
-            int number = 0;
-            if (!Directory.Exists(Environment.CurrentDirectory + @"\StephanLogs")) Directory.CreateDirectory(Environment.CurrentDirectory + @"\StephanLogs");
-            foreach (FileInfo finf in new DirectoryInfo(Environment.CurrentDirectory + @"\StephanLogs").GetFiles())
-            {
-                if (finf.Name.StartsWith($"stephan_{StephanColor.ToString()}") && finf.Extension == ".log")
-                {
-                    number++;
-                }
-            }
-            Logger = new StreamWriter($@"{Environment.CurrentDirectory}\StephanLogs\stephan_{StephanColor.ToString()}{number.ToString()}.log");
+            if (log != null)
+                WriteLogging = log.WriteLogging;
+            else
+                WriteLogging = x => x="";
+  
             LoggerMessage = $"{DateTime.Now.ToShortTimeString()}: Initializing Stephan. Color: {StephanColor}";
             WriteLogging(LoggerMessage);
             LoggerMessage = "";
@@ -67,7 +63,8 @@ namespace LudoEngine.GameLogic
 
                     if (CalcInfo.takeoutCount == 2)
                     {
-                        if (Board.StartSquare(StephanColor).Pawns.FindAll(x => x.Color == StephanColor).Count == 0)
+                        var pawnsInBase = Board.PawnsInBase(StephanColor);
+                        if (pawnsInBase.Count == 0)
                         {
                             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] No pawn found";
                             WriteLogging(LoggerMessage);
@@ -347,11 +344,6 @@ namespace LudoEngine.GameLogic
             }
             return (eradication, eradicationPawn);
         }
-        private void WriteLogging(string input)
-        {
-            Logger.Write(input);
-            Logger.WriteLine("");
-            Logger.Flush();
-        }
+       
     }
 }

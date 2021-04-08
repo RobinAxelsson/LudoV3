@@ -36,7 +36,8 @@ namespace LudoConsole.Main
             List<Stephan> stephans = new List<Stephan>();
             for(var i = 0; i <= AIColors.Count - 1; i++)
             {
-                var stephan = new Stephan(AIColors[i]);
+                var log = new StefanLog(AIColors[i]);
+                var stephan = new Stephan(AIColors[i], log);
                 stephan.TakeOutSquare = Board.StartSquare(AIColors[i]);
                 stephans.Add(stephan);
             }

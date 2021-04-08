@@ -32,7 +32,10 @@ namespace LudoTest.AI
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue });
             var stephan = new Stephan(TeamColor.Blue);
             stephan.TakeOutSquare = Board.StartSquare(TeamColor.Blue);
-            stephan.Play(); //input dice
+            var StephanResult = stephan.Play(6);
+            ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
+            var pawns = squares[1].Pawns;
+            Assert.True(pawns.Count == 1);
         }
     }
 }
