@@ -12,11 +12,11 @@ namespace LudoTest.board_pawn
         [Fact]
         public void MoveToExit_AssertTrue()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var bluePawn = new Pawn(TeamColor.Blue);
             var baseSquare = Board.BaseSquare(TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
-            
+
             bluePawn.Move(7);
             var current = bluePawn.CurrentSquare();
 
@@ -25,7 +25,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void MoveToFinish_AssertTrue()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
             var baseSquare = Board.BaseSquare(TeamColor.Blue);
@@ -39,7 +39,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void MoveUpNotFinish_AssertTrue()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var redPawn = new Pawn(TeamColor.Red);
             var start = Board.BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 1);
@@ -53,7 +53,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void ErradicateOne_AssertBaseSquare()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
             var baseSquare = Board.BaseSquare(TeamColor.Blue);
@@ -71,7 +71,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void ErradicateTwo_AssertTwoInBase()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
             var baseSquare = Board.BaseSquare(TeamColor.Blue);
@@ -91,9 +91,9 @@ namespace LudoTest.board_pawn
         [Fact]
         public void GameSetup_fourRed_AssertTrue()
         {
-            Board.Init(@"Board/test-map1.txt");
+            Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] {TeamColor.Blue, TeamColor.Red });
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Red });
             var redsBased = Board.PawnsInBase(TeamColor.Red);
 
             Assert.True(redsBased.Count == 4);
@@ -101,7 +101,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void GameSetup_fourBlue_AssertTrue()
         {
-            Board.Init(@"Board/test-map-2p.txt");
+            Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
             var bluesBased = Board.PawnsInBase(TeamColor.Blue);
@@ -111,7 +111,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void GameSetUp_AssertTrue()
         {
-            Board.Init(@"Board/test-map-2p.txt");
+            Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
             var greensBased = Board.PawnsInBase(TeamColor.Green);
@@ -121,7 +121,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void GetTeamPawns_AssertTrue()
         {
-            Board.Init(@"Board/test-map-2p.txt");
+            Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
 
@@ -132,7 +132,7 @@ namespace LudoTest.board_pawn
         [Fact]
         public void ActivePlayer_AssertTrue()
         {
-            Board.Init(@"Board/test-map-2p.txt");
+            Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
 
@@ -147,11 +147,99 @@ namespace LudoTest.board_pawn
         [Fact]
         public void RollSix_AssertTakeOutTwo()
         {
-            Board.Init(@"AI/ai-test-map2.txt");
+            Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
             ActivePlayer.SetFirstTeam(TeamColor.Blue);
+            ActivePlayer.TakeOutTwo();
+            int pawnsInBase = Board.PawnsInBase(TeamColor.Blue).Count;
 
+            Assert.True(pawnsInBase == 2);
+        }
+        [Fact]
+        public void RollSix_AssertTakeOutFour()
+        {
+            Board.Init(@"board-pawn/test-map-2p.txt");
+            var squares = Board.BoardSquares;
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            ActivePlayer.SetFirstTeam(TeamColor.Blue);
+            ActivePlayer.TakeOutTwo();
+            ActivePlayer.TakeOutTwo();
+            var pawnsInBase = Board.PawnsInBase(TeamColor.Blue);
+
+            Assert.True(pawnsInBase.Count == 0);
+        }
+        [Fact]
+        public void Erradicate_NewTurn_ExpectNoException()
+        {
+            Board.Init(@"board-pawn/test-map-2p.txt");
+            var squares = Board.BoardSquares;
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            ActivePlayer.SetFirstTeam(TeamColor.Blue);
+            var bluePawns = Board.GetTeamPawns(TeamColor.Blue);
+            var greenPawns = Board.GetTeamPawns(TeamColor.Green);
+
+            ActivePlayer.SelectPawn(bluePawns[0]);
+            ActivePlayer.MoveSelectedPawn(7);
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(greenPawns[0]);
+            ActivePlayer.MoveSelectedPawn(1);
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(bluePawns[0]);
+            ActivePlayer.MoveSelectedPawn(7);
+            //Assert Does Not Throw Exception
+        }
+        [Fact]
+        public void ErradicateAll_NewTurn_ExpectNoException()
+        {
+            Board.Init(@"board-pawn/test-map-2p.txt");
+            var squares = Board.BoardSquares;
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            ActivePlayer.SetFirstTeam(TeamColor.Blue);
+            var bluePawns = Board.GetTeamPawns(TeamColor.Blue);
+            var greenPawns = Board.GetTeamPawns(TeamColor.Green);
+
+            foreach (var bp in bluePawns)
+            {
+                ActivePlayer.SelectPawn(bp);
+                ActivePlayer.MoveSelectedPawn(7);
+            }
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(greenPawns[0]);
+            ActivePlayer.MoveSelectedPawn(1);
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(bluePawns[0]);
+            ActivePlayer.MoveSelectedPawn(7);
+            //Assert Does Not Throw Exception
+        }
+        [Fact]
+        public void ErradicateAll__ExpectNoException()
+        {
+            Board.Init(@"board-pawn/test-map-2p.txt");
+            var squares = Board.BoardSquares;
+            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            ActivePlayer.SetFirstTeam(TeamColor.Blue);
+            var bluePawns = Board.GetTeamPawns(TeamColor.Blue);
+            var greenPawns = Board.GetTeamPawns(TeamColor.Green);
+
+            foreach (var bp in bluePawns)
+            {
+                ActivePlayer.SelectPawn(bp);
+                ActivePlayer.MoveSelectedPawn(7);
+            }
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(greenPawns[0]);
+            ActivePlayer.MoveSelectedPawn(1);
+            ActivePlayer.NextTeam();
+
+            ActivePlayer.SelectPawn(bluePawns[0]);
+            ActivePlayer.MoveSelectedPawn(7);
+            //Assert Does Not Throw Exception
         }
     }
 }
