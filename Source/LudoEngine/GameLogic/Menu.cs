@@ -132,7 +132,6 @@ namespace LudoEngine.GameLogic
             }
             else
             {
-                Environment.Exit(0);
                 return 3;
             }
         }

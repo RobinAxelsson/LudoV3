@@ -23,7 +23,6 @@ namespace LudoConsole.Main
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Board.Init();
             DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
-            GameSetup.NewGame(Board.BoardSquares, players: 4);
             UiControl.SetDefault();
         }
         private static void Main(string[] args)
@@ -57,6 +56,8 @@ namespace LudoConsole.Main
             
             if (drawGameBoard == 0)
             {
+                GameSetup.NewGame(Board.BoardSquares, players: 4);
+
                 writerThread.Start();
                 var diceLine = new LineData(0, 9);
                 DatabaseManagement.SaveAndGetGame(ActivePlayer.CurrentTeam());
@@ -170,7 +171,11 @@ namespace LudoConsole.Main
                 GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
                 writerThread.Start();
             }
-            
+            else if (drawGameBoard == 3)
+            {
+                Environment.Exit(0);
+            }
+
         }
 
     }
