@@ -21,12 +21,28 @@ namespace LudoConsole.Main
         static UITestMain()
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Board.Init();
             DrawSquares = UiControl.ConvertAllSquares(Board.BoardSquares);
             GameSetup.NewGame(Board.BoardSquares, players: 4);
             UiControl.SetDefault();
         }
         private static void Main(string[] args)
         {
+            
+            List<TeamColor> AIColors = new List<TeamColor>();
+            AIColors.Add(TeamColor.Red);
+            AIColors.Add(TeamColor.Yellow);
+            AIColors.Add(TeamColor.Blue);
+            AIColors.Add(TeamColor.Green);
+            List<Stephan> stephans = new List<Stephan>();
+            for(var i = 0; i <= AIColors.Count - 1; i++)
+            {
+                var log = new StefanLog(AIColors[i]);
+                var stephan = new Stephan(AIColors[i], log);
+                stephan.TakeOutSquare = Board.StartSquare(AIColors[i]);
+                stephans.Add(stephan);
+            }
+
             var writerThread = new Thread(new ThreadStart(() =>
             {
                 while (true)
@@ -38,52 +54,44 @@ namespace LudoConsole.Main
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
 
-            if (drawGameBoard == 0)
+            writerThread.Start();
+            var diceLine = new LineData(0, 9);
+            
+
+            while (true)
             {
-                writerThread.Start();
-                var diceLine = new LineData(0, 9);
-                bool humanPlayer = true;
-                GameRules.SaveFirstTime(ActivePlayer.CurrentTeam());
-
-                while (true)
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                Thread.Sleep(500);
+                int dieRoll = ActivePlayer.RollDice();
+                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                Console.ReadKey(true);
+                var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                bool movePawn = false;
+                int selection = 0;
+                var AIPlayer = AIColors.Contains(ActivePlayer.CurrentTeam());
+                var key = new ConsoleKeyInfo().Key;
+                
+                if (!AIPlayer)
                 {
-                    diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
-                    Thread.Sleep(500);
-                    int dieRoll = ActivePlayer.RollDice();
-                    diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
-                    Console.ReadKey(true);
-                    var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
-                    bool movePawn = false;
-
-                    int selection = 0;
-
-                    var key = new ConsoleKeyInfo().Key;
-
-                    if (humanPlayer)
+                    while (true)
                     {
-                        while (true)
+                        if(pawnsToMove.Count == 0)
                         {
-                            if (pawnsToMove.Count == 0)
+                            ActivePlayer.NextTeam();
+                            break;
+                        }
+                        if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
+                        {
+                            diceLine.Update("'x' for two");
+                            if (key == ConsoleKey.X)
                             {
-                                DatabaseManagement.Save();
+                                ActivePlayer.TakeOutTwo();
                                 ActivePlayer.NextTeam();
                                 break;
                             }
-                            if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
-                            {
-                                diceLine.Update("'x' for two");
-                                if (key == ConsoleKey.X)
-                                {
-                                    var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
-                                    for (int i = 0; i < 2; i++) basePawns[i].Move(1);
-                                    DatabaseManagement.Save();
-                                    ActivePlayer.NextTeam();
-                                    break;
-                                }
-
-                            }
-                            ActivePlayer.SelectPawn(pawnsToMove[selection]);
-                            key = Console.ReadKey(true).Key;
+                        }
+                        ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                        key = Console.ReadKey(true).Key;
 
                             if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
                                 selection++;
@@ -95,26 +103,58 @@ namespace LudoConsole.Main
                                 selection > pawnsToMove.Count - 1 ? 0 :
                                 selection < 0 ? pawnsToMove.Count - 1 : selection;
 
-                            if (key == ConsoleKey.Enter)
-                            {
-                                ActivePlayer.MoveSelectedPawn(dieRoll);
-                                if (dieRoll != 6)
-                                {
-                                    DatabaseManagement.Save();
-                                    ActivePlayer.NextTeam();
-                                }
-                                break;
-                            }
+                        if (key == ConsoleKey.Enter)
+                        {
+                            ActivePlayer.MoveSelectedPawn(dieRoll);
+                            if (dieRoll != 6) ActivePlayer.NextTeam();
+                            break;
                         }
                     }
                 }
+                else
+                {
+                    
+                    while (true)
+                    {
+                        var CurrentStephan = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single();
+                        var StephanResult = CurrentStephan.Play(dieRoll);
+                        ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
+                        if (dieRoll == 6)
+                        {
+                            if (StephanResult.TakeOutTwo)
+                            {
+                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    CurrentStephan.StephanPawns.Add(basePawns[0]);
+                                    basePawns[0].Move(1);
+                                }
+                                ActivePlayer.NextTeam();
+                                break;
+                            }
+                            else
+                            {
+                                if (ActivePlayer.SelectedPawn != null)
+                                {
+                                    ActivePlayer.MoveSelectedPawn(dieRoll);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (ActivePlayer.SelectedPawn != null)
+                            {
+                                ActivePlayer.MoveSelectedPawn(dieRoll);
+                            }
+                            ActivePlayer.NextTeam();
+                            break;
+                        }
+                    }
+                 
+                }
             }
-            else if (drawGameBoard == 1)
-            {
-                GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
-                writerThread.Start();
-
-            }
+        }
 
         }
     }

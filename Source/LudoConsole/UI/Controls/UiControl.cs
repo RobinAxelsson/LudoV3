@@ -35,7 +35,6 @@ namespace LudoConsole.UI.Controls
            color == TeamColor.Green ? ConsoleColor.Green :
            color == TeamColor.Red ? ConsoleColor.Red :
            color == TeamColor.Yellow ? ConsoleColor.Yellow : LightAccent;
-
         public static List<ISquareDrawable> ConvertAllSquares(List<IGameSquare> squares)
         {
             var squareDraws = squares.Where(x => x.GetType() != typeof(BaseSquare)).Select(x => new SquareDrawable(x));
