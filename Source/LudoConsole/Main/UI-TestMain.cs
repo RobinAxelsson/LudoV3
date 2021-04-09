@@ -8,6 +8,7 @@ using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
 using LudoConsole.UI.Screens;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.Models;
@@ -34,69 +35,87 @@ namespace LudoConsole.Main
                     Thread.Sleep(300);
                 }
             }));
+            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
+            var drawGameBoard = Menu.SelectedOptions(selected);
 
-            writerThread.Start();
-            var diceLine = new LineData(0, 9);
-            bool humanPlayer = true;
-
-            while (true)
+            if (drawGameBoard == 0)
             {
-                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
-                Thread.Sleep(500);
-                int dieRoll = 6;//ActivePlayer.RollDice();
-                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
-                Console.ReadKey(true);
-                var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
-                bool movePawn = false;
+                writerThread.Start();
+                var diceLine = new LineData(0, 9);
+                bool humanPlayer = true;
+                GameRules.SaveFirstTime(ActivePlayer.CurrentTeam());
 
-                int selection = 0;
-
-                var key = new ConsoleKeyInfo().Key;
-
-                if (humanPlayer)
+                while (true)
                 {
-                    while (true)
+                    diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                    Thread.Sleep(500);
+                    int dieRoll = ActivePlayer.RollDice();
+                    diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                    Console.ReadKey(true);
+                    var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                    bool movePawn = false;
+
+                    int selection = 0;
+
+                    var key = new ConsoleKeyInfo().Key;
+
+                    if (humanPlayer)
                     {
-                        if(pawnsToMove.Count == 0)
+                        while (true)
                         {
-                            ActivePlayer.NextTeam();
-                            break;
-                        }
-                        if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
-                        {
-                            diceLine.Update("'x' for two");
-                            if (key == ConsoleKey.X)
+                            if (pawnsToMove.Count == 0)
                             {
-                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
-                                for (int i = 0; i < 2; i++) basePawns[i].Move(1);
+                                DatabaseManagement.Save();
                                 ActivePlayer.NextTeam();
                                 break;
                             }
+                            if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
+                            {
+                                diceLine.Update("'x' for two");
+                                if (key == ConsoleKey.X)
+                                {
+                                    var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                    for (int i = 0; i < 2; i++) basePawns[i].Move(1);
+                                    DatabaseManagement.Save();
+                                    ActivePlayer.NextTeam();
+                                    break;
+                                }
 
-                        }
-                        ActivePlayer.SelectPawn(pawnsToMove[selection]);
-                        key = Console.ReadKey(true).Key;
+                            }
+                            ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                            key = Console.ReadKey(true).Key;
 
-                        if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
-                            selection++;
+                            if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
+                                selection++;
 
-                        if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
-                            selection--;
+                            if (key == ConsoleKey.DownArrow || key == ConsoleKey.LeftArrow)
+                                selection--;
 
-                        selection =
-                            selection > pawnsToMove.Count - 1 ? 0 :
-                            selection < 0 ? pawnsToMove.Count - 1 : selection;
+                            selection =
+                                selection > pawnsToMove.Count - 1 ? 0 :
+                                selection < 0 ? pawnsToMove.Count - 1 : selection;
 
-                        if (key == ConsoleKey.Enter)
-                        {
-                            ActivePlayer.MoveSelectedPawn(dieRoll);
-                            if (dieRoll != 6) ActivePlayer.NextTeam();
-                            break;
+                            if (key == ConsoleKey.Enter)
+                            {
+                                ActivePlayer.MoveSelectedPawn(dieRoll);
+                                if (dieRoll != 6)
+                                {
+                                    DatabaseManagement.Save();
+                                    ActivePlayer.NextTeam();
+                                }
+                                break;
+                            }
                         }
                     }
                 }
             }
-        }
+            else if (drawGameBoard == 1)
+            {
+                GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
+                writerThread.Start();
 
+            }
+
+        }
     }
 }

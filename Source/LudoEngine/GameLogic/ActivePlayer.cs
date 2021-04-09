@@ -36,6 +36,13 @@ namespace LudoEngine.GameLogic
             iCurrentTeam++;
             if (iCurrentTeam % 4 == 0) iCurrentTeam = 0;
         }
+        public static TeamColor CachedNextTeam()
+        {
+            int cachedICurrentTeam =  iCurrentTeam;
+            cachedICurrentTeam++;
+            if (cachedICurrentTeam % 4 == 0) cachedICurrentTeam = 0;
+            return OrderOfTeams[cachedICurrentTeam];
+        }
         public static int RollDice() => random.Next(1, 6);
         public static List<Pawn> SelectablePawns(int rollDie) => GameRules.SelectablePawns(CurrentTeam(), rollDie);
         public static void MoveSelectedPawn(int dieRoll) 

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LudoEngine.Migrations
 {
-    public partial class FirstBestMigration : Migration
+    public partial class SecondMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,11 +25,12 @@ namespace LudoEngine.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentTurn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstPlace = table.Column<int>(type: "int", nullable: false),
-                    SecondPlace = table.Column<int>(type: "int", nullable: false),
-                    ThirdPlace = table.Column<int>(type: "int", nullable: false),
-                    FourthPlace = table.Column<int>(type: "int", nullable: false),
+                    CurrentTurn = table.Column<int>(type: "int", nullable: false),
+                    FirstPlace = table.Column<int>(type: "int", nullable: true),
+                    SecondPlace = table.Column<int>(type: "int", nullable: true),
+                    ThirdPlace = table.Column<int>(type: "int", nullable: true),
+                    FourthPlace = table.Column<int>(type: "int", nullable: true),
+                    LastSaved = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PlayerGameGameId = table.Column<int>(type: "int", nullable: true),
                     PlayerGamePlayerId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -65,55 +67,27 @@ namespace LudoEngine.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pawns",
+                name: "PawnSavePoints",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GameID = table.Column<int>(type: "int", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: true),
+                    PawnId = table.Column<int>(type: "int", nullable: false),
                     Color = table.Column<int>(type: "int", nullable: false),
                     XPosition = table.Column<int>(type: "int", nullable: false),
                     YPosition = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pawns", x => x.ID);
+                    table.PrimaryKey("PK_PawnSavePoints", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pawns_Games_GameID",
-                        column: x => x.GameID,
-                        principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GamePlayer",
-                columns: table => new
-                {
-                    GameId = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GamePlayer", x => new { x.GameId, x.PlayerId });
-                    table.ForeignKey(
-                        name: "FK_GamePlayer_Games_GameId",
+                        name: "FK_PawnSavePoints_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GamePlayer_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GamePlayer_PlayerId",
-                table: "GamePlayer",
-                column: "PlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_PlayerGameGameId_PlayerGamePlayerId",
@@ -121,10 +95,9 @@ namespace LudoEngine.Migrations
                 columns: new[] { "PlayerGameGameId", "PlayerGamePlayerId" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pawns_GameID",
-                table: "Pawns",
-                column: "GameID",
-                unique: true);
+                name: "IX_PawnSavePoints_GameId",
+                table: "PawnSavePoints",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_PlayerGameGameId_PlayerGamePlayerId",
@@ -135,10 +108,7 @@ namespace LudoEngine.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GamePlayer");
-
-            migrationBuilder.DropTable(
-                name: "Pawns");
+                name: "PawnSavePoints");
 
             migrationBuilder.DropTable(
                 name: "Players");

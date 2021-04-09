@@ -7,11 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using LudoEngine.GameLogic;
+using LudoEngine.BoardUnits.Main;
+using System.Threading;
 
 namespace LudoEngine.DbModel
 {
     public static class DatabaseManagement
     {
+        public static Thread SaveThread;
+        static DatabaseManagement()
+        {
+            SaveThread = new Thread(new ThreadStart(save));
+            SaveThread.IsBackground = true;
+        }
+
         public static string ConnectionString { get; private set; }
 
         public static void ReadConnectionString(string filepath)
@@ -23,31 +33,29 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-            var player = new Player { PlayerName = Name};
+            var player = new Player { PlayerName = Name };
             db.Players.Add(player);
 
             db.SaveChanges();
 
 
-            var playerGame = new PlayerGame { GameId = gameId, PlayerId = player.Id};
+            var playerGame = new PlayerGame { GameId = gameId, PlayerId = player.Id };
             db.GamePlayers.Add(playerGame);
 
             db.SaveChanges();
-
-
         }
 
-        public static void SavePawn(TeamColor color, int xPosition , int  yPosition, Game gameID)
+        public static void SavePawn(TeamColor color, int xPosition, int yPosition, Game gameID)
         {
             using var db = new LudoContext();
 
-            var pawn = new SavePoint { Color = color, XPosition = xPosition, YPosition = yPosition, Game = gameID};
+            var pawn = new PawnSavePoint { Color = color, XPosition = xPosition, YPosition = yPosition, GameId = gameID.Id };
 
             db.Update(pawn);
             db.SaveChanges();
         }
 
-        public static void SaveGame(string currentTurn, int firstplace, int secondPlace, int thirdPlace, int fourthPlace)
+        public static void SaveGame(TeamColor currentTurn, int firstplace, int secondPlace, int thirdPlace, int fourthPlace)
         {
             using var db = new LudoContext();
 
@@ -57,16 +65,36 @@ namespace LudoEngine.DbModel
             db.SaveChanges();
         }
 
-        public static Game GetGame(int id)
+        public static void SaveAndGetGame(TeamColor currentTurn)
+        {
+            using var db = new LudoContext();
+
+            var saveGame = new Game { CurrentTurn = currentTurn};
+            db.Games.Update(saveGame);
+            db.SaveChanges();
+
+            var getGame = db.Games
+                .Where(x => x.Id ==  saveGame.Id)
+                .First();
+
+            StageSaving.Game = getGame;
+        }
+
+        public static List<Game> GetGames()
         {
             using var db = new LudoContext();
 
             var game = db.Games
                 .Select(x => x)
-                .Where(x => x.Id == id)
-                .FirstOrDefault();
+                .OrderByDescending(x => x.LastSaved);
 
-            return game;
+            List<Game> games = new();
+            if (game != null)
+            {
+                games.AddRange(game);
+            }
+
+            return games;
         }
 
         public static void GetPlayersInGame(int gameId)
@@ -100,8 +128,8 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-            var savePoints = db.SavePoints
-                .Where(x => x.Game == gameId);
+            var savePoints = db.PawnSavePoints
+                .Where(x => x.GameId == gameId.Id);
 
             List<(TeamColor color, (int X, int Y) position)> savepointList = new();
 
@@ -121,12 +149,71 @@ namespace LudoEngine.DbModel
                 .Where(x => x.PlayerId == playerId)
                 .Select(x => x.GameId).ToList();
 
-            return ( from item in gameId
-                     from game in db.Games
-                     where game.Id == item
-                     select game
+            return (from item in gameId
+                    from game in db.Games
+                    where game.Id == item
+                    select game
                      ).ToList();
         }
+
+        private static void save()
+        {
+            TeamColor currentTeam = ActivePlayer.CurrentTeam();
+            StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
+
+            List<Pawn> pawns = StageSaving.Pawns;
+            Game game = StageSaving.Game;
+            using var db = new LudoContext();
+
+            foreach (var item in pawns)
+            {
+                var querry = db.PawnSavePoints
+                    .Where(x => x.PawnId == item.Id && x.Color == item.Color)
+                    .FirstOrDefault();
+                if (querry != null)
+                {
+                    querry.XPosition = item.CurrentSquare().BoardX;
+                    querry.YPosition = item.CurrentSquare().BoardY;
+                }
+                else
+                {
+                    var pawnPosition = new PawnSavePoint { PawnId = item.Id, Color = item.Color, XPosition = item.CurrentSquare().BoardX, YPosition = item.CurrentSquare().BoardY, GameId = game.Id };
+                    db.Add(pawnPosition);
+                }
+            db.SaveChanges();
+            }
+
+            var result = db.Games
+                .Where(x => x.Id == game.Id)
+                .SingleOrDefault();
+            if (result != null)
+            {
+                result.CurrentTurn = ActivePlayer.CachedNextTeam();
+                result.LastSaved = DateTime.Now;
+                db.Games.Attach(result);
+                db.Entry(result).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public static void Save()
+        {
+            if (!SaveThread.IsAlive)
+            {
+                SaveThread = new Thread(new ThreadStart(save));
+                SaveThread.Start();
+            }
+        }
+    }
+
+    public static class StageSaving {
+        public static List<Pawn> Pawns { get; set;}
+
+        public static Game Game { get; set; }
+
+        public static List<Player> Players { get; set; }
+
+        public static List<(TeamColor color, (int X, int Y) position)> TeamPosition { get; set; }
     }
 
 }

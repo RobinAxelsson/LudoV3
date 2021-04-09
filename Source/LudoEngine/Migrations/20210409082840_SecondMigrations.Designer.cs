@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LudoEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    [Migration("20210406081004_ChangeGameIDInPawns")]
-    partial class ChangeGameIDInPawns
+    [Migration("20210409082840_SecondMigrations")]
+    partial class SecondMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,14 +28,17 @@ namespace LudoEngine.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CurrentTurn")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FirstPlace")
+                    b.Property<int>("CurrentTurn")
                         .HasColumnType("int");
 
-                    b.Property<int>("FourthPlace")
+                    b.Property<int?>("FirstPlace")
                         .HasColumnType("int");
+
+                    b.Property<int?>("FourthPlace")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastSaved")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PlayerGameGameId")
                         .HasColumnType("int");
@@ -43,10 +46,10 @@ namespace LudoEngine.Migrations
                     b.Property<int?>("PlayerGamePlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SecondPlace")
+                    b.Property<int?>("SecondPlace")
                         .HasColumnType("int");
 
-                    b.Property<int>("ThirdPlace")
+                    b.Property<int?>("ThirdPlace")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -56,7 +59,7 @@ namespace LudoEngine.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("LudoEngine.Models.Pawn", b =>
+            modelBuilder.Entity("LudoEngine.Models.PawnSavePoint", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,7 +69,10 @@ namespace LudoEngine.Migrations
                     b.Property<int>("Color")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GameId")
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PawnId")
                         .HasColumnType("int");
 
                     b.Property<int>("XPosition")
@@ -77,9 +83,7 @@ namespace LudoEngine.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
-                    b.ToTable("Pawns");
+                    b.ToTable("PawnSavePoints");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Player", b =>
@@ -123,15 +127,6 @@ namespace LudoEngine.Migrations
                     b.HasOne("LudoEngine.Models.PlayerGame", null)
                         .WithMany("Game")
                         .HasForeignKey("PlayerGameGameId", "PlayerGamePlayerId");
-                });
-
-            modelBuilder.Entity("LudoEngine.Models.Pawn", b =>
-                {
-                    b.HasOne("LudoEngine.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId");
-
-                    b.Navigation("Game");
                 });
 
             modelBuilder.Entity("LudoEngine.Models.Player", b =>

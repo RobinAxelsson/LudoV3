@@ -13,6 +13,8 @@ namespace LudoEngine.GameLogic
         public IGameSquare TakeOutSquare { get; set; }
         public IGameSquare FarTakeOutSquare { get; set; }
         public List<Pawn> StephanPawns { get; set; }
+
+        private static List<TeamColor> AIColors = new List<TeamColor>();
         public Stephan()
         {
             if (StephanColor == null)
@@ -24,7 +26,28 @@ namespace LudoEngine.GameLogic
         {
             
         }
-
+        public static void SthepansPlaying(List<int> aiColorsChoises)
+        {
+            foreach (var aiColor in aiColorsChoises)
+            {
+                if (TeamColor.Blue == (TeamColor)aiColor)
+                {
+                    AIColors.Add(TeamColor.Blue);
+                }
+                else if (TeamColor.Red == (TeamColor)aiColor)
+                {
+                    AIColors.Add(TeamColor.Red);
+                }
+                else if (TeamColor.Green == (TeamColor)aiColor)
+                {
+                    AIColors.Add(TeamColor.Green);
+                }
+                else
+                {
+                    AIColors.Add(TeamColor.Yellow);
+                }
+            }
+        }
         public void Play()
         {
             int rolled = ActivePlayer.RollDice();
