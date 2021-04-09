@@ -1,8 +1,10 @@
 ﻿using LudoEngine.BoardUnits.Main;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace LudoEngine.GameLogic
 {
@@ -20,6 +22,11 @@ namespace LudoEngine.GameLogic
             else
                 return activeSquares.SelectMany(x => x.Pawns).ToList(); 
         }
+        public static void SaveFirstTime(TeamColor currentTurn) 
+        {
+            DatabaseManagement.SaveAndGetGame(currentTurn);
+        }
+
         public static void LeaveHome(int dieRoll)
         {
             if (dieRoll == 1)
@@ -92,27 +99,6 @@ namespace LudoEngine.GameLogic
                 return false;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         /*
