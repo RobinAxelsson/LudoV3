@@ -7,6 +7,7 @@ using LudoConsole.UI;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Dice;
@@ -47,6 +48,8 @@ namespace LudoConsole.Main
                     Thread.Sleep(200);
                 }
             }));
+            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
+            var drawGameBoard = Menu.SelectedOptions(selected);
 
             writerThread.Start();
             game.Start();

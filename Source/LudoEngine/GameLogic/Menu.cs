@@ -1,8 +1,12 @@
-﻿using System;
+﻿using LudoEngine.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LudoEngine.DbModel;
+using LudoEngine.Models;
+using System.Globalization;
 
 namespace LudoEngine.GameLogic
 {
@@ -63,14 +67,74 @@ namespace LudoEngine.GameLogic
             }
         }
 
-        public static void SelectedOptions(int selected)
+        public static int SelectedOptions(int selected)
         {
             if (selected == 0)
             {
+                Console.WriteLine("Write a number");
+                Console.Write("How many players are you: ");
+                int players = Convert.ToInt32(Console.ReadLine());
+                string[] selectebleColors = new string[] { "Blue", "Red", "Green", "Yellow" };
+                List<int> aiColors = new();
+                for (int i = 0; i < players; i++)
+                {
+                    int removeIdex = ShowMenu("Select player color: \n", selectebleColors);
+                    aiColors.Add(removeIdex);
+                    selectebleColors = selectebleColors.Where((source, index) => index != removeIdex).ToArray();
+                }
+
+                int numberOfAis = Convert.ToInt32(players) - 4;
+                if (numberOfAis != 0)
+                {
+                    //hur många stephans??
+                }
+                Console.Clear();
+                
+
+                return 0;
+            }
+            else if (selected == 1)
+            {
+                //Gets the Saved games
+                List<Game> games = DatabaseManagement.GetGames();
+                List<string> savedGames = new ();
+                //Lists the games if there are any saved games
+                if (games.Count > 0)
+                {
+                    foreach (var item in games)
+                    {
+                        savedGames.Add(item.LastSaved.ToString("yyy/MM/dd HH:mm"));
+                    }
+                }
+                else
+                {
+                    savedGames.Add("You have no saved games.");
+                }
+                
+                //Sets the stageSaving class so we can access the game later
+                int selectedGame = ShowMenu("Select save: \n", savedGames.ToArray());
+                Console.Clear();
+                StageSaving.Game = games.ToArray()[selectedGame];
+
+                //Gets the pawn positions for the selected game and saves them to the stageSaving class
+                StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
                 var random = new Random();
                 int diceNumber = random.Next(1, 6);
 
-                ShowMenu("You rolled " + diceNumber + "\n" + "Select Witch pawn to move", new string[] {"pawn1", "pawn2", "pawn3", "pawn4" });
+                return 1;
+            }
+            else if (selected == 2)
+            {
+                Console.Clear();
+                Console.WriteLine("Here are all the controlls for the game.\n");
+                Console.WriteLine("Use arrow keys to change beween the pawns");
+                Console.WriteLine("Enter is for selecting what pawn to play");
+                Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time");
+                return 2;
+            }
+            else
+            {
+                return 3;
             }
         }
     }
