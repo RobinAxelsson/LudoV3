@@ -1,11 +1,12 @@
 ﻿using LudoEngine.Enum;
+using LudoEngine.GameLogic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace LudoConsole.UI.Controls
 {
-    public class InfoDisplay
+    public class InfoDisplay : IInfoDisplay
     {
         public InfoDisplay(int x, int y)
         {

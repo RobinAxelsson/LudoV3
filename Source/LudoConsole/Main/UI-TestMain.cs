@@ -5,12 +5,10 @@ using System.Threading;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.Creation;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
-using LudoEngine.GameLogic.Dice;
-using LudoEngine.GameLogic.GamePlayers;
-using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoConsole.Main
 {
@@ -38,13 +36,15 @@ namespace LudoConsole.Main
             var drawGameBoard = Menu.SelectedOptions(selected);
             if (drawGameBoard == 0)
             {
-                var game = NewGame2AI2Human();
+                var game = game2Human2AI();
+                DatabaseManagement.SaveInit(game);
                 writerThread.Start();
                 game.Start();
             }
             else if (drawGameBoard == 1)
             {
                 var game = LoadedSetupHumans();
+                DatabaseManagement.SaveInit(game);
                 writerThread.Start();
                 game.Start();
             }
@@ -52,27 +52,25 @@ namespace LudoConsole.Main
         public static GamePlay LoadedSetupHumans()
         {
             var colors = GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
-            var display = new InfoDisplay(0, 9);
-            var keyboardControl = new KeyboardControl(display.Update);
-            var dice = new Dice(1, 6);
-            var gamePlayers = new List<IGamePlayer>();
-            foreach (var c in colors)
-            {
-                gamePlayers.Add(new HumanPlayer(c, display.UpdateDiceRoll, keyboardControl));
-            }
-            return new GamePlay(gamePlayers, dice);
+
+            var builder = new GamePlayBuilder(ConsoleBuild.display, ConsoleBuild.KeyboardControl);
+            builder.AddStandardDice();
+            colors.ForEach(x => builder.AddHuman(x));
+            return builder.Play();
         }
-        public static GamePlay NewGame2AI2Human()
+        public static GamePlay game2Human2AI()
         {
-            GameSetup.NewGame(Board.BoardSquares, 4);
-            var display = new InfoDisplay(0, 9);
-            var keyboardControl = new KeyboardControl(display.Update);
-            var dice = new Dice(6, 6);
-            var redPlayer = new HumanPlayer(TeamColor.Red, display.UpdateDiceRoll, keyboardControl);
-            var bluePlayer = new HumanPlayer(TeamColor.Blue, display.UpdateDiceRoll, keyboardControl);
-            var greenPlayer = new Stephan(TeamColor.Green, display.UpdateAIDiceRoll);
-            var yellowPlayer = new Stephan(TeamColor.Yellow, display.UpdateAIDiceRoll);
-            return new GamePlay(new List<IGamePlayer> { redPlayer, bluePlayer, greenPlayer, yellowPlayer }, dice);
+            GameSetup.NewGame(Board.BoardSquares);
+
+            var gamePlay = new GamePlayBuilder(ConsoleBuild.display, ConsoleBuild.KeyboardControl)
+                .AddStandardDice()
+                .AddAI(TeamColor.Green)
+                .AddAI(TeamColor.Yellow)
+                .AddHuman(TeamColor.Red)
+                .AddHuman(TeamColor.Blue)
+                .Play();
+
+            return gamePlay;
         }
     }
 }
