@@ -168,7 +168,7 @@ namespace LudoEngine.DbModel
             foreach (var item in pawns)
             {
                 var querry = db.PawnSavePoints
-                    .Where(x => x.PawnId == item.Id && x.Color == item.Color)
+                    .Where(x => x.GameId == game.Id && x.PawnId == item.Id && x.Color == item.Color)
                     .FirstOrDefault();
                 if (querry != null)
                 {

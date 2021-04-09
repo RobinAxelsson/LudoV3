@@ -55,7 +55,7 @@ namespace LudoEngine.BoardUnits.Main
             var nextSquare = squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y) ?? throw new NullReferenceException();
             return nextSquare;
         }
-        public static List<Pawn> GetTeamPawns(TeamColor color) => BoardSquares.SelectMany(x => x.Pawns).Where(x => x.Color == color).ToList();
+        //public static List<Pawn> GetTeamPawns(TeamColor color) => BoardSquares.SelectMany(x => x.Pawns).Where(x => x.Color == color).ToList();
 
     }
 }

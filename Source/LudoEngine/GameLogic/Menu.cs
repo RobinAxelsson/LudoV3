@@ -86,7 +86,7 @@ namespace LudoEngine.GameLogic
                 int numberOfAis = Convert.ToInt32(players) - 4;
                 if (numberOfAis != 0)
                 {
-                    Stephan.SthepansPlaying(aiColors);
+                    //hur många stephans??
                 }
                 Console.Clear();
                 

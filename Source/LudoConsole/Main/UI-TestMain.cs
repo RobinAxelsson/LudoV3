@@ -54,44 +54,48 @@ namespace LudoConsole.Main
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
 
-            writerThread.Start();
-            var diceLine = new LineData(0, 9);
             
-
-            while (true)
+            if (drawGameBoard == 0)
             {
-                diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
-                Thread.Sleep(500);
-                int dieRoll = ActivePlayer.RollDice();
-                diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
-                Console.ReadKey(true);
-                var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
-                bool movePawn = false;
-                int selection = 0;
-                var AIPlayer = AIColors.Contains(ActivePlayer.CurrentTeam());
-                var key = new ConsoleKeyInfo().Key;
-                
-                if (!AIPlayer)
+                writerThread.Start();
+                var diceLine = new LineData(0, 9);
+                DatabaseManagement.SaveAndGetGame(ActivePlayer.CurrentTeam());
+                while (true)
                 {
-                    while (true)
+                    diceLine.Update($"{ActivePlayer.CurrentTeam()} rolling dice...");
+                    Thread.Sleep(500);
+                    int dieRoll = ActivePlayer.RollDice();
+                    diceLine.Update($"{ActivePlayer.CurrentTeam()} got {dieRoll}");
+                    Console.ReadKey(true);
+                    var pawnsToMove = ActivePlayer.SelectablePawns(dieRoll);
+                    bool movePawn = false;
+                    int selection = 0;
+                    var AIPlayer = AIColors.Contains(ActivePlayer.CurrentTeam());
+                    var key = new ConsoleKeyInfo().Key;
+
+                    if (!AIPlayer)
                     {
-                        if(pawnsToMove.Count == 0)
+                        while (true)
                         {
-                            ActivePlayer.NextTeam();
-                            break;
-                        }
-                        if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
-                        {
-                            diceLine.Update("'x' for two");
-                            if (key == ConsoleKey.X)
+                            if (pawnsToMove.Count == 0)
                             {
-                                ActivePlayer.TakeOutTwo();
+                                DatabaseManagement.Save();
                                 ActivePlayer.NextTeam();
                                 break;
                             }
-                        }
-                        ActivePlayer.SelectPawn(pawnsToMove[selection]);
-                        key = Console.ReadKey(true).Key;
+                            if (dieRoll == 6 && Board.PawnsInBase(ActivePlayer.CurrentTeam()).Count > 1)
+                            {
+                                diceLine.Update("'x' for two");
+                                if (key == ConsoleKey.X)
+                                {
+                                    ActivePlayer.TakeOutTwo();
+                                    DatabaseManagement.Save();
+                                    ActivePlayer.NextTeam();
+                                    break;
+                                }
+                            }
+                            ActivePlayer.SelectPawn(pawnsToMove[selection]);
+                            key = Console.ReadKey(true).Key;
 
                             if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow)
                                 selection++;
@@ -103,59 +107,71 @@ namespace LudoConsole.Main
                                 selection > pawnsToMove.Count - 1 ? 0 :
                                 selection < 0 ? pawnsToMove.Count - 1 : selection;
 
-                        if (key == ConsoleKey.Enter)
-                        {
-                            ActivePlayer.MoveSelectedPawn(dieRoll);
-                            if (dieRoll != 6) ActivePlayer.NextTeam();
-                            break;
+                            if (key == ConsoleKey.Enter)
+                            {
+                                ActivePlayer.MoveSelectedPawn(dieRoll);
+                                if (dieRoll != 6)
+                                {
+                                    DatabaseManagement.Save();
+                                    ActivePlayer.NextTeam();
+                                }
+                                break;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    
-                    while (true)
+                    else
                     {
-                        var CurrentStephan = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single();
-                        var StephanResult = CurrentStephan.Play(dieRoll);
-                        ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
-                        if (dieRoll == 6)
+
+                        while (true)
                         {
-                            if (StephanResult.TakeOutTwo)
+                            var CurrentStephan = stephans.Where(s => s.StephanColor == ActivePlayer.CurrentTeam()).Single();
+                            var StephanResult = CurrentStephan.Play(dieRoll);
+                            ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
+                            if (dieRoll == 6)
                             {
-                                var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
-                                for (int i = 0; i < 2; i++)
+                                if (StephanResult.TakeOutTwo)
                                 {
-                                    CurrentStephan.StephanPawns.Add(basePawns[0]);
-                                    basePawns[0].Move(1);
+                                    var basePawns = Board.BaseSquare(ActivePlayer.CurrentTeam()).Pawns;
+                                    for (int i = 0; i < 2; i++)
+                                    {
+                                        CurrentStephan.StephanPawns.Add(basePawns[0]);
+                                        basePawns[0].Move(1);
+                                    }
+                                    DatabaseManagement.Save();
+                                    ActivePlayer.NextTeam();
+                                    break;
                                 }
-                                ActivePlayer.NextTeam();
-                                break;
+                                else
+                                {
+                                    if (ActivePlayer.SelectedPawn != null)
+                                    {
+                                        ActivePlayer.MoveSelectedPawn(dieRoll);
+                                        break;
+                                    }
+                                }
                             }
                             else
                             {
                                 if (ActivePlayer.SelectedPawn != null)
                                 {
                                     ActivePlayer.MoveSelectedPawn(dieRoll);
-                                    break;
                                 }
+                                DatabaseManagement.Save();
+                                ActivePlayer.NextTeam();
+                                break;
                             }
                         }
-                        else
-                        {
-                            if (ActivePlayer.SelectedPawn != null)
-                            {
-                                ActivePlayer.MoveSelectedPawn(dieRoll);
-                            }
-                            ActivePlayer.NextTeam();
-                            break;
-                        }
+
                     }
-                 
                 }
             }
+            else if (drawGameBoard == 1)
+            {
+                GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
+                writerThread.Start();
+            }
+            
         }
 
-        }
     }
 }
