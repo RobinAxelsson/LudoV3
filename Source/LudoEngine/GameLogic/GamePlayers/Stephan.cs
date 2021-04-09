@@ -17,7 +17,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         private Action<TeamColor, int> DisplayDice { get; set; }
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, Action<TeamColor, int> displayDice, ILog log = null, bool delay = true)
+        public Stephan(TeamColor color, Action<TeamColor, int> displayDice, ILog log = null)
         {
             Color = color;
             DisplayDice = displayDice;
@@ -33,10 +33,13 @@ namespace LudoEngine.GameLogic.GamePlayers
 
             Pawns = Board.GetTeamPawns(color);
         }
-        public void Play(Dice dice)
+        public void Play(IDice dice)
         {
             int diceRoll = dice.Roll();
+            
+            if(DisplayDice != null)
             DisplayDice(Color, diceRoll);
+
 
             var selectablePawns = GameRules.SelectablePawns(Color, diceRoll);
             if (selectablePawns.Count == 0) return;
@@ -65,6 +68,7 @@ namespace LudoEngine.GameLogic.GamePlayers
 
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculating play...";
             var CalcInfo = CalculatePlay(rolled);
+
             if (CalcInfo.pawnToMove != null && !CalcInfo.pass && !CalcInfo.takeout)
             {
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Will move pawn";
@@ -89,8 +93,8 @@ namespace LudoEngine.GameLogic.GamePlayers
 
                     if (CalcInfo.takeoutCount == 2)
                     {
-                        var pawnsInBase = Board.PawnsInBase(Color);
-                        if (pawnsInBase.Count == 0)
+                        var pawnsInStartSquare = Board.StartSquare(Color).Pawns;
+                        if (pawnsInStartSquare.Count == 0)
                         {
                             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] No pawn found";
                             WriteLogging(LoggerMessage);
@@ -208,21 +212,20 @@ namespace LudoEngine.GameLogic.GamePlayers
                 if (dice == 6)
                 {
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Dice resulted in a 6\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking how many friendly pawns is on board. Result: {Pawns.Count.ToString()}";
-                    if (Pawns.Count <= 2)
+                    if (Board.OutOfBasePawns(Color).Count < 3)
                     {
-                        LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is less than two. Will attempt to pull out two pawns";
-                        return (null, false, true, 2); //Tar ut 2
+                        LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is less than three. Will attempt to pull out two pawns";
+                        return (null, false, true, 2); //Take out two
                     }
-                    else if (Pawns.Count == 3)
+                    else if (Board.OutOfBasePawns(Color).Count == 3)
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is equal to three. Will attempt to pull out one pawn";
-                        return (null, false, true, 1); //Tar ut 1
-                        //spela igen
+                        return (null, false, true, 1); //take out one, play again
                     }
                     else
                     {
                         LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is equal to four. Will now calculate most appropriate piece to move.";
-                        return (CalculateWhatPieceToMove(Pawns, dice), false, false, 0); //Returnar en pawn
+                        return (CalculateWhatPieceToMove(Pawns, dice), false, false, 0);
                     }
                 }
                 else if (dice == 1)

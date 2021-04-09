@@ -9,6 +9,7 @@ using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
+using LudoEngine.GameLogic.Dice;
 using LudoEngine.GameLogic.GamePlayers;
 using LudoEngine.GameLogic.Interfaces;
 

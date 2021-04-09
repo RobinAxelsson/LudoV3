@@ -6,8 +6,8 @@ namespace LudoConsole.Main
 {
     public class GamePlay
     {
-        private Dice dice { get; set; }
-        public GamePlay(List<IGamePlayer> players, Dice dice, IGamePlayer first = null)
+        private IDice dice { get; set; }
+        public GamePlay(List<IGamePlayer> players, IDice dice, IGamePlayer first = null)
         {
             this.dice = dice;
             Players = players;

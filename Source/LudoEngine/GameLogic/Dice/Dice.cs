@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
 
-namespace LudoConsole.Main
+namespace LudoEngine.GameLogic.Dice
 {
-    public class Dice
+    public class Dice : IDice
     {
         private int Highest { get; set; }
         private int Lowest { get; set; }

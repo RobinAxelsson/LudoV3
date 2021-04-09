@@ -22,7 +22,7 @@ namespace LudoConsole.Main
         private Action<TeamColor, int> DisplayDice { get; set; }
         public List<Pawn> Pawns { get; set; }
         public TeamColor Color { get; set; }
-        public void Play(Dice dice)
+        public void Play(IDice dice)
         {
             int result = dice.Roll();
             bool tookOutTwo = false;

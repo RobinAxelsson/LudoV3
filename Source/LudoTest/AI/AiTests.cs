@@ -3,6 +3,11 @@ using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
+using LudoEngine.GameLogic.GamePlayers;
+using LudoConsole.Main;
+using LudoEngine.GameLogic.Dice;
+using System;
+using System.Collections.Generic;
 
 namespace LudoTest.AI
 {
@@ -13,29 +18,40 @@ namespace LudoTest.AI
         {
             Board.Init(@"AI/ai-test-map1.txt");
 
-            var aiPawn1 = new Pawn(TeamColor.Red);
-            var aiPawn2 = new Pawn(TeamColor.Red);
-            var enemyPawn = new Pawn(TeamColor.Blue);
-            var squareAi1 = Board.BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 0);
-            var squareAi2 = Board.BoardSquares.Find(x => x.BoardX == 3 && x.BoardY == 0);
-            var squareEnemy = Board.BoardSquares.Find(x => x.BoardX == 2 && x.BoardY == 0);
-            squareAi1.Pawns.Add(aiPawn1);
-            squareAi2.Pawns.Add(aiPawn2);
+            var stephan = new Stephan(TeamColor.Blue, null);
+            var dice = new RiggedDice(new[] { 2 });
+
+            var pawn1 = new Pawn(TeamColor.Blue);
+            var pawn2 = new Pawn(TeamColor.Blue);
+            stephan.Pawns = new List<Pawn> {pawn1, pawn2 };
+            var enemyPawn = new Pawn(TeamColor.Red);
+            var squarePawn1 = Board.BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 1);
+            var squarePawn2 = Board.BoardSquares.Find(x => x.BoardX == 1 && x.BoardY == 1);
+            var squareEnemy = Board.BoardSquares.Find(x => x.BoardX == 2 && x.BoardY == 1);
+            var enemyBase = Board.BaseSquare(TeamColor.Green);
+
+            squarePawn1.Pawns.Add(pawn1);
+            squarePawn2.Pawns.Add(pawn2);
             squareEnemy.Pawns.Add(enemyPawn);
+
+            stephan.Play(dice);
+
+            Assert.True(squarePawn1.Pawns.Count == 0);
+
         }
         [Fact]
         public void StephanRollSix_AssertTakeOutTwo()
         {
-            Board.Init(@"AI/ai-test-map2.txt");
+            Board.Init(@"AI/ai-test-map1.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue });
-            var stephan = new Stephan(TeamColor.Blue);
-            stephan.TakeOutSquare = Board.StartSquare(TeamColor.Blue);
-            var StephanResult = stephan.Play(6);
+            var dice = new RiggedDice(new[] { 6, 1});
 
-            ActivePlayer.SelectedPawn = StephanResult.PlayPawn;
-            var pawns = squares[1].Pawns;
-            Assert.True(pawns.Count == 1);
+            var stephan = new Stephan(TeamColor.Blue, null);
+            stephan.Play(dice);
+            var startSquare = Board.StartSquare(TeamColor.Blue);
+            var pawns = startSquare.Pawns;
+            Assert.True(pawns.Count == 2);
         }
     }
 }

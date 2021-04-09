@@ -67,7 +67,8 @@ namespace LudoEngine.GameLogic
         {
             if (selected == 0)
             {
-                int diceNumber = ActivePlayer.RollDice();
+                var random = new Random();
+                int diceNumber = random.Next(1, 6);
 
                 ShowMenu("You rolled " + diceNumber + "\n" + "Select Witch pawn to move", new string[] {"pawn1", "pawn2", "pawn3", "pawn4" });
             }

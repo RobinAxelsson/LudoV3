@@ -10,6 +10,6 @@ namespace LudoEngine.GameLogic.Interfaces
     {
         public TeamColor Color { get; set; }
         public List<Pawn> Pawns { get; set; }
-        public void Play(Dice dice);
+        public void Play(IDice dice);
     }
 }
