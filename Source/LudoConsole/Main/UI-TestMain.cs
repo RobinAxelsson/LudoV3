@@ -1,9 +1,7 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
-using LudoConsole.UI;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
@@ -28,7 +26,6 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            GameSetup.NewGame(Board.BoardSquares, players: 4);
             var writerThread = new Thread(new ThreadStart(() =>
             {
                 while (true)
@@ -37,22 +34,35 @@ namespace LudoConsole.Main
                     Thread.Sleep(200);
                 }
             }));
-            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
+            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
             if (drawGameBoard == 0)
             {
-                //GameSetup.NewGame(Board.BoardSquares, 4);
-                var game = TempGameSetup();
-                game.Start();
+                var game = NewGame2AI2Human();
                 writerThread.Start();
+                game.Start();
             }
             else if (drawGameBoard == 1)
             {
-                GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
-                //game.Start();
+                var game = LoadedSetupHumans();
+                writerThread.Start();
+                game.Start();
             }
         }
-        public static GamePlay TempGameSetup()
+        public static GamePlay LoadedSetupHumans()
+        {
+            var colors = GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
+            var display = new InfoDisplay(0, 9);
+            var keyboardControl = new KeyboardControl(display.Update);
+            var dice = new Dice(1, 6);
+            var gamePlayers = new List<IGamePlayer>();
+            foreach (var c in colors)
+            {
+                gamePlayers.Add(new HumanPlayer(c, display.UpdateDiceRoll, keyboardControl));
+            }
+            return new GamePlay(gamePlayers, dice);
+        }
+        public static GamePlay NewGame2AI2Human()
         {
             GameSetup.NewGame(Board.BoardSquares, 4);
             var display = new InfoDisplay(0, 9);

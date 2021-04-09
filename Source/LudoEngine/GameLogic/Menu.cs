@@ -19,7 +19,7 @@ namespace LudoEngine.GameLogic
 
             HighlightMenuOption(info, options, selected);
 
-            ConsoleKey key = Console.ReadKey().Key;
+            ConsoleKey key = Console.ReadKey(true).Key;
 
             while (key != ConsoleKey.Enter)
             {
@@ -34,7 +34,7 @@ namespace LudoEngine.GameLogic
                     HighlightMenuOption(info, options, selected);
                 }
 
-                key = Console.ReadKey().Key;
+                key = Console.ReadKey(true).Key;
             }
 
             return selected;
@@ -71,25 +71,25 @@ namespace LudoEngine.GameLogic
         {
             if (selected == 0)
             {
-                Console.WriteLine("Write a number");
-                Console.Write("How many players are you: ");
-                int players = Convert.ToInt32(Console.ReadLine());
-                string[] selectebleColors = new string[] { "Blue", "Red", "Green", "Yellow" };
-                List<int> aiColors = new();
-                for (int i = 0; i < players; i++)
-                {
-                    int removeIdex = ShowMenu("Select player color: \n", selectebleColors);
-                    aiColors.Add(removeIdex);
-                    selectebleColors = selectebleColors.Where((source, index) => index != removeIdex).ToArray();
-                }
+                //Console.WriteLine("Write a number");
+                //Console.Write("How many players are you: ");
+                //int players = Convert.ToInt32(Console.ReadLine());
+                //string[] selectebleColors = new string[] { "Blue", "Red", "Green", "Yellow" };
+                //List<int> aiColors = new();
+                //for (int i = 0; i < players; i++)
+                //{
+                //    int removeIdex = ShowMenu("Select player color: \n", selectebleColors);
+                //    aiColors.Add(removeIdex);
+                //    selectebleColors = selectebleColors.Where((source, index) => index != removeIdex).ToArray();
+                //}
 
-                int numberOfAis = Convert.ToInt32(players) - 4;
-                if (numberOfAis != 0)
-                {
-                    //hur många stephans??
-                }
-                Console.Clear();
-                
+                //int numberOfAis = Convert.ToInt32(players) - 4;
+                //if (numberOfAis != 0)
+                //{
+                //    //hur många stephans??
+                //}
+                //Console.Clear();
+
 
                 return 0;
             }
@@ -118,8 +118,6 @@ namespace LudoEngine.GameLogic
 
                 //Gets the pawn positions for the selected game and saves them to the stageSaving class
                 StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
-                var random = new Random();
-                int diceNumber = random.Next(1, 6);
 
                 return 1;
             }

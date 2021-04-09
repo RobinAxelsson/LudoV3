@@ -50,7 +50,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             {
                 var basePawns = Board.PawnsInBase(Color);
                 basePawns[0].Move(1);
-                basePawns[1].Move(1);
+                basePawns[0].Move(1);
                 return;
             }
             if (result.TakeOutTwo == false && result.PlayPawn != null)
