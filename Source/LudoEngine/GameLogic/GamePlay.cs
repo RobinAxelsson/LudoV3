@@ -37,6 +37,12 @@ namespace LudoConsole.Main
             iCurrentTeam++;
             iCurrentTeam = iCurrentTeam >= Players.Count ? 0 : iCurrentTeam;
         }
+        public TeamColor CachedPlayer()
+        {
+            int i = iCurrentTeam + 1;
+            i = i >= Players.Count ? 0 : i;
+            return OrderOfTeams[i];
+        }
         public IGamePlayer CurrentPlayer() => Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
 
     }

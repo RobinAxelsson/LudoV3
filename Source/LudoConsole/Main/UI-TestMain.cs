@@ -29,17 +29,6 @@ namespace LudoConsole.Main
         private static void Main(string[] args)
         {
             GameSetup.NewGame(Board.BoardSquares, players: 4);
-
-            var display = new InfoDisplay(0, 9);
-            var keyboardControl = new KeyboardControl(display.Update);
-            var dice = new Dice(6, 6);
-            var redPlayer = new HumanPlayer(TeamColor.Red, display.UpdateDiceRoll, keyboardControl);
-            var bluePlayer = new HumanPlayer(TeamColor.Blue, display.UpdateDiceRoll, keyboardControl);
-            var greenPlayer = new Stephan(TeamColor.Green, display.UpdateAIDiceRoll);
-            var yellowPlayer = new Stephan(TeamColor.Yellow, display.UpdateAIDiceRoll);
-
-            var game = new GamePlay(new List<IGamePlayer> { redPlayer, bluePlayer, greenPlayer, yellowPlayer }, dice);
-
             var writerThread = new Thread(new ThreadStart(() =>
             {
                 while (true)
@@ -50,9 +39,30 @@ namespace LudoConsole.Main
             }));
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] {"New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
-
-            writerThread.Start();
-            game.Start();
+            if (drawGameBoard == 0)
+            {
+                //GameSetup.NewGame(Board.BoardSquares, 4);
+                var game = TempGameSetup();
+                game.Start();
+                writerThread.Start();
+            }
+            else if (drawGameBoard == 1)
+            {
+                GameSetup.Load(Board.BoardSquares, StageSaving.TeamPosition);
+                //game.Start();
+            }
+        }
+        public static GamePlay TempGameSetup()
+        {
+            GameSetup.NewGame(Board.BoardSquares, 4);
+            var display = new InfoDisplay(0, 9);
+            var keyboardControl = new KeyboardControl(display.Update);
+            var dice = new Dice(6, 6);
+            var redPlayer = new HumanPlayer(TeamColor.Red, display.UpdateDiceRoll, keyboardControl);
+            var bluePlayer = new HumanPlayer(TeamColor.Blue, display.UpdateDiceRoll, keyboardControl);
+            var greenPlayer = new Stephan(TeamColor.Green, display.UpdateAIDiceRoll);
+            var yellowPlayer = new Stephan(TeamColor.Yellow, display.UpdateAIDiceRoll);
+            return new GamePlay(new List<IGamePlayer> { redPlayer, bluePlayer, greenPlayer, yellowPlayer }, dice);
         }
     }
 }

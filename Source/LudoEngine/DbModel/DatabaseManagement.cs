@@ -10,19 +10,28 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using LudoEngine.GameLogic;
 using LudoEngine.BoardUnits.Main;
 using System.Threading;
+using LudoConsole.Main;
 
 namespace LudoEngine.DbModel
 {
     public static class DatabaseManagement
     {
+        public static string ConnectionString { get; private set; }
         public static Thread SaveThread;
-        static DatabaseManagement()
+        private static GamePlay _gamePlay { get; set; }
+        public static void SaveInit(GamePlay gamePlay)
         {
-            SaveThread = new Thread(new ThreadStart(save));
+            SaveThread = new Thread(new ThreadStart( () => save(gamePlay)));
             SaveThread.IsBackground = true;
         }
-
-        public static string ConnectionString { get; private set; }
+        public static void Save()
+        {
+            if (!SaveThread.IsAlive)
+            {
+                SaveThread = new Thread(new ThreadStart(() => save(_gamePlay)));
+                SaveThread.Start();
+            }
+        }
 
         public static void ReadConnectionString(string filepath)
         {
@@ -156,9 +165,9 @@ namespace LudoEngine.DbModel
                      ).ToList();
         }
 
-        private static void save()
+        private static void save(GamePlay gamePlay)
         {
-            TeamColor currentTeam = ActivePlayer.CurrentTeam();
+            TeamColor currentTeam = gamePlay.CurrentPlayer().Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
             List<Pawn> pawns = StageSaving.Pawns;
@@ -188,7 +197,7 @@ namespace LudoEngine.DbModel
                 .SingleOrDefault();
             if (result != null)
             {
-                result.CurrentTurn = ActivePlayer.CachedNextTeam();
+                result.CurrentTurn = gamePlay.CachedPlayer();
                 result.LastSaved = DateTime.Now;
                 db.Games.Attach(result);
                 db.Entry(result).State = EntityState.Modified;
@@ -196,14 +205,7 @@ namespace LudoEngine.DbModel
             }
         }
 
-        public static void Save()
-        {
-            if (!SaveThread.IsAlive)
-            {
-                SaveThread = new Thread(new ThreadStart(save));
-                SaveThread.Start();
-            }
-        }
+
     }
 
     public static class StageSaving {
