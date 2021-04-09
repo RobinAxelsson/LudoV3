@@ -1,11 +1,13 @@
-﻿using System;
+﻿using LudoEngine.Enum;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 
-namespace LudoConsole.UI
+namespace LudoConsole.UI.Controls
 {
-    public class LineData
+    public class InfoDisplay
     {
-        public LineData(int x, int y)
+        public InfoDisplay(int x, int y)
         {
             X = x;
             Y = y;
@@ -13,6 +15,23 @@ namespace LudoConsole.UI
         private List<IDrawable> drawables { get; set; } = new List<IDrawable>();
         private int X { get; set; }
         private int Y { get; set; }
+        public void UpdateDiceRoll(TeamColor color, int diceRoll)
+        {
+            Update($"{color}, throw dice");
+            Console.ReadKey(true);
+            Update($"{color} throws...");
+            Thread.Sleep(1000);
+            Update($"{color} got a {diceRoll}");
+            Thread.Sleep(500);
+        }
+        public void UpdateAIDiceRoll(TeamColor color, int diceRoll)
+        {
+            Thread.Sleep(500);
+            Update($"{color} throws...");
+            Thread.Sleep(1000);
+            Update($"{color} got a {diceRoll}");
+            Thread.Sleep(1000);
+        }
 
         public void Update(string newString)
         {

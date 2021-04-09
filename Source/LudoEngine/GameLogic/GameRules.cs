@@ -20,6 +20,7 @@ namespace LudoEngine.GameLogic
             else
                 return activeSquares.SelectMany(x => x.Pawns).ToList(); 
         }
+        public static bool CanTakeOutTwo(TeamColor color, int diceRoll) => Board.PawnsInBase(color).Count > 1 && diceRoll == 6;
         public static void LeaveHome(int dieRoll)
         {
             if (dieRoll == 1)

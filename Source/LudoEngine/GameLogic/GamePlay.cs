@@ -1,0 +1,43 @@
+﻿using System.Collections.Generic;
+using LudoEngine.Enum;
+using LudoEngine.GameLogic.Interfaces;
+
+namespace LudoConsole.Main
+{
+    public class GamePlay
+    {
+        private Dice dice { get; set; }
+        public GamePlay(List<IGamePlayer> players, Dice dice, IGamePlayer first = null)
+        {
+            this.dice = dice;
+            Players = players;
+            if (first != null) SetFirstTeam(first.Color);
+        }
+        public void Start()
+        {
+            while (true)
+            {
+                CurrentPlayer().Play(dice);
+                NextPlayer();
+            }
+        }
+  
+        private List<TeamColor> OrderOfTeams = new List<TeamColor>
+        {
+            TeamColor.Blue,
+            TeamColor.Red,
+            TeamColor.Green,
+            TeamColor.Yellow
+        };
+        public List<IGamePlayer> Players { get; set; }
+        private int iCurrentTeam { get; set; }
+        public void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
+        public void NextPlayer()
+        {
+            iCurrentTeam++;
+            iCurrentTeam = iCurrentTeam >= Players.Count ? 0 : iCurrentTeam;
+        }
+        public IGamePlayer CurrentPlayer() => Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
+
+    }
+}

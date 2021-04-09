@@ -4,7 +4,7 @@ using System.IO;
 using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
-using LudoEngine.Models;
+using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
@@ -24,7 +24,7 @@ namespace LudoEngine.GameLogic
             }
             Logger = new StreamWriter($@"{Environment.CurrentDirectory}\StephanLogs\stephan_{color.ToString()}{number.ToString()}.log");
         }
-        public void WriteLogging(string input)
+        public void Log(string input)
         {
             Logger.Write(input);
             Logger.WriteLine("");

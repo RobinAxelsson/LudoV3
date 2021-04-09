@@ -33,9 +33,9 @@ namespace LudoEngine.BoardUnits.Main
         public static List<IGameSquare> TeamPath(TeamColor color)
         {
             var teamSquares = new List<IGameSquare>();
-            var start = StartSquare(color);
-            teamSquares.Add(start);
-            IGameSquare temp = start;
+            var baseSquare = BaseSquare(color);
+            teamSquares.Add(baseSquare);
+            IGameSquare temp = baseSquare;
             while (temp.GetType() != typeof(GoalSquare))
             {
                 temp = GetNext(BoardSquares, temp, color);
