@@ -16,24 +16,15 @@ namespace LudoConsole.UI.Controls
         private List<IDrawable> drawables { get; set; } = new List<IDrawable>();
         private int X { get; set; }
         private int Y { get; set; }
-        public void UpdateDiceRoll(TeamColor color, int diceRoll)
+        public void UpdateDiceRoll(TeamColor color, int diceRoll, Action throwStyle)
         {
             Update($"{color}, throw dice");
-            Console.ReadKey(true);
+            throwStyle();
             Update($"{color} throws...");
             Thread.Sleep(1000);
             Update($"{color} got a {diceRoll}");
             Thread.Sleep(500);
         }
-        public void UpdateAIDiceRoll(TeamColor color, int diceRoll)
-        {
-            Thread.Sleep(500);
-            Update($"{color} throws...");
-            Thread.Sleep(1000);
-            Update($"{color} got a {diceRoll}");
-            Thread.Sleep(1000);
-        }
-
         public void Update(string newString)
         {
             if (drawables.Count > newString.Length)

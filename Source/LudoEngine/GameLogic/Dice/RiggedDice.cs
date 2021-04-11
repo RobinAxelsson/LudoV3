@@ -18,7 +18,7 @@ namespace LudoEngine.GameLogic.Dice
         }
         public int Roll()
         {
-            if (Index + 1 >= ResultSeries.Length) Index = 0;
+            if (Index + 1 > ResultSeries.Length) Index = 0;
             var result = ResultSeries[Index];
             Index++;
             return result;

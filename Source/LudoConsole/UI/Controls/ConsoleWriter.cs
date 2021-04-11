@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LudoConsole.UI.Controls
 {
-    public static class ConsoleWriter
+    public class ConsoleWriter
     {
         private static List<IDrawable> ScreenMemory = new List<IDrawable>();
         public static void TryAppend(List<ISquareDrawable> squares)

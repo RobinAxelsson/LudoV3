@@ -11,7 +11,7 @@ namespace LudoConsole.Main
 {
     public class HumanPlayer : IGamePlayer
     {
-        public HumanPlayer(TeamColor color, Action<TeamColor, int> displayDice, IController control)
+        public HumanPlayer(TeamColor color, Action<TeamColor, int, Action> displayDice, IController control)
         {
             Color = color;
             DisplayDice = displayDice;
@@ -19,14 +19,14 @@ namespace LudoConsole.Main
             Control = control;
         }
         public IController Control { get; set; }
-        private Action<TeamColor, int> DisplayDice { get; set; }
+        private Action<TeamColor, int, Action> DisplayDice { get; set; }
         public List<Pawn> Pawns { get; set; }
         public TeamColor Color { get; set; }
         public void Play(IDice dice)
         {
             int result = dice.Roll();
             bool tookOutTwo = false;
-            DisplayDice(Color, result);
+            DisplayDice(Color, result, () => Console.ReadKey(true));
             var selectablePawns = GameRules.SelectablePawns(Color, result);
             if (selectablePawns.Count == 0) return;
 

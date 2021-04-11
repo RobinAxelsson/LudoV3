@@ -14,10 +14,10 @@ namespace LudoEngine.GameLogic.GamePlayers
     {
         public TeamColor Color { get; set; }
         public List<Pawn> Pawns { get; set; }
-        private Action<TeamColor, int> DisplayDice { get; set; }
+        private Action<TeamColor, int, Action> DisplayDice { get; set; }
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, Action<TeamColor, int> displayDice, ILog log = null)
+        public Stephan(TeamColor color, Action<TeamColor, int, Action> displayDice, ILog log = null)
         {
             Color = color;
             DisplayDice = displayDice;
@@ -38,7 +38,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             int diceRoll = dice.Roll();
             
             if(DisplayDice != null)
-            DisplayDice(Color, diceRoll);
+            DisplayDice(Color, diceRoll, () => Thread.Sleep(1000));
 
 
             var selectablePawns = GameRules.SelectablePawns(Color, diceRoll);

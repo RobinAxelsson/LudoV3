@@ -10,7 +10,6 @@ namespace LudoEngine.GameLogic.Interfaces
     public interface IInfoDisplay
     {
         void Update(string newString);
-        void UpdateAIDiceRoll(TeamColor color, int diceRoll);
-        void UpdateDiceRoll(TeamColor color, int diceRoll);
+        public void UpdateDiceRoll(TeamColor color, int diceRoll, Action throwStyle);
     }
 }

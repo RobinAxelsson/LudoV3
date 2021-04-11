@@ -13,12 +13,12 @@ namespace LudoEngine.Creation
     {
         public GamePlayBuilder(IInfoDisplay display, IController controller)
         {
-            display = display;
+            _display = display;
             Controller = controller;
         }
         private List<TeamColor> TeamColors { get; set; } = new();
-        private IInfoDisplay display { get; set; }
-        private List<IGamePlayer> gamePlayers { get; set; }
+        private IInfoDisplay _display { get; set; }
+        private List<IGamePlayer> gamePlayers { get; set; } = new();
         private IGamePlayer first { get; set; }
         private IController Controller { get; set; }
         private IDice dice { get; set; }
@@ -30,7 +30,7 @@ namespace LudoEngine.Creation
         public GamePlayBuilder AddHuman(TeamColor color)
         {
             AddColor(color);
-            gamePlayers.Add(new HumanPlayer(color, display.UpdateDiceRoll, Controller));
+            gamePlayers.Add(new HumanPlayer(color, _display.UpdateDiceRoll, Controller));
             return this;
         }
         public GamePlayBuilder AddAI(TeamColor color, bool log = false)
@@ -38,15 +38,15 @@ namespace LudoEngine.Creation
             AddColor(color);
 
             if (log)
-                gamePlayers.Add(new Stephan(color, display.UpdateDiceRoll, new StefanLog(color)));
+                gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StefanLog(color)));
             else
-                gamePlayers.Add(new Stephan(color, display.UpdateDiceRoll));
+                gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll));
             
             return this;
         }
-        public GamePlayBuilder AddStandardDice()
+        public GamePlayBuilder AddStandardDice(int low, int high)
         {
-            dice = new Dice(1, 6);
+            dice = new Dice(low, high);
             return this;
         }
         public GamePlayBuilder FirstColor(TeamColor color)
@@ -54,10 +54,10 @@ namespace LudoEngine.Creation
             first = gamePlayers.Find(x => x.Color == color);
             return this;
         }
-        public GamePlay Play()
-        {
-            if (dice == null) throw new Exception("You need a dice");
-            return new GamePlay(gamePlayers, dice, first);
-        }
+        //public GamePlay Play()
+        //{
+        //    if (dice == null) throw new Exception("You need a dice");
+        //    return new GamePlay(gamePlayers, dice, first);
+        //}
     }
 }

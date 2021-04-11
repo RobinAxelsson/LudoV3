@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public static partial class Board
+    public static class Board
     {
         public static List<IGameSquare> BoardSquares { get; set; }
         private const string _filePath = @"BoardUnits/Map/BoardMap.txt";
@@ -26,6 +26,7 @@ namespace LudoEngine.BoardUnits.Main
             BoardSquares.Find(x => x.GetType() == typeof(GoalSquare)).Pawns.FindAll(x => x.Color == color);
         public static List<Pawn> OutOfBasePawns(TeamColor color) => AllPlayingPawns().FindAll(x => x.Color == color);
         public static List<Pawn> AllPlayingPawns() => BoardSquares.FindAll(x => x.GetType() != typeof(BaseSquare) && x.GetType() != typeof(GoalSquare)).SelectMany(x => x.Pawns).ToList();
+        public static bool IsMoreThenOneTeam() => BoardSquares.SelectMany(x => x.Pawns).Select(x => x.Color).Distinct().ToList().Count > 1;
         public static IGameSquare StartSquare(TeamColor color)
             => BoardSquares.Find(x => x.GetType() == typeof(StartSquare) && x.Color == color);
         public static IGameSquare BaseSquare(TeamColor color)

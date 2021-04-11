@@ -35,14 +35,6 @@ namespace LudoConsole.UI.Controls
            color == TeamColor.Green ? ConsoleColor.Green :
            color == TeamColor.Red ? ConsoleColor.Red :
            color == TeamColor.Yellow ? ConsoleColor.Yellow : LightAccent;
-        public static List<ISquareDrawable> ConvertAllSquares(List<IGameSquare> squares)
-        {
-            var squareDraws = squares.Where(x => x.GetType() != typeof(BaseSquare)).Select(x => new SquareDrawable(x));
-            var x = squareDraws.Select(x => x.MaxCoord()).Max(x => x.X);
-            var y = squareDraws.Select(x => x.MaxCoord()).Max(x => x.Y);
-            var baseDraws = squares.Where(x => x.GetType() == typeof(BaseSquare)).Select(square => new BaseDrawable(square, (x, y))).Select(x => (ISquareDrawable)x);
-            return squareDraws.Concat(baseDraws).ToList();
-        }
 
     }
 }
