@@ -18,8 +18,8 @@ namespace LudoEngine.Models
         }
         public bool IsSelected { get; set; }
         public TeamColor Color { get; set; }
-        public IGameSquare CurrentSquare() => Board.BoardSquares.Find(x => x.Pawns.Contains(this, new PawnComparer()));
-        public bool Based() => Board.PawnsInBase(Color).Contains(this, new PawnComparer()); //Kolla om Pawn ligger i basen
+        public IGameSquare CurrentSquare() => Board.BoardSquares.Find(x => x.Pawns.Contains(this));
+        public bool Based() => Board.PawnsInBase(Color).Contains(this); //Kolla om Pawn ligger i basen
         public void Move(int dice)
         {
             var tempSquare = CurrentSquare();

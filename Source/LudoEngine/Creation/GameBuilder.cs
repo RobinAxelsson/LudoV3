@@ -8,8 +8,6 @@ using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoEngine.Creation
 {
@@ -19,8 +17,8 @@ namespace LudoEngine.Creation
         IGameBuilderSetControl,
         IGameBuilderSetInfoDisplay,
         IGameBuilderLoadOrNew,
+        IGameBuilderNewGame,
         IGameBuilderGamePlay,
-        IGameBuilderAddPlayer,
         IGameBuilderNewGamePlay,
         IGameBuilderStartingColor,
         IGameBuilderLoadPlayers,
@@ -77,7 +75,7 @@ namespace LudoEngine.Creation
             //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
             return this;
         }
-        public IGameBuilderAddPlayer NewGame()
+        public IGameBuilderNewGame NewGame()
         {
             return this;
         }
