@@ -103,7 +103,7 @@ namespace LudoEngine.Creation
             AddColor(color);
 
             if (log)
-                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StefanLog(color)));
+                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StephanLog(color)));
             else
                 _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll));
             return this;
