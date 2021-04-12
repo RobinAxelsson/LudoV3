@@ -18,14 +18,16 @@ namespace LudoEngine.DbModel
         private static GamePlay _gamePlay { get; set; }
         public static void SaveInit(GamePlay gamePlay)
         {
-            SaveThread = new Thread(new ThreadStart( () => save(gamePlay)));
+            
+            _gamePlay = gamePlay;
+            SaveThread = new Thread(new ThreadStart( () => save()));
             SaveThread.IsBackground = true;
         }
         public static void Save()
         {
             if (!SaveThread.IsAlive)
             {
-                SaveThread = new Thread(new ThreadStart(() => save(_gamePlay)));
+                SaveThread = new Thread(new ThreadStart(() => save()));
                 SaveThread.Start();
             }
         }
@@ -48,26 +50,6 @@ namespace LudoEngine.DbModel
             var playerGame = new PlayerGame { GameId = gameId, PlayerId = player.Id };
             db.GamePlayers.Add(playerGame);
 
-            db.SaveChanges();
-        }
-
-        public static void SavePawn(TeamColor color, int xPosition, int yPosition, Game gameID)
-        {
-            using var db = new LudoContext();
-
-            var pawn = new PawnSavePoint { Color = color, XPosition = xPosition, YPosition = yPosition, GameId = gameID.Id };
-
-            db.Update(pawn);
-            db.SaveChanges();
-        }
-
-        public static void SaveGame(TeamColor currentTurn, int firstplace, int secondPlace, int thirdPlace, int fourthPlace)
-        {
-            using var db = new LudoContext();
-
-            var game = new Game { CurrentTurn = currentTurn, FirstPlace = firstplace, SecondPlace = secondPlace, ThirdPlace = thirdPlace, FourthPlace = fourthPlace };
-
-            db.Add(game);
             db.SaveChanges();
         }
 
@@ -130,18 +112,26 @@ namespace LudoEngine.DbModel
             }
         }
 
-        public static List<(TeamColor color, (int X, int Y) position)> GetPawnPositionsInGame(Game gameId)
+        public static List<PawnSavePoint> GetPawnPositionsInGame(Game gameId)
         {
             using var db = new LudoContext();
 
             var savePoints = db.PawnSavePoints
                 .Where(x => x.GameId == gameId.Id);
 
-            List<(TeamColor color, (int X, int Y) position)> savepointList = new();
+            List<PawnSavePoint> savepointList = new();
 
             foreach (var item in savePoints)
             {
-                savepointList.Add((item.Color, (item.XPosition, item.YPosition)));
+                PawnSavePoint savepoint = new PawnSavePoint()
+                { 
+                    Id = item.Id,
+                    GameId = item.GameId,
+                    Color = item.Color,
+                    XPosition = item.XPosition,
+                    YPosition = item.YPosition
+                };
+                savepointList.Add(savepoint);
             }
 
             return savepointList;
@@ -162,39 +152,81 @@ namespace LudoEngine.DbModel
                      ).ToList();
         }
 
-        private static void save(GamePlay gamePlay)
+        private static void save()
         {
-            TeamColor currentTeam = gamePlay.CurrentPlayer().Color;
+            
+            TeamColor currentTeam = _gamePlay.CurrentPlayer(stageSaving: true).Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
             List<Pawn> pawns = StageSaving.Pawns;
-            Game game = StageSaving.Game;
+            Game game = new();
+            if (StageSaving.Game != null)
+            {
+                game = StageSaving.Game;
+            }
+            else
+            {
+                SaveAndGetGame(currentTeam);
+                game = StageSaving.Game;
+            }
             using var db = new LudoContext();
 
-            foreach (var item in pawns)
+            
+            if (db.PawnSavePoints.Any(x => x.Color == currentTeam && x.GameId == game.Id))
             {
                 var querry = db.PawnSavePoints
-                    .Where(x => x.GameId == game.Id && x.PawnId == item.Id && x.Color == item.Color)
-                    .FirstOrDefault();
-                if (querry != null)
+                .Where(x => x.Color == currentTeam && x.GameId == game.Id);
+
+                var pawnsArray = pawns.ToArray();
+                foreach (var dbData in querry)
                 {
-                    querry.XPosition = item.CurrentSquare().BoardX;
-                    querry.YPosition = item.CurrentSquare().BoardY;
+                    for (int i = 0; i < 1; i++)
+                    {
+                        dbData.Color = pawnsArray[i].Color;
+                        dbData.XPosition = pawnsArray[i].CurrentSquare().BoardX;
+                        dbData.YPosition = pawnsArray[i].CurrentSquare().BoardY;
+                        dbData.GameId = game.Id;
+
+                        db.PawnSavePoints.Attach(dbData);
+                        db.Entry(dbData).State = EntityState.Modified;
+                    }
                 }
-                else
-                {
-                    var pawnPosition = new PawnSavePoint { PawnId = item.Id, Color = item.Color, XPosition = item.CurrentSquare().BoardX, YPosition = item.CurrentSquare().BoardY, GameId = game.Id };
-                    db.Add(pawnPosition);
-                }
-            db.SaveChanges();
             }
+            else
+            {
+                foreach (var pawn in pawns)
+                {
+                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, GameId = game.Id };
+
+                    db.Update(pawnPosition);
+                }
+            }
+
+            db.SaveChanges();
+
+            //foreach (var item in pawns)
+            //{
+                //var querry = db.PawnSavePoints
+                //    .Where(x => x.GameId == game.Id && x.PawnId == item.Id && x.Color == item.Color)
+                //    .FirstOrDefault();
+                //if (querry != null)
+                //{
+                //    querry.XPosition = item.CurrentSquare().BoardX;
+                //    querry.YPosition = item.CurrentSquare().BoardY;
+                //}
+                //else
+                //{
+                //    var pawnPosition = new PawnSavePoint { PawnId = item.Id, Color = item.Color, XPosition = item.CurrentSquare().BoardX, YPosition = item.CurrentSquare().BoardY, GameId = game.Id };
+                //    db.Add(pawnPosition);
+                //}
+            //}
 
             var result = db.Games
                 .Where(x => x.Id == game.Id)
                 .SingleOrDefault();
             if (result != null)
             {
-                result.CurrentTurn = gamePlay.CachedPlayer();
+                result.CurrentTurn = _gamePlay.NextPlayerForSave();
                 result.LastSaved = DateTime.Now;
                 db.Games.Attach(result);
                 db.Entry(result).State = EntityState.Modified;
@@ -212,7 +244,9 @@ namespace LudoEngine.DbModel
 
         public static List<Player> Players { get; set; }
 
-        public static List<(TeamColor color, (int X, int Y) position)> TeamPosition { get; set; }
+        public static List<PawnSavePoint> TeamPosition { get; set; }
+
+        public static int CurrentTeam { get; set; }
     }
 
 }
