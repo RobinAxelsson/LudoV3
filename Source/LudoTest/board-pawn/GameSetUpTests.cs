@@ -78,6 +78,7 @@ namespace LudoTest.board_pawn
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
             .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            .DisableSaving()
             .ToGamePlay();
 
             var players = game.Players;
@@ -121,6 +122,7 @@ namespace LudoTest.board_pawn
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
             .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            .DisableSaving()
             .ToGamePlay();
 
             var players = game.Players;
