@@ -1,7 +1,7 @@
-﻿using LudoEngine.BoardUnits.Intefaces;
+﻿using LudoEngine.BoardUnits.Interfaces;
 using System.Collections.Generic;
 
-namespace LudoConsole.UI.Models
+namespace LudoConsole.UI.Interfaces
 {
     public interface ISquareDrawable
     {

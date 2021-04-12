@@ -1,4 +1,4 @@
-﻿using LudoEngine.BoardUnits.Intefaces;
+﻿using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 using System.Collections.Generic;

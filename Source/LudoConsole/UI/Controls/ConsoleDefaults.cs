@@ -11,6 +11,5 @@ namespace LudoConsole.UI.Controls
             display = new InfoDisplay(0, 9);
             KeyboardControl = new KeyboardControl(display.Update);
         }
-
     }
 }

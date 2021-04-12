@@ -1,5 +1,6 @@
 ﻿using LudoConsole.UI.Controls;
-using LudoEngine.BoardUnits.Intefaces;
+using LudoConsole.UI.Interfaces;
+using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 using System;

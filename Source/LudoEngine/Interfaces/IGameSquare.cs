@@ -2,7 +2,7 @@
 using LudoEngine.Models;
 using System.Collections.Generic;
 
-namespace LudoEngine.BoardUnits.Intefaces
+namespace LudoEngine.BoardUnits.Interfaces
 {
     public interface IGameSquare
     {

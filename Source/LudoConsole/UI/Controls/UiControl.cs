@@ -1,5 +1,5 @@
 ﻿using LudoConsole.UI.Models;
-using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using System;

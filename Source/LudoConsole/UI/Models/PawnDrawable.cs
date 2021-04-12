@@ -1,5 +1,6 @@
 ﻿using LudoConsole.UI.Controls;
 using System;
+using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
 {

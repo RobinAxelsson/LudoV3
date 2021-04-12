@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LudoConsole.UI
+namespace LudoConsole.UI.Interfaces
 {
     public interface IDrawable
     {

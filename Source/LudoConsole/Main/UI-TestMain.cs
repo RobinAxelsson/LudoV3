@@ -54,7 +54,7 @@ namespace LudoConsole.Main
 
             var loadGame = GameBuilder.StartBuild()
                 .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new Dice(1, 6))
+                .AddDice(new RiggedDice(new[] { 7 }))
                 .SetControl(ConsoleDefaults.KeyboardControl)
                 .SetInfoDisplay(ConsoleDefaults.display)
                 .LoadGame()
@@ -62,17 +62,16 @@ namespace LudoConsole.Main
                 .LoadPlayers()
                 .StartingColor(TeamColor.Blue)
                 .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
-                .EnableSavingToDb()
+                .DisableSaving()
                 .ToGamePlay();
 
-            var writerThread = UiBuilder.StartBuild()
+            var writerThread = UiThreadBuilder.StartBuild()
                 .ColorSettings(UiControl.SetDefault)
                 .DrawBoardConvert(Board.BoardSquares)
-                .LoopCondition(() => true)
+                .StopEventFrom(loadGame)
                 .ToWriterThread();
             
             writerThread.Start();
-            
             loadGame.Start();
         }
     }

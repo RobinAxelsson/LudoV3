@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using LudoConsole.Main;
-using LudoEngine.BoardUnits.Intefaces;
+using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;

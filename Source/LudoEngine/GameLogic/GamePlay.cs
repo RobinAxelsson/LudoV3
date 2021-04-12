@@ -20,6 +20,7 @@ namespace LudoConsole.Main
             OrderOfTeams = OrderOfTeams.Intersect(players.Select(x => x.Color)).ToList();
             if (first != null) SetFirstTeam(first.Color);
         }
+        public event EventHandler GameOverEvent;
         public void Start()
         {
             SaveActions.Init?.Invoke(this);
@@ -29,6 +30,7 @@ namespace LudoConsole.Main
                 SaveActions.OnAfterMove?.Invoke();
                 NextPlayer();
             }
+            GameOverEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private List<TeamColor> OrderOfTeams = new List<TeamColor>
