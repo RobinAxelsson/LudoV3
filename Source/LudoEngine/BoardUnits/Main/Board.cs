@@ -12,7 +12,7 @@ namespace LudoEngine.BoardUnits.Main
     {
         public static List<IGameSquare> BoardSquares { get; set; }
 
-        private const string _filePath = @"BoardUnits/Map/BoardMap.txt";
+        private const string _filePath = @"LudoORM/Map/BoardMap.txt";
         public static void Init(string filePath = _filePath)
         {
             BoardSquares = BoardOrm.Map(filePath);

@@ -18,12 +18,12 @@ namespace LudoConsole.Main
             OrderOfTeams = OrderOfTeams.Intersect(players.Select(x => x.Color)).ToList();
             if (first != null) SetFirstTeam(first.Color);
         }
-        public void Start(Action OnNewRound)
+        public void Start(Action OnNewRound = null)
         {
             while (RunCondition())
             {
                 CurrentPlayer().Play(dice);
-                OnNewRound();
+                if(OnNewRound != null)OnNewRound();
                 NextPlayer();
             }
         }

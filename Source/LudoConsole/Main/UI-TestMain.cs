@@ -1,16 +1,10 @@
 ﻿
-using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using LudoConsole.UI.Controls;
-using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Creation;
-using LudoEngine.DbModel;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Dice;
-using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
@@ -27,7 +21,7 @@ namespace LudoConsole.Main
 
 
             var builder = GameBuilder.StartBuild()
-                .MapBoard(@"BoardUnits/Map/BoardMap.txt")
+                .MapBoard(@"LudoORM/Map/BoardMap.txt")
                 .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
                 .SetControl(ConsoleDefaults.KeyboardControl)
                 .SetInfoDisplay(ConsoleDefaults.display)
@@ -56,7 +50,7 @@ namespace LudoConsole.Main
             //};
 
             //var loadGame = GameBuilder.StartBuild()
-            //    .MapBoard(@"BoardUnits/Map/BoardMap.txt")
+            //    .MapBoard(@"@"LudoORM/Map/BoardMap.txt"")
             //    .AddDice(new Dice(1, 6))
             //    .SetControl(ConsoleDefaults.KeyboardControl)
             //    .SetInfoDisplay(ConsoleDefaults.display)
@@ -73,9 +67,9 @@ namespace LudoConsole.Main
                 .ToWriterThread();
 
             writerThread.Start();
-            
+
             //loadGame.Start(DatabaseManagement.Save);
-            game.Start(DatabaseManagement.Save);
+            game.Start(null);//(DatabaseManagement.Save);
         }
     }
 }
