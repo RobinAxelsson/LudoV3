@@ -1,5 +1,6 @@
 ﻿using LudoConsole.Main;
 using LudoEngine.BoardUnits.Main;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
@@ -23,6 +24,7 @@ namespace LudoEngine.Creation
         IGameBuilderNewGamePlay,
         IGameBuilderStartingColor,
         IGameBuilderLoadPlayers,
+        IGameBuilderSaveConfig,
         IGameBuilderRunsWhile
     {
         private IController _control { get; set; }
@@ -32,6 +34,7 @@ namespace LudoEngine.Creation
         private TeamColor _first { get; set; }
         private List<IGamePlayer> _gamePlayers { get; set; } = new();
         private Func<bool> _runsWhileCondtition { get; set; }
+        private bool _enableSaving { get; set; }
         private void AddColor(TeamColor color)
         {
             if (_teamColors.Contains(color)) throw new Exception("There can only be one player per color");
@@ -74,7 +77,7 @@ namespace LudoEngine.Creation
         {
             foreach (var color in _teamColors)
             {
-                 _gamePlayers.Add(new HumanPlayer(color, _display.UpdateDiceRoll, _control));
+                _gamePlayers.Add(new HumanPlayer(color, _display.UpdateDiceRoll, _control));
             }
             //HumanColors = savePoints.Select(x => x.Color && x.PlayerType == 0).Distinct().ToList();
             //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
@@ -113,15 +116,27 @@ namespace LudoEngine.Creation
             GameSetup.NewGame(Board.BoardSquares, _teamColors.ToArray());
             return this;
         }
-        public IGameBuilderGamePlay GameRunsWhile(Func<bool> whileCondition)
+        public IGameBuilderSaveConfig GameRunsWhile(Func<bool> whileCondition)
         {
             _runsWhileCondtition = whileCondition;
             return this;
         }
+        public IGameBuilderGamePlay DisableSaving() => this;
+        public IGameBuilderGamePlay EnableSavingToDb()
+        {
+            _enableSaving = true;
+            return this;
+        }
+
         public GamePlay ToGamePlay()
         {
             var firstPlayer = _gamePlayers.Find(x => x.Color == _first);
-            return new GamePlay(_gamePlayers, _dice, _runsWhileCondtition, firstPlayer);
+            var gamePlay = new GamePlay(_gamePlayers, _dice, _runsWhileCondtition, firstPlayer);
+            if (_enableSaving)
+            {
+                gamePlay.SaveActions = (DatabaseManagement.SaveInit, DatabaseManagement.Save);
+            }
+            return gamePlay;
         }
     }
 }

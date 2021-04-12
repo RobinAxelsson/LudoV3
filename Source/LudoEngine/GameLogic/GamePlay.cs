@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
 
@@ -8,6 +9,7 @@ namespace LudoConsole.Main
 {
     public class GamePlay
     {
+        public (Action<GamePlay> Init, Action OnAfterMove) SaveActions { get; set; }
         private IDice dice { get; set; }
         private Func<bool> RunCondition { get; set; }
         public GamePlay(List<IGamePlayer> players, IDice dice, Func<bool> runCondition, IGamePlayer first = null)
@@ -18,16 +20,17 @@ namespace LudoConsole.Main
             OrderOfTeams = OrderOfTeams.Intersect(players.Select(x => x.Color)).ToList();
             if (first != null) SetFirstTeam(first.Color);
         }
-        public void Start(Action OnNewRound = null)
+        public void Start()
         {
+            SaveActions.Init?.Invoke(this);
             while (RunCondition())
             {
                 CurrentPlayer().Play(dice);
-                if(OnNewRound != null)OnNewRound();
+                SaveActions.OnAfterMove?.Invoke();
                 NextPlayer();
             }
         }
-  
+
         private List<TeamColor> OrderOfTeams = new List<TeamColor>
         {
             TeamColor.Blue,

@@ -4,6 +4,7 @@ using System.Globalization;
 using LudoConsole.UI.Controls;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Creation;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Dice;
 using LudoEngine.Models;
@@ -61,6 +62,7 @@ namespace LudoConsole.Main
                 .LoadPlayers()
                 .StartingColor(TeamColor.Blue)
                 .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+                .EnableSavingToDb()
                 .ToGamePlay();
 
             var writerThread = UiBuilder.StartBuild()
@@ -68,11 +70,10 @@ namespace LudoConsole.Main
                 .DrawBoardConvert(Board.BoardSquares)
                 .LoopCondition(() => true)
                 .ToWriterThread();
-
+            
             writerThread.Start();
-
-            loadGame.Start(null);//(DatabaseManagement.Save);
-            //game.Start(null);//(DatabaseManagement.Save);
+            
+            loadGame.Start();
         }
     }
 }

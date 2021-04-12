@@ -55,7 +55,12 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderRunsWhile
     {
-        public IGameBuilderGamePlay GameRunsWhile(Func<bool> whileCondition);
+        public IGameBuilderSaveConfig GameRunsWhile(Func<bool> whileCondition);
+    }
+    public interface IGameBuilderSaveConfig
+    {
+        public IGameBuilderGamePlay DisableSaving();
+        public IGameBuilderGamePlay EnableSavingToDb();
     }
     public interface IGameBuilderGamePlay
     {
