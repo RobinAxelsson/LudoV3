@@ -62,7 +62,7 @@ namespace LudoEngine.Creation
         {
             return this;
         }
-        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints) //TODO needs setup logic
+        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints)
         {
             GameSetup.LoadSavedPawns(savePoints);
             _teamColors = savePoints.Select(x => x.Color).Distinct().ToList();

@@ -26,6 +26,7 @@ namespace LudoTest.board_pawn
                 .AddDice(new Dice(1, 6))
                 .SetControl(null)
                 .SetInfoDisplay(null)
+                .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint });
 
             var pawns = Board.GetTeamPawns(TeamColor.Blue);
@@ -51,6 +52,7 @@ namespace LudoTest.board_pawn
                 .AddDice(new Dice(1, 6))
                 .SetControl(null)
                 .SetInfoDisplay(null)
+                .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2 });
 
             var square = Board.BoardSquares.Find(x => x.BoardX == savePoint.XPosition && x.BoardY == savePoint.YPosition);
@@ -71,6 +73,7 @@ namespace LudoTest.board_pawn
             .AddDice(new Dice(1, 6))
             .SetControl(ConsoleDefaults.KeyboardControl)
             .SetInfoDisplay(ConsoleDefaults.display)
+            .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
@@ -113,6 +116,7 @@ namespace LudoTest.board_pawn
             .AddDice(new Dice(1, 6))
             .SetControl(ConsoleDefaults.KeyboardControl)
             .SetInfoDisplay(ConsoleDefaults.display)
+            .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
