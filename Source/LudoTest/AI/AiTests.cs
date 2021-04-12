@@ -24,7 +24,7 @@ namespace LudoTest.AI
             var pawn1 = new Pawn(TeamColor.Blue);
             var pawn2 = new Pawn(TeamColor.Blue);
             stephan.Pawns = new List<Pawn> {pawn1, pawn2 };
-            var enemyPawn = new Pawn(TeamColor.Red);
+            var enemyPawn = new Pawn(TeamColor.Green);
             var squarePawn1 = Board.BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 1);
             var squarePawn2 = Board.BoardSquares.Find(x => x.BoardX == 1 && x.BoardY == 1);
             var squareEnemy = Board.BoardSquares.Find(x => x.BoardX == 2 && x.BoardY == 1);

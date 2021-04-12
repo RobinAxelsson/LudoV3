@@ -25,20 +25,20 @@ namespace LudoConsole.Main
             var drawGameBoard = Menu.SelectedOptions(selected);
 
 
-            var game = GameBuilder.StartBuild()
-                .MapBoard(@"BoardUnits/Map/BoardMap.txt")
-                .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
-                .SetControl(ConsoleDefaults.KeyboardControl)
-                .SetInfoDisplay(ConsoleDefaults.display)
-                .NewGame()
-                .AddAIPlayer(TeamColor.Blue, true)
-                .AddAIPlayer(TeamColor.Green, true)
-                .AddHumanPlayer(TeamColor.Red)
-                .AddHumanPlayer(TeamColor.Yellow)
-                .SetUpPawns()
-                .StartingColor(TeamColor.Blue)
-                .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
-                .ToGamePlay();
+            //var game = GameBuilder.StartBuild()
+            //    .MapBoard(@"BoardUnits/Map/BoardMap.txt")
+            //    .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
+            //    .SetControl(ConsoleDefaults.KeyboardControl)
+            //    .SetInfoDisplay(ConsoleDefaults.display)
+            //    .NewGame()
+            //    .AddAIPlayer(TeamColor.Blue, true)
+            //    .AddAIPlayer(TeamColor.Green, true)
+            //    .AddHumanPlayer(TeamColor.Red)
+            //    .AddHumanPlayer(TeamColor.Yellow)
+            //    .SetUpPawns()
+            //    .StartingColor(TeamColor.Blue)
+            //    .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            //    .ToGamePlay();
 
             var loadGame = GameBuilder.StartBuild()
                 .MapBoard(@"BoardUnits/Map/BoardMap.txt")
@@ -58,7 +58,7 @@ namespace LudoConsole.Main
                 .ToWriterThread();
 
             writerThread.Start();
-            game.Start();
+            loadGame.Start();
         }
     }
 }
