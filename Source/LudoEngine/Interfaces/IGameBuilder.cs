@@ -25,8 +25,12 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderLoadOrNew
     {
-        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints);
+        public IGameBuilderLoadPawns LoadGame();
         public IGameBuilderNewGame NewGame();
+    }
+    public interface IGameBuilderLoadPawns
+    {
+        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints);
     }
     public interface IGameBuilderNewGame
     {

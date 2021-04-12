@@ -18,6 +18,7 @@ namespace LudoEngine.Creation
         IGameBuilderSetInfoDisplay,
         IGameBuilderLoadOrNew,
         IGameBuilderNewGame,
+        IGameBuilderLoadPawns,
         IGameBuilderGamePlay,
         IGameBuilderNewGamePlay,
         IGameBuilderStartingColor,
@@ -55,6 +56,10 @@ namespace LudoEngine.Creation
         public IGameBuilderLoadOrNew SetInfoDisplay(IInfoDisplay infoDisplay)
         {
             _display = infoDisplay;
+            return this;
+        }
+        public IGameBuilderLoadPawns LoadGame()
+        {
             return this;
         }
         public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints) //TODO needs setup logic
