@@ -36,10 +36,8 @@ namespace LudoEngine.GameLogic.GamePlayers
         public void Play(IDice dice)
         {
             int diceRoll = dice.Roll();
-            
-            if(DisplayDice != null)
-            DisplayDice(Color, diceRoll, () => Thread.Sleep(1000));
-
+          
+            DisplayDice?.Invoke(Color, diceRoll, () => Thread.Sleep(1000));
 
             var selectablePawns = GameRules.SelectablePawns(Color, diceRoll);
             if (selectablePawns.Count == 0) return;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
@@ -26,7 +25,7 @@ namespace LudoConsole.Main
         {
             int result = dice.Roll();
             bool tookOutTwo = false;
-            DisplayDice(Color, result, Control.Throw);
+            DisplayDice?.Invoke(Color, result, Control.Throw);
             var selectablePawns = GameRules.SelectablePawns(Color, result);
             if (selectablePawns.Count == 0) return;
 
