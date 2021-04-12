@@ -25,17 +25,22 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderLoadOrNew
     {
+        public IGameBuilderLoadPawns LoadGame();
+        public IGameBuilderNewGame NewGame();
+    }
+    public interface IGameBuilderLoadPawns
+    {
         public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints);
-        public IGameBuilderAddPlayer NewGame();
+    }
+    public interface IGameBuilderNewGame
+    {
+        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
+        public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
+        public IGameBuilderStartingColor SetUpPawns();
     }
     public interface IGameBuilderLoadPlayers
     {
         public IGameBuilderStartingColor LoadPlayers();
-    }
-    public interface IGameBuilderAddPlayer
-    {
-        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
-        public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
     }
  
     public interface IGameBuilderNewGamePlay

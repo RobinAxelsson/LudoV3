@@ -8,10 +8,10 @@ using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public class StefanLog : ILog
+    public class StephanLog : ILog
     {
         private StreamWriter Logger;
-        public StefanLog(TeamColor color)
+        public StephanLog(TeamColor color)
         {
             int number = 0;
             if (!Directory.Exists(Environment.CurrentDirectory + @"\StephanLogs")) Directory.CreateDirectory(Environment.CurrentDirectory + @"\StephanLogs");

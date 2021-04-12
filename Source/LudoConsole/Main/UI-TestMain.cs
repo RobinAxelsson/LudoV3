@@ -2,15 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading;
 using LudoConsole.UI.Controls;
-using LudoConsole.UI.Models;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Creation;
-using LudoEngine.DbModel;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Dice;
+using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
@@ -22,8 +19,8 @@ namespace LudoConsole.Main
         }
         private static void Main(string[] args)
         {
-            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
-            var drawGameBoard = Menu.SelectedOptions(selected);
+            //var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
+            //var drawGameBoard = Menu.SelectedOptions(selected);
 
             var writerThread = UiBuilder.StartBuild()
                 .ColorSettings(UiControl.SetDefault)
@@ -31,33 +28,34 @@ namespace LudoConsole.Main
                 .LoopCondition(() => true)
                 .ToWriterThread();
 
-            if (drawGameBoard == 0)
+            //var builder = GameBuilder.StartBuild()
+            //    .MapBoard(@"LudoORM/Map/BoardMap.txt")
+            //    .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
+            //    .SetControl(ConsoleDefaults.KeyboardControl)
+            //    .SetInfoDisplay(ConsoleDefaults.display)
+            //    .NewGame();
+
+            //var game = builder.AddAIPlayer(TeamColor.Blue, true)
+            //      .AddAIPlayer(TeamColor.Green, true)
+            //      .AddHumanPlayer(TeamColor.Red)
+            //      .AddHumanPlayer(TeamColor.Yellow)
+            //      .SetUpPawns()
+            //      .StartingColor(TeamColor.Blue)
+            //      .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            //      .ToGamePlay();
+
+            var startPoint = new PawnSavePoint()
             {
-                var gameBuilder = GameBuilder.StartBuild()
-                .MapBoard(@"BoardUnits/Map/BoardMap.txt")
-                .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
-                .SetControl(ConsoleDefaults.KeyboardControl)
-                .SetInfoDisplay(ConsoleDefaults.display)
-                .NewGame();
-
-                foreach (var color in Menu.aiColor)
-                {
-                    gameBuilder.AddAIPlayer(color, true);
-                }
-
-                foreach (var color in Menu.humanColor)
-                {
-                   gameBuilder.AddHumanPlayer(color);
-                }
-                
-                //.AddAIPlayer(TeamColor.Blue, true)
-                //.AddAIPlayer(TeamColor.Green, true)
-                //.AddHumanPlayer(TeamColor.Red)
-                //.AddHumanPlayer(TeamColor.Yellow)
-                //.SetUpPawns()
-                //.StartingColor(TeamColor.Blue)
-                //.GameRunsWhile(Board.IsMoreThenOneTeamLeft)
-                //.ToGamePlay();
+                Color = TeamColor.Blue,
+                XPosition = 4,
+                YPosition = 0
+            };
+            var startPoint2 = new PawnSavePoint()
+            {
+                Color = TeamColor.Red,
+                XPosition = 5,
+                YPosition = 0
+            };
 
                 writerThread.Start();
                 //game.Start();

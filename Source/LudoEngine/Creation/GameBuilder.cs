@@ -8,8 +8,6 @@ using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoEngine.Creation
 {
@@ -19,8 +17,9 @@ namespace LudoEngine.Creation
         IGameBuilderSetControl,
         IGameBuilderSetInfoDisplay,
         IGameBuilderLoadOrNew,
+        IGameBuilderNewGame,
+        IGameBuilderLoadPawns,
         IGameBuilderGamePlay,
-        IGameBuilderAddPlayer,
         IGameBuilderNewGamePlay,
         IGameBuilderStartingColor,
         IGameBuilderLoadPlayers,
@@ -59,7 +58,11 @@ namespace LudoEngine.Creation
             _display = infoDisplay;
             return this;
         }
-        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints) //TODO needs setup logic
+        public IGameBuilderLoadPawns LoadGame()
+        {
+            return this;
+        }
+        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints)
         {
             GameSetup.LoadSavedPawns(savePoints);
             _teamColors = savePoints.Select(x => x.Color).Distinct().ToList();
@@ -77,7 +80,7 @@ namespace LudoEngine.Creation
             //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
             return this;
         }
-        public IGameBuilderAddPlayer NewGame()
+        public IGameBuilderNewGame NewGame()
         {
             return this;
         }
@@ -100,7 +103,7 @@ namespace LudoEngine.Creation
             AddColor(color);
 
             if (log)
-                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StefanLog(color)));
+                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StephanLog(color)));
             else
                 _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll));
             return this;
