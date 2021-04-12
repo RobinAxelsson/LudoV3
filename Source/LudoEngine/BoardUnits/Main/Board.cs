@@ -11,6 +11,7 @@ namespace LudoEngine.BoardUnits.Main
     public static class Board
     {
         public static List<IGameSquare> BoardSquares { get; set; }
+
         private const string _filePath = @"BoardUnits/Map/BoardMap.txt";
         public static void Init(string filePath = _filePath)
         {
@@ -24,9 +25,11 @@ namespace LudoEngine.BoardUnits.Main
             BoardSquares.Find(x => x.GetType() == typeof(BaseSquare) && x.Color == color).Pawns;
         public static List<Pawn> PawnsInGoal(TeamColor color) =>
             BoardSquares.Find(x => x.GetType() == typeof(GoalSquare)).Pawns.FindAll(x => x.Color == color);
+        public static IGameSquare FindPawnSquare(Pawn pawn) => BoardSquares.Find(x => x.Pawns.Contains(pawn));
+        public static List<Pawn> AllBaseAndPlayingPawns() => Board.BoardSquares.SelectMany(x => x.Pawns).ToList();
         public static List<Pawn> OutOfBasePawns(TeamColor color) => AllPlayingPawns().FindAll(x => x.Color == color);
         public static List<Pawn> AllPlayingPawns() => BoardSquares.FindAll(x => x.GetType() != typeof(BaseSquare) && x.GetType() != typeof(GoalSquare)).SelectMany(x => x.Pawns).ToList();
-        public static bool IsMoreThenOneTeam() => BoardSquares.SelectMany(x => x.Pawns).Select(x => x.Color).Distinct().ToList().Count > 1;
+        public static bool IsMoreThenOneTeamLeft() => BoardSquares.SelectMany(x => x.Pawns).Select(x => x.Color).Distinct().ToList().Count > 1;
         public static IGameSquare StartSquare(TeamColor color)
             => BoardSquares.Find(x => x.GetType() == typeof(StartSquare) && x.Color == color);
         public static IGameSquare BaseSquare(TeamColor color)
@@ -53,6 +56,19 @@ namespace LudoEngine.BoardUnits.Main
         public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
         {
             var diff = NextDiff(square.DirectionNext(color));
+            var nextSquare = squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y) ?? throw new NullReferenceException();
+            return nextSquare;
+        }
+        public static BoardDirection ReverseDirection(BoardDirection direction) =>
+            direction == BoardDirection.Down ? BoardDirection.Up :
+            direction == BoardDirection.Up ? BoardDirection.Down :
+            direction == BoardDirection.Left ? BoardDirection.Right : BoardDirection.Left;
+
+        public static IGameSquare GetBack(List<IGameSquare> squares, IGameSquare square, TeamColor color)
+        {
+            var defaultDirection = square.DirectionNext(color);
+            var backDirection = ReverseDirection(defaultDirection);
+            var diff = NextDiff(backDirection);
             var nextSquare = squares.Find(x => x.BoardX == square.BoardX + diff.X && x.BoardY == square.BoardY + diff.Y) ?? throw new NullReferenceException();
             return nextSquare;
         }

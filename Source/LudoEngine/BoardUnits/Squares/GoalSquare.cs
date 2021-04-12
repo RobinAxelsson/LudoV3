@@ -20,9 +20,9 @@ namespace LudoEngine.BoardUnits.Main
         public BoardDirection DirectionNext(TeamColor Color)
         {
                 return
-                   Color == TeamColor.Yellow ? BoardDirection.Down :
-                   Color == TeamColor.Blue ? BoardDirection.Left :
-                   Color == TeamColor.Red ? BoardDirection.Up : BoardDirection.Right;
+                   Color == TeamColor.Yellow ? BoardDirection.Up :
+                   Color == TeamColor.Blue ? BoardDirection.Right :
+                   Color == TeamColor.Red ? BoardDirection.Down : BoardDirection.Left;
         }
     }
 }

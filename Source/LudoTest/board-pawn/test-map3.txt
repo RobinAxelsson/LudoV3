@@ -1,0 +1,32 @@
+﻿r
+e
+a
+s
+/*
+
+0-up
+1-right
+2-down
+3-left
+
+a - red safe zone, down
+b - blue safe zone, right
+c - yellow safe zone, up
+d - green safe zone, left
+
+e - red exit, down
+f - blue exit, right
+g - yellow exit, up
+h - green exit, left
+
+r - red start, down
+l - blue start, right
+y - yellow start, up
+n - green start, left
+
+4 - red base, left
+5 - blue base, down
+6 - yellow base, right
+7 - green base, up
+
+s - finish

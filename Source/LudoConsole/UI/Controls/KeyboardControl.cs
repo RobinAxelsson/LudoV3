@@ -7,6 +7,7 @@ namespace LudoConsole.UI.Controls
 {
     public class KeyboardControl : IController
     {
+        public void Throw() => Console.ReadKey(true);
         private Action<string> DisplayMessage { get; set; }
         public KeyboardControl(Action<string> displayMessage)
         {

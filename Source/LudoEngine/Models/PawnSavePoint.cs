@@ -13,6 +13,7 @@ namespace LudoEngine.Models
         public int GameId { get; set; }
         public int PawnId { get; set; }
         public TeamColor Color { get; set; }
+        //int PlayerType
         public int XPosition { get; set; }
         public int YPosition { get; set; }
     }

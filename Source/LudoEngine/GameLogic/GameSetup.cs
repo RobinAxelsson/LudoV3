@@ -14,7 +14,14 @@ namespace LudoEngine.GameLogic
 {
     public static class GameSetup
     { 
-
+        public static void LoadSavedPawns(List<PawnSavePoint> savePoints)
+        {
+            foreach (var sp in savePoints)
+            {
+                var squareToPut = Board.BoardSquares.Find(bs => sp.XPosition == bs.BoardX && sp.YPosition == bs.BoardY);
+                squareToPut.Pawns.Add(new Pawn(sp.Color));
+            }
+        }
         public static List<TeamColor> Load(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)

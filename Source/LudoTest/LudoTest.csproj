@@ -8,15 +8,27 @@
 
   <ItemGroup>
     <None Remove="AI\ai-test-map1.txt" />
+    <None Remove="board-pawn\test-copy_BoardMap.txt" />
     <None Remove="board-pawn\test-map-2p.txt" />
     <None Remove="board-pawn\test-map1.txt" />
+    <None Remove="board-pawn\test-map3.txt" />
+    <None Remove="board-pawn\test-map4.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="AI\ai-test-map1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="board-pawn\test-copy_BoardMap.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="board-pawn\test-map-2p.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="board-pawn\test-map4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="board-pawn\test-map3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="board-pawn\test-map1.txt">
@@ -38,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LudoConsole\LudoConsole.csproj" />
     <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
   </ItemGroup>
 

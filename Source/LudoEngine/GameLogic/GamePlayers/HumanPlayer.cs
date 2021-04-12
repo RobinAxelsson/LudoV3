@@ -26,7 +26,7 @@ namespace LudoConsole.Main
         {
             int result = dice.Roll();
             bool tookOutTwo = false;
-            DisplayDice(Color, result, () => Console.ReadKey(true));
+            DisplayDice(Color, result, Control.Throw);
             var selectablePawns = GameRules.SelectablePawns(Color, result);
             if (selectablePawns.Count == 0) return;
 

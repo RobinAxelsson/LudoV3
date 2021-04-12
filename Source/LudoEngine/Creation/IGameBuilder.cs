@@ -1,7 +1,9 @@
 ﻿using LudoConsole.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Models;
 using System;
+using System.Collections.Generic;
 
 namespace LudoEngine.Creation
 {
@@ -23,23 +25,28 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderLoadOrNew
     {
-        public IGameBuilderGamePlay LoadGame();
+        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints);
         public IGameBuilderAddPlayer NewGame();
+    }
+    public interface IGameBuilderLoadPlayers
+    {
+        public IGameBuilderStartingColor LoadPlayers();
     }
     public interface IGameBuilderAddPlayer
     {
         public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
     }
+ 
     public interface IGameBuilderNewGamePlay
     {
         public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
-        public IGameBuilderSetupPawns StartingColor(TeamColor color);
+        public IGameBuilderStartingColor SetUpPawns();
     }
-    public interface IGameBuilderSetupPawns
+    public interface IGameBuilderStartingColor
     {
-        public IGameBuilderRunsWhile SetUpPawns();
+        public IGameBuilderRunsWhile StartingColor(TeamColor? color);
     }
     public interface IGameBuilderRunsWhile
     {

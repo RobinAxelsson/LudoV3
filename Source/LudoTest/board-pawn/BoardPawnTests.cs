@@ -4,8 +4,6 @@ using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
-using LudoEngine.GameLogic.Dice;
-using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoTest.board_pawn
 {
@@ -25,10 +23,9 @@ namespace LudoTest.board_pawn
             Assert.IsType<ExitSquare>(current);
         }
         [Fact]
-        public void MoveToFinish_AssertTrue()
+        public void MoveToFinish_AndRemoveFromBoard_AssertTrue()
         {
             Board.Init(@"board-pawn/test-map1.txt");
-            var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
             var baseSquare = Board.BaseSquare(TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
@@ -36,7 +33,84 @@ namespace LudoTest.board_pawn
             bluePawn.Move(8);
             var current = bluePawn.CurrentSquare();
 
-            Assert.IsType<GoalSquare>(current);
+            Assert.True(current == null);
+        }
+        [Fact]
+        public void BlueBounceFromFinish_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map4.txt");
+            var bluePawn = new Pawn(TeamColor.Blue);
+            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            baseSquare.Pawns.Add(bluePawn);
+            bluePawn.Move(7);
+            var expectedSquare = Board.BoardSquares[1];
+            var square = bluePawn.CurrentSquare();
+
+            Assert.True(expectedSquare == square);
+        }
+        [Fact]
+        public void RedExitSquare_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map3.txt");
+            var redPawn = new Pawn(TeamColor.Red);
+            var startSquare = Board.StartSquare(TeamColor.Red);
+            startSquare.Pawns.Add(redPawn);
+
+            redPawn.Move(1);
+            var square = Board.FindPawnSquare(redPawn);
+            Assert.IsType<ExitSquare>(square);
+        }
+        [Fact]
+        public void RedSafeZoneSquare_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map3.txt");
+            var redPawn = new Pawn(TeamColor.Red);
+            var startSquare = Board.StartSquare(TeamColor.Red);
+            startSquare.Pawns.Add(redPawn);
+
+            redPawn.Move(2);
+            var square = Board.FindPawnSquare(redPawn);
+            Assert.IsType<SafezoneSquare>(square);
+        }
+        [Fact]
+        public void RedGoal_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map3.txt");
+            var redPawn = new Pawn(TeamColor.Red);
+            var startSquare = Board.StartSquare(TeamColor.Red);
+            startSquare.Pawns.Add(redPawn);
+
+            redPawn.Move(3);
+            var pawns = Board.AllBaseAndPlayingPawns();
+            Assert.True(pawns.Count == 0);
+        }
+        [Fact]
+        public void RedGoalBounce_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map3.txt");
+            var redPawn = new Pawn(TeamColor.Red);
+            var startSquare = Board.StartSquare(TeamColor.Red);
+            startSquare.Pawns.Add(redPawn);
+
+            var squarse = Board.BoardSquares;
+            redPawn.Move(4);
+            var expectedSquare = Board.BoardSquares[2];
+
+            Assert.True(expectedSquare.Pawns.Count == 1);
+        }
+        [Fact]
+        public void RedGoalBounce2_AssertTrue()
+        {
+            Board.Init(@"board-pawn/test-map3.txt");
+            var redPawn = new Pawn(TeamColor.Red);
+            var startSquare = Board.StartSquare(TeamColor.Red);
+            startSquare.Pawns.Add(redPawn);
+
+            var squares = Board.BoardSquares;
+            redPawn.Move(5);
+            var expectedSquare = Board.BoardSquares[1];
+
+            Assert.True(expectedSquare.Pawns.Count == 1);
         }
         [Fact]
         public void MoveUpNotFinish_AssertTrue()
