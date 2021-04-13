@@ -28,7 +28,6 @@ namespace LudoEngine.Creation
     {
         private IController _control { get; set; }
         private IDice _dice { get; set; }
-        private IInfoDisplay _display { get; set; }
         private List<TeamColor> _teamColors { get; set; } = new();
         private List<PawnSavePoint> _pawnSavePoints { get; set; } = new();
         private TeamColor _first { get; set; }
@@ -57,7 +56,6 @@ namespace LudoEngine.Creation
         }
         public IGameBuilderLoadOrNew SetInfoDisplay(IInfoDisplay infoDisplay)
         {
-            _display = infoDisplay;
             return this;
         }
         public IGameBuilderLoadPawns LoadGame()
