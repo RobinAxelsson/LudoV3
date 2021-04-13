@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using LudoConsole.Main;
-using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
@@ -14,13 +11,11 @@ namespace LudoEngine.GameLogic.GamePlayers
     {
         public TeamColor Color { get; set; }
         public List<Pawn> Pawns { get; set; }
-        private Action<TeamColor, int, Action> DisplayDice { get; set; }
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, Action<TeamColor, int, Action> displayDice, ILog log = null)
+        public Stephan(TeamColor color, ILog log = null)
         {
             Color = color;
-            DisplayDice = displayDice;
 
             if (log != null)
                 WriteLogging = log.Log;
@@ -33,11 +28,12 @@ namespace LudoEngine.GameLogic.GamePlayers
 
             Pawns = Board.GetTeamPawns(color);
         }
+        public static event Action<Stephan, int> StephanThrowEvent;
         public void Play(IDice dice)
         {
             int diceRoll = dice.Roll();
-          
-            DisplayDice?.Invoke(Color, diceRoll, () => Thread.Sleep(1000));
+
+            StephanThrowEvent?.Invoke(this, diceRoll);
 
             var selectablePawns = GameRules.SelectablePawns(Color, diceRoll);
             if (selectablePawns.Count == 0) return;

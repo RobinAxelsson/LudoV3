@@ -16,15 +16,7 @@ namespace LudoConsole.UI.Interfaces
     }
     public interface IUiBuilderDrawBoardConvert
     {
-        public IUiBuilderStopEvent DrawBoardConvert(List<IGameSquare> squares);
-    }
-    public interface IUiBuilderStopEvent
-    {
-        public UiBuilderToWriterThread StopEventFrom(GamePlay gamePlay);
-    }
-    public interface IUiBuilderLoopCondition
-    {
-        public UiBuilderToWriterThread LoopCondition(Func<bool> loopCondition);
+        public UiBuilderToWriterThread DrawBoardConvert(List<IGameSquare> squares);
     }
     public interface UiBuilderToWriterThread
     {

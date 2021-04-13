@@ -9,7 +9,7 @@ namespace LudoConsole.UI.Controls
         static ConsoleDefaults()
         {
             display = new InfoDisplay(0, 9);
-            KeyboardControl = new KeyboardControl(display.Update);
+            KeyboardControl = new KeyboardControl();
         }
     }
 }

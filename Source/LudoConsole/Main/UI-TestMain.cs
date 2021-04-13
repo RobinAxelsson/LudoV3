@@ -54,21 +54,19 @@ namespace LudoConsole.Main
 
             var loadGame = GameBuilder.StartBuild()
                 .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new RiggedDice(new[] { 7 }))
+                .AddDice(new RiggedDice(new[] { 4 }))
                 .SetControl(ConsoleDefaults.KeyboardControl)
                 .SetInfoDisplay(ConsoleDefaults.display)
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { startPoint, startPoint2 })
                 .LoadPlayers()
                 .StartingColor(TeamColor.Blue)
-                .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
                 .DisableSaving()
                 .ToGamePlay();
 
             var writerThread = UiThreadBuilder.StartBuild()
                 .ColorSettings(UiControl.SetDefault)
                 .DrawBoardConvert(Board.BoardSquares)
-                .StopEventFrom(loadGame)
                 .ToWriterThread();
             
             writerThread.Start();

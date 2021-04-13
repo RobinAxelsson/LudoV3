@@ -51,11 +51,7 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderStartingColor
     {
-        public IGameBuilderRunsWhile StartingColor(TeamColor? color);
-    }
-    public interface IGameBuilderRunsWhile
-    {
-        public IGameBuilderSaveConfig GameRunsWhile(Func<bool> whileCondition);
+        public IGameBuilderSaveConfig StartingColor(TeamColor? color);
     }
     public interface IGameBuilderSaveConfig
     {

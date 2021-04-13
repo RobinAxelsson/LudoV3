@@ -13,19 +13,17 @@ namespace LudoConsole.UI.Controls
     public class UiThreadBuilder :
         IUiBuilderSetColors,
         IUiBuilderDrawBoardConvert,
-        UiBuilderToWriterThread,
-        IUiBuilderStopEvent
+        UiBuilderToWriterThread
 
     {
         public static IUiBuilderSetColors StartBuild() => new UiThreadBuilder();
         private IEnumerable<ISquareDrawable> _squareDrawables { get; set; }
-        private GamePlay _gamePlay { get; set; }
         public IUiBuilderDrawBoardConvert ColorSettings(Action setColor)
         {
             setColor();
             return this;
         }
-        public IUiBuilderStopEvent DrawBoardConvert(List<IGameSquare> squares)
+        public UiBuilderToWriterThread DrawBoardConvert(List<IGameSquare> squares)
         {
             var squareDraws = squares.Where(x => x.GetType() != typeof(BaseSquare)).Select(x => new SquareDrawable(x));
             var x = squareDraws.Select(x => x.MaxCoord()).Max(x => x.X);
@@ -37,11 +35,6 @@ namespace LudoConsole.UI.Controls
 
             return this;
         }
-        public UiBuilderToWriterThread StopEventFrom(GamePlay gamePlay)
-        {
-            _gamePlay = gamePlay;
-            return this;
-        }
-        public WriterThread ToWriterThread() => new WriterThread(_gamePlay, _squareDrawables);
+        public WriterThread ToWriterThread() => new WriterThread(_squareDrawables);
     }
 }

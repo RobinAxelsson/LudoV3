@@ -1,5 +1,6 @@
 ﻿using LudoConsole.Main;
 using LudoConsole.UI.Interfaces;
+using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace LudoConsole.UI.Controls
         private IEnumerable<ISquareDrawable> _squareDrawables { get; set; }
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
-        public WriterThread(GamePlay gamePlay, IEnumerable<ISquareDrawable> squareDrawables)
+        public WriterThread(IEnumerable<ISquareDrawable> squareDrawables)
         {
-            gamePlay.GameOverEvent += OnGameOver;
             _squareDrawables = squareDrawables;
+            Pawn.GameOverEvent += OnGameOver;
             _thread = new Thread(new ThreadStart(() =>
             {
                 while (IsRunning)
@@ -30,12 +31,11 @@ namespace LudoConsole.UI.Controls
             IsRunning = true;
             _thread.Start();
         }
-        public void OnGameOver(object source, EventArgs e)
+        public void OnGameOver()
         {
+            Console.ReadKey();
             IsRunning = false;
             _thread.Join();
-            ConsoleWriter.ClearScreen();
-            Console.WriteLine("Game Over"); //testmethod
             Console.ReadKey();
         }
     }

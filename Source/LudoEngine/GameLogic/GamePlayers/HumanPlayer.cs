@@ -10,26 +10,29 @@ namespace LudoConsole.Main
 {
     public class HumanPlayer : IGamePlayer
     {
-        public HumanPlayer(TeamColor color, Action<TeamColor, int, Action> displayDice, IController control)
+        public HumanPlayer(TeamColor color, IController control)
         {
             Color = color;
-            DisplayDice = displayDice;
             Pawns = Board.GetTeamPawns(color);
             Control = control;
         }
         public IController Control { get; set; }
-        private Action<TeamColor, int, Action> DisplayDice { get; set; }
+        public static event Action<HumanPlayer, int> HumanThrowEvent;
+        public static event Action<HumanPlayer> OnTakeOutTwoPossibleEvent;
         public List<Pawn> Pawns { get; set; }
         public TeamColor Color { get; set; }
         public void Play(IDice dice)
         {
             int result = dice.Roll();
             bool tookOutTwo = false;
-            DisplayDice?.Invoke(Color, result, Control.Throw);
+
+            HumanThrowEvent?.Invoke(this, result);
             var selectablePawns = GameRules.SelectablePawns(Color, result);
             if (selectablePawns.Count == 0) return;
 
-            var selected = Control.Select(selectablePawns, GameRules.CanTakeOutTwo(Color, result));
+            bool takeoutTwoIsOption = GameRules.CanTakeOutTwo(Color, result);
+            if (takeoutTwoIsOption) OnTakeOutTwoPossibleEvent?.Invoke(this);
+            var selected = Control.Select(selectablePawns, takeoutTwoIsOption);
 
             if(selected.Count == 2)
             {

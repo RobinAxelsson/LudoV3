@@ -24,8 +24,7 @@ namespace LudoEngine.Creation
         IGameBuilderNewGamePlay,
         IGameBuilderStartingColor,
         IGameBuilderLoadPlayers,
-        IGameBuilderSaveConfig,
-        IGameBuilderRunsWhile
+        IGameBuilderSaveConfig
     {
         private IController _control { get; set; }
         private IDice _dice { get; set; }
@@ -77,7 +76,7 @@ namespace LudoEngine.Creation
         {
             foreach (var color in _teamColors)
             {
-                _gamePlayers.Add(new HumanPlayer(color, _display.UpdateDiceRoll, _control));
+                _gamePlayers.Add(new HumanPlayer(color, _control));
             }
             //HumanColors = savePoints.Select(x => x.Color && x.PlayerType == 0).Distinct().ToList();
             //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
@@ -87,7 +86,7 @@ namespace LudoEngine.Creation
         {
             return this;
         }
-        public IGameBuilderRunsWhile StartingColor(TeamColor? color)
+        public IGameBuilderSaveConfig StartingColor(TeamColor? color)
         {
             if (color != null && _teamColors.Contains((TeamColor)color)) _first = (TeamColor)color;
             else _first = _teamColors[0];
@@ -98,7 +97,7 @@ namespace LudoEngine.Creation
         public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color)
         {
             AddColor(color);
-            _gamePlayers.Add(new HumanPlayer(color, _display.UpdateDiceRoll, _control));
+            _gamePlayers.Add(new HumanPlayer(color, _control));
             return this;
         }
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log = false)
@@ -106,19 +105,14 @@ namespace LudoEngine.Creation
             AddColor(color);
 
             if (log)
-                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll, new StephanLog(color)));
+                _gamePlayers.Add(new Stephan(color, new StephanLog(color)));
             else
-                _gamePlayers.Add(new Stephan(color, _display.UpdateDiceRoll));
+                _gamePlayers.Add(new Stephan(color));
             return this;
         }
         public IGameBuilderStartingColor SetUpPawns()
         {
             GameSetup.NewGame(Board.BoardSquares, _teamColors.ToArray());
-            return this;
-        }
-        public IGameBuilderSaveConfig GameRunsWhile(Func<bool> whileCondition)
-        {
-            _runsWhileCondtition = whileCondition;
             return this;
         }
         public IGameBuilderGamePlay DisableSaving() => this;
@@ -131,11 +125,8 @@ namespace LudoEngine.Creation
         public GamePlay ToGamePlay()
         {
             var firstPlayer = _gamePlayers.Find(x => x.Color == _first);
-            var gamePlay = new GamePlay(_gamePlayers, _dice, _runsWhileCondtition, firstPlayer);
-            if (_enableSaving)
-            {
-                gamePlay.SaveActions = (DatabaseManagement.SaveInit, DatabaseManagement.Save);
-            }
+            var gamePlay = new GamePlay(_gamePlayers, _dice, firstPlayer);
+            if (_enableSaving == true) DatabaseManagement.SaveInit(gamePlay);
             return gamePlay;
         }
     }

@@ -8,13 +8,8 @@ namespace LudoConsole.UI.Controls
     public class KeyboardControl : IController
     {
         public void Throw() => Console.ReadKey(true);
-        private Action<string> DisplayMessage { get; set; }
-        public KeyboardControl(Action<string> displayMessage)
-        {
-            DisplayMessage = displayMessage;
-        }
         private void DeselectAll(List<Pawn> pawns) => pawns.ForEach(x => x.IsSelected = false);
-        public List<Pawn> Select(List<Pawn> pawns, bool takeTwo)
+        public List<Pawn> Select(List<Pawn> pawns, bool takeTwoIsOption)
         {
             var key = new ConsoleKeyInfo().Key;
             var outPawns = new List<Pawn>();
@@ -24,9 +19,8 @@ namespace LudoConsole.UI.Controls
 
             while (true)
             {
-                if (takeTwo == true)
+                if (takeTwoIsOption == true)
                 {
-                    DisplayMessage("'x' for two");
                     if (key == ConsoleKey.X)
                     {
                         var basePawns = pawns.FindAll(x => x.Based() == true);

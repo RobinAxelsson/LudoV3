@@ -18,9 +18,9 @@ namespace LudoEngine.DbModel
         private static GamePlay _gamePlay { get; set; }
         public static void SaveInit(GamePlay gamePlay)
         {
-            _gamePlay = gamePlay;
             SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
             SaveThread.IsBackground = true;
+            GamePlay.OnPlayerEndsRoundEvent += Save;
         }
         public static void Save()
         {
