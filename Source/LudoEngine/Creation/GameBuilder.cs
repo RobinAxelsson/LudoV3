@@ -30,9 +30,9 @@ namespace LudoEngine.Creation
         private IDice _dice { get; set; }
         private IInfoDisplay _display { get; set; }
         private List<TeamColor> _teamColors { get; set; } = new();
+        private List<PawnSavePoint> _pawnSavePoints { get; set; } = new();
         private TeamColor _first { get; set; }
         private List<IGamePlayer> _gamePlayers { get; set; } = new();
-        private Func<bool> _runsWhileCondtition { get; set; }
         private bool _enableSaving { get; set; }
         private void AddColor(TeamColor color)
         {
@@ -67,19 +67,25 @@ namespace LudoEngine.Creation
         public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints)
         {
             GameSetup.LoadSavedPawns(savePoints);
-            _teamColors = savePoints.Select(x => x.Color).Distinct().ToList();
-            //HumanColors = savePoints.Select(x => x.Color && x.PlayerType == 0).Distinct().ToList();
-            //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
+            _pawnSavePoints = savePoints;
+            
             return this;
         }
         public IGameBuilderStartingColor LoadPlayers()
         {
-            foreach (var color in _teamColors)
+            var colorTypeList = _pawnSavePoints.Select(x => (x.Color, x.PlayerType)).Distinct().ToList();
+
+            foreach (var colorType in colorTypeList)
             {
-                _gamePlayers.Add(new HumanPlayer(color, _control));
+                if (colorType.PlayerType == 0)
+                {
+                    AddHumanPlayer(colorType.Color);
+                }
+                if (colorType.PlayerType == 1)
+                {
+                    AddAIPlayer(colorType.Color);
+                }
             }
-            //HumanColors = savePoints.Select(x => x.Color && x.PlayerType == 0).Distinct().ToList();
-            //AiColors = savePoints.Select(x => x.Color && x.PlayerType == 1).Distinct().ToList();
             return this;
         }
         public IGameBuilderNewGame NewGame()
