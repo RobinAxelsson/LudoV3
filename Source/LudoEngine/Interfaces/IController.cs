@@ -1,11 +1,14 @@
-﻿using LudoEngine.Models;
-using System.Collections.Generic;
+﻿using System;
 
-namespace LudoEngine.GameLogic.Interfaces
+namespace LudoEngine.Interfaces
 {
     public interface IController
     {
-        public void Throw();
-        public List<Pawn> Select(List<Pawn> pawns, bool takeTwo);
+        public void Activate();
+
+        public event Action SelectionUpEvent;
+        public event Action SelectionDownEvent;
+        public event Action TakeOutTwoPressEvent;
+        public event Action OnConfirmEvent;
     }
 }

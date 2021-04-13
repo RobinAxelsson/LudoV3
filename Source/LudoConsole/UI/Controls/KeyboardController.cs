@@ -1,13 +1,9 @@
-﻿using LudoEngine.GameLogic.Interfaces;
-using LudoEngine.Interfaces;
-using LudoEngine.Models;
+﻿using LudoEngine.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace LudoConsole.UI.Controls
 {
-    public class KeyboardEventController : IEventController
+    public class KeyboardController : IController
     {
         public event Action SelectionUpEvent;
         public event Action SelectionDownEvent;
@@ -16,7 +12,7 @@ namespace LudoConsole.UI.Controls
 
         public void Activate()
         {
-            var key = new ConsoleKeyInfo().Key;
+            var key = Console.ReadKey(true).Key;
             if (key == ConsoleKey.X) TakeOutTwoPressEvent?.Invoke();
             if (key == ConsoleKey.Enter) OnConfirmEvent?.Invoke();
             if (key == ConsoleKey.UpArrow || key == ConsoleKey.RightArrow) SelectionUpEvent?.Invoke();

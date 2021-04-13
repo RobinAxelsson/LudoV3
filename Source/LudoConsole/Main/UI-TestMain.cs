@@ -29,26 +29,24 @@ namespace LudoConsole.Main
         }
         public static void setupNoSave()
         {
-            var builder = GameBuilder.StartBuild()
+            var game = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new RiggedDice(new int[] { 6 }))
-                    .SetControl(ConsoleDefaults.KeyboardControl)
+                    .AddDice(new RiggedDice(new int[] { 1, 6, 2 }))
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .NewGame()
-                    .AddHumanPlayer(TeamColor.Blue)
-                    .AddAIPlayer(TeamColor.Green, false);
+                    .AddHumanPlayer(TeamColor.Blue, new KeyboardController())
+                    .AddHumanPlayer(TeamColor.Green, new KeyboardController())
+                    .SetUpPawns()
+                    .StartingColor(TeamColor.Green)
+                    .DisableSaving()
+                    .ToGamePlay();
 
-            var game = builder
-                  .SetUpPawns()
-                  .StartingColor(TeamColor.Blue)
-                  .EnableSavingToDb()
-                  .ToGamePlay();
             WriterThreadStart();
             game.Start();
         }
         private static void Main(string[] args)
         {
-            setupNoSave();
+            //setupNoSave();
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
 
@@ -58,20 +56,19 @@ namespace LudoConsole.Main
                 var builder = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
                     .AddDice(new RiggedDice(new int[] { 6 }))
-                    .SetControl(ConsoleDefaults.KeyboardControl)
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .NewGame();
 
                 var humanColors = Menu.humanColor;
                 var aiColors = Menu.aiColor;
 
-                humanColors.ForEach(x => builder.AddHumanPlayer(x));
+                humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
                 aiColors.ForEach(x => builder.AddAIPlayer(x, true));
 
                 var game = builder
                       .SetUpPawns()
                       .StartingColor(TeamColor.Blue)
-                      .EnableSavingToDb()
+                      .DisableSaving()
                       .ToGamePlay();
 
 
@@ -84,13 +81,12 @@ namespace LudoConsole.Main
                 var loadGame = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
                     .AddDice(new Dice(1, 6))
-                    .SetControl(ConsoleDefaults.KeyboardControl)
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .LoadGame()
                     .LoadPawns(StageSaving.TeamPosition)
-                    .LoadPlayers()
+                    .LoadPlayers(ConsoleDefaults.KeyboardControl)
                     .StartingColor(StageSaving.Game.CurrentTurn)
-                    .EnableSavingToDb()
+                    .DisableSaving()
                     .ToGamePlay();
 
                 WriterThreadStart();

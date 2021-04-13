@@ -2,50 +2,96 @@
 using System.Collections.Generic;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 
 namespace LudoEngine.GameLogic.GamePlayers
 {
     public class HumanPlayer : IGamePlayer
     {
-        public HumanPlayer(TeamColor color, IController control)
-        {
-            Color = color;
-            Pawns = Board.GetTeamPawns(color);
-            Control = control;
-        }
-        public IController Control { get; set; }
-        public static event Action<HumanPlayer, int> HumanThrowEvent;
-        public static event Action<HumanPlayer> OnTakeOutTwoPossibleEvent;
-        public List<Pawn> Pawns { get; set; }
+        private IController Controller { get; set; }
+        public static event Action<IGamePlayer, int> HumanThrowEvent;
+        public static event Action<IGamePlayer> OnTakeOutTwoPossibleEvent;
+        public static event Action<IGamePlayer> OnMovedSixEvent;
         public TeamColor Color { get; set; }
+        private int _result { get; set; }
+        private List<Pawn> _pawnsToMove { get; set; } = new();
+        private int _pawnIndex { get; set; }
+        private IDice _dice { get; set; }
+        public HumanPlayer(TeamColor color, IController eventController)
+        {
+            Controller = eventController;
+            Color = color;
+            Controller.SelectionDownEvent += ChangeSelectionDown;
+            Controller.SelectionUpEvent += ChangeSelectionUp;
+            Controller.OnConfirmEvent += MoveSelectedPawn;
+        }
         public void Play(IDice dice)
         {
+            int pawnIndex = 0;
             int result = dice.Roll();
-            bool tookOutTwo = false;
+            var pawnsToMove = GameRules.SelectablePawns(Color,result);
 
-            HumanThrowEvent?.Invoke(this, result);
-            var selectablePawns = GameRules.SelectablePawns(Color, result);
-            if (selectablePawns.Count == 0) return;
+            _dice = dice;
+            _pawnIndex = pawnIndex;
+            _result = result;
+            _pawnsToMove = pawnsToMove;
 
-            bool takeoutTwoIsOption = GameRules.CanTakeOutTwo(Color, result);
-            if (takeoutTwoIsOption) OnTakeOutTwoPossibleEvent?.Invoke(this);
-            var selected = Control.Select(selectablePawns, takeoutTwoIsOption);
+            HumanThrowEvent?.Invoke(this, _result);
+            if (pawnsToMove.Count == 0) return;
+            pawnsToMove[0].IsSelected = true;
 
-            if(selected.Count == 2)
+            if (GameRules.CanTakeOutTwo(Color, _result))
             {
-                selected[0].Move(1);
-                selected[1].Move(1); //0, 1 on selected
-                tookOutTwo = true;
+                OnTakeOutTwoPossibleEvent?.Invoke(this);
+                Controller.TakeOutTwoPressEvent += TakeOutTwo;
+                Controller.OnConfirmEvent += PlayAgain;
             }
-            if (selected.Count == 1)
-            {
-               selected[0].Move(result);
-            }
-
-            if (result == 6 && tookOutTwo == false) Play(dice);
+            Controller.Activate();
         }
+        private void PlayAgain()
+        {
+            Controller.OnConfirmEvent -= PlayAgain;
+            Play(_dice);
+        }
+
+        private void MoveSelectedPawn()
+        {
+            _pawnsToMove[_pawnIndex].Move(_result);
+        }
+        private void ChangeSelectionUp()
+        {
+            var tempIndex = _pawnIndex + 1;
+            if (tempIndex > _pawnsToMove.Count - 1)
+                tempIndex = 0;
+
+            _pawnIndex = tempIndex;
+            Select(tempIndex);
+            Controller.Activate();
+        }
+        private void ChangeSelectionDown()
+        {
+            var tempIndex = _pawnIndex - 1;
+            if (tempIndex < 0)
+                tempIndex = _pawnsToMove.Count - 1;
+
+            _pawnIndex = tempIndex;
+            Select(tempIndex);
+            Controller.Activate();
+        }
+        private void Select(int pawnIndex)
+        {
+            DeselectAll();
+            _pawnsToMove[pawnIndex].IsSelected = true;
+        }
+        private void TakeOutTwo()
+        {
+            for (int i = 0; i < 2; i++)
+                Board.PawnsInBase(Color)[0].Move(1);
+            Controller.TakeOutTwoPressEvent -= TakeOutTwo;
+        }
+
+        private void DeselectAll() => _pawnsToMove.ForEach(x => x.IsSelected = false);
     }
 }
