@@ -29,9 +29,6 @@ namespace LudoEngine.GameLogic.GamePlayers
             LoggerMessage = "";
         }
 
-
-
-
         public void Play(IDice dice)
         {
             var diceRoll = dice.Roll();

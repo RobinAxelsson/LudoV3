@@ -67,6 +67,7 @@ namespace LudoConsole.UI.Controls
 
             for (int i = 0; i < countedMemory; i++)
             {
+                if (countedMemory < ScreenMemory.Count) countedMemory = ScreenMemory.Count;
                 var drawableCompare = ScreenMemory[i];
                 if (drawable.IsSame(drawableCompare))
                     return true;

@@ -34,14 +34,14 @@ namespace LudoConsole.UI.Controls
         public void LoserMessage(TeamColor loser)
         {
             Update($"{loser} lost it all!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageOnSafeZone(Pawn pawn)
         {
             Update($"Close one {pawn.Color}!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Update($"Pawn is safe.");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageGameOver()
         {
@@ -50,28 +50,28 @@ namespace LudoConsole.UI.Controls
         public void MessageOnGoal(Pawn pawn, int pawnsInPlay)
         {
             Update($"{pawn.Color} scored!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Update($"{pawnsInPlay} to go...");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageOnEradication(Pawn pawn, TeamColor enemyColor, int eradicatedEnemies)
         {
             Update($"{pawn.Color} kills...");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Update($"{eradicatedEnemies} {enemyColor}!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageOnBounce(Pawn pawn)
         {
             Update($"Bad luck {pawn.Color}!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageOnAllTeamPawnsOut(Pawn pawn)
         {
             Update($"Nice {pawn.Color}!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Update($"All Scored!");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void MessageTakeOutTwoPossible(HumanPlayer player)
         {
@@ -84,16 +84,16 @@ namespace LudoConsole.UI.Controls
             Update($"{player.Color} throws...");
             Thread.Sleep(1000);
             Update($"{player.Color} got a {result}");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void UpdateDiceRoll(Stephan stephan, int diceRoll)
         {
             Update($"{stephan.Color}, throw dice");
-            Thread.Sleep(4000);
+            Thread.Sleep(1000);
             Update($"{stephan.Color} throws...");
             Thread.Sleep(1000);
             Update($"{stephan.Color} got a {diceRoll}");
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
         }
         public void Update(string newString)
         {

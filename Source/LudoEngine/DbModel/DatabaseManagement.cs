@@ -23,11 +23,11 @@ namespace LudoEngine.DbModel
             SaveThread.IsBackground = true;
             GamePlay.OnPlayerEndsRoundEvent += Save;
         }
-        public static void Save()
+        public static void Save(GamePlay gamePlay)
         {
             if (!SaveThread.IsAlive)
             {
-                SaveThread = new Thread(new ThreadStart(() => save(_gamePlay)));
+                SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
                 SaveThread.Start();
             }
         }
@@ -190,7 +190,7 @@ namespace LudoEngine.DbModel
             {
                 foreach (var pawn in pawns)
                 {
-                    Type playerType = _gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
+                    Type playerType = gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
                     int iPlayerType = -1;
                     if (playerType == typeof(HumanPlayer)) iPlayerType = 0;
                     if(playerType == typeof(Stephan)) iPlayerType = 1;
@@ -208,7 +208,7 @@ namespace LudoEngine.DbModel
                 .SingleOrDefault();
             if (result != null)
             {
-                result.CurrentTurn = _gamePlay.NextPlayerForSave();
+                result.CurrentTurn = gamePlay.NextPlayerForSave();
                 result.LastSaved = DateTime.Now;
                 db.Games.Attach(result);
                 db.Entry(result).State = EntityState.Modified;

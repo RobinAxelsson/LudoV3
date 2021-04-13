@@ -19,7 +19,7 @@ namespace LudoConsole.Main
         }
 
         public static event Action<GamePlay> GameStartEvent;
-        public static event Action OnPlayerEndsRoundEvent;
+        public static event Action <GamePlay>OnPlayerEndsRoundEvent;
         public void Start()
         {
             GameStartEvent?.Invoke(this);
@@ -27,7 +27,7 @@ namespace LudoConsole.Main
             {
                 var test = CurrentPlayer();
                 CurrentPlayer().Play(dice);
-                OnPlayerEndsRoundEvent?.Invoke();
+                OnPlayerEndsRoundEvent?.Invoke(this);
                 NextPlayer();
             }
         }
