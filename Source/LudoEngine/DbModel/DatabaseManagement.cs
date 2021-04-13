@@ -111,12 +111,12 @@ namespace LudoEngine.DbModel
             }
         }
 
-        public static List<PawnSavePoint> GetPawnPositionsInGame(Game gameId)
+        public static List<PawnSavePoint> GetPawnPositionsInGame(Game game)
         {
             using var db = new LudoContext();
 
             var savePoints = db.PawnSavePoints
-                .Where(x => x.GameId == gameId.Id);
+                .Where(x => x.Game == game);
 
             List<PawnSavePoint> savepointList = new();
 
@@ -125,7 +125,7 @@ namespace LudoEngine.DbModel
                 PawnSavePoint savepoint = new PawnSavePoint()
                 {
                     Id = item.Id,
-                    GameId = item.GameId,
+                    Game = item.Game,
                     Color = item.Color,
                     PlayerType = item.PlayerType,
                     XPosition = item.XPosition,
@@ -170,10 +170,10 @@ namespace LudoEngine.DbModel
             using var db = new LudoContext();
 
             
-            if (db.PawnSavePoints.Any(x => x.Color == currentTeam && x.GameId == game.Id))
+            if (db.PawnSavePoints.Any(x => x.Color == currentTeam && x.Game == game))
             {
                 var querry = db.PawnSavePoints
-                .Where(x => x.Color == currentTeam && x.GameId == game.Id);
+                .Where(x => x.Color == currentTeam && x.Game == game);
 
                 Pawn[] pawnsArray = pawns.ToArray();
                 int i = 0;
@@ -182,7 +182,7 @@ namespace LudoEngine.DbModel
                     dbData.Color = pawnsArray[i].Color;
                     dbData.XPosition = pawnsArray[i].CurrentSquare().BoardX;
                     dbData.YPosition = pawnsArray[i].CurrentSquare().BoardY;
-                    dbData.GameId = game.Id;
+                    dbData.Game = game;
                     i++;
                 }
             }
@@ -196,7 +196,7 @@ namespace LudoEngine.DbModel
                     if(playerType == typeof(Stephan)) iPlayerType = 1;
                     if (iPlayerType == -1) throw new Exception("Playertype is not available");
 
-                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, GameId = game.Id, PlayerType = iPlayerType};
+                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, Game = game, PlayerType = iPlayerType};
 
                     db.Update(pawnPosition);
                 }
