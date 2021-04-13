@@ -5,6 +5,7 @@ using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
 using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace LudoEngine.Creation
     public class GameBuilder :
         IGameBuilderMapBoard,
         IGameBuilderAddDice,
-        IGameBuilderSetControl,
         IGameBuilderSetInfoDisplay,
         IGameBuilderLoadOrNew,
         IGameBuilderNewGame,
@@ -26,7 +26,6 @@ namespace LudoEngine.Creation
         IGameBuilderLoadPlayers,
         IGameBuilderSaveConfig
     {
-        private IController _control { get; set; }
         private IDice _dice { get; set; }
         private List<TeamColor> _teamColors { get; set; } = new();
         private List<PawnSavePoint> _pawnSavePoints { get; set; } = new();
@@ -44,14 +43,9 @@ namespace LudoEngine.Creation
             Board.BoardSquares = BoardOrm.Map(filePath);
             return this;
         }
-        public IGameBuilderSetControl AddDice(IDice dice)
+        public IGameBuilderSetInfoDisplay AddDice(IDice dice)
         {
             _dice = dice;
-            return this;
-        }
-        public IGameBuilderSetInfoDisplay SetControl(IController control)
-        {
-            _control = control;
             return this;
         }
         public IGameBuilderLoadOrNew SetInfoDisplay(IInfoDisplay infoDisplay)
@@ -69,7 +63,7 @@ namespace LudoEngine.Creation
             
             return this;
         }
-        public IGameBuilderStartingColor LoadPlayers()
+        public IGameBuilderStartingColor LoadPlayers(Func<IController> humanController)
         {
             var colorTypeList = _pawnSavePoints.Select(x => (x.Color, x.PlayerType)).Distinct().ToList();
 
@@ -77,7 +71,7 @@ namespace LudoEngine.Creation
             {
                 if (colorType.PlayerType == 0)
                 {
-                    AddHumanPlayer(colorType.Color);
+                    AddHumanPlayer(colorType.Color, humanController());
                 }
                 if (colorType.PlayerType == 1)
                 {
@@ -86,6 +80,12 @@ namespace LudoEngine.Creation
             }
             return this;
         }
+
+        private void AddHumanPlayer(TeamColor color, object consoleDefaults)
+        {
+            throw new NotImplementedException();
+        }
+
         public IGameBuilderNewGame NewGame()
         {
             return this;
@@ -98,10 +98,10 @@ namespace LudoEngine.Creation
 
             return this;
         }
-        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color)
+        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color, IController control)
         {
             AddColor(color);
-            _gamePlayers.Add(new HumanPlayer(color, _control));
+            _gamePlayers.Add(new HumanPlayer(color,  control));
             return this;
         }
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log = false)

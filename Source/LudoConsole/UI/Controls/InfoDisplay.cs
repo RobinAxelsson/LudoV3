@@ -73,11 +73,11 @@ namespace LudoConsole.UI.Controls
             Update($"All Scored!");
             Thread.Sleep(1000);
         }
-        public void MessageTakeOutTwoPossible(HumanPlayer player)
+        public void MessageTakeOutTwoPossible(IGamePlayer player)
         {
             Update("'x' to takeout two.");
         }
-        public void UpdateDiceRoll(HumanPlayer player, int result)
+        public void UpdateDiceRoll(IGamePlayer player, int result)
         {
             Update($"{player.Color}, throw dice");
             Console.ReadKey(true);

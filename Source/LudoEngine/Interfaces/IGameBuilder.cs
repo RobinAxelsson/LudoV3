@@ -1,6 +1,7 @@
 ﻿using LudoConsole.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,7 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderAddDice
     {
-        public IGameBuilderSetControl AddDice(IDice dice);
-    }
-    public interface IGameBuilderSetControl
-    {
-        public IGameBuilderSetInfoDisplay SetControl(IController control);
+        public IGameBuilderSetInfoDisplay AddDice(IDice dice);
     }
     public interface IGameBuilderSetInfoDisplay
     {
@@ -34,19 +31,19 @@ namespace LudoEngine.Creation
     }
     public interface IGameBuilderNewGame
     {
-        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
         public IGameBuilderStartingColor SetUpPawns();
+        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color, IController control);
     }
     public interface IGameBuilderLoadPlayers
     {
-        public IGameBuilderStartingColor LoadPlayers();
+        public IGameBuilderStartingColor LoadPlayers(Func<IController> humanController);
     }
  
     public interface IGameBuilderNewGamePlay
     {
-        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color);
         public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log);
+        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color, IController control);
         public IGameBuilderStartingColor SetUpPawns();
     }
     public interface IGameBuilderStartingColor
