@@ -6,7 +6,7 @@ using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Interfaces;
 using LudoEngine.Models;
 
-namespace LudoConsole.Main
+namespace LudoEngine.GameLogic.GamePlayers
 {
     public class HumanPlayer : IGamePlayer
     {
@@ -37,7 +37,7 @@ namespace LudoConsole.Main
             if(selected.Count == 2)
             {
                 selected[0].Move(1);
-                selected[1].Move(1);
+                selected[0].Move(1);
                 tookOutTwo = true;
             }
             if (selected.Count == 1)

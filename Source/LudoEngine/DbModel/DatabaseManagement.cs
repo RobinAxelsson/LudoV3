@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using LudoEngine.BoardUnits.Main;
 using System.Threading;
 using LudoConsole.Main;
+using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoEngine.DbModel
 {
@@ -18,15 +19,16 @@ namespace LudoEngine.DbModel
         private static GamePlay _gamePlay { get; set; }
         public static void SaveInit(GamePlay gamePlay)
         {
-            SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
+            _gamePlay = gamePlay;
+            SaveThread = new Thread(new ThreadStart(() => save(gamePlay.CurrentPlayer())));
             SaveThread.IsBackground = true;
             GamePlay.OnPlayerEndsRoundEvent += Save;
         }
-        public static void Save()
+        public static void Save(IGamePlayer newRoundPlayer)
         {
             if (!SaveThread.IsAlive)
             {
-                SaveThread = new Thread(new ThreadStart(() => save(_gamePlay)));
+                SaveThread = new Thread(new ThreadStart(() => save(newRoundPlayer)));
                 SaveThread.Start();
             }
         }
@@ -163,9 +165,9 @@ namespace LudoEngine.DbModel
                      ).ToList();
         }
 
-        private static void save(GamePlay gamePlay)
+        private static void save(IGamePlayer newRoundPlayer)
         {
-            TeamColor currentTeam = gamePlay.CurrentPlayer().Color;
+            TeamColor currentTeam = _gamePlay.CurrentPlayer().Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
             List<Pawn> pawns = StageSaving.Pawns;
@@ -195,15 +197,13 @@ namespace LudoEngine.DbModel
                 .SingleOrDefault();
             if (result != null)
             {
-                result.CurrentTurn = gamePlay.CachedPlayer();
+                result.CurrentTurn = newRoundPlayer.Color;
                 result.LastSaved = DateTime.Now;
                 db.Games.Attach(result);
                 db.Entry(result).State = EntityState.Modified;
                 db.SaveChanges();
             }
         }
-
-
     }
 
     public static class StageSaving {

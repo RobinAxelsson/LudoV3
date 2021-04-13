@@ -18,15 +18,15 @@ namespace LudoConsole.Main
         }
 
         public static event Action<GamePlay> GameStartEvent;
-        public static event Action OnPlayerEndsRoundEvent;
+        public static event Action<IGamePlayer> OnPlayerEndsRoundEvent;
         public void Start()
         {
             GameStartEvent?.Invoke(this);
             while (true)
             {
                 CurrentPlayer().Play(dice);
-                OnPlayerEndsRoundEvent?.Invoke();
-                NextPlayer();
+                var newRoundPlayer = NextPlayer();
+                OnPlayerEndsRoundEvent?.Invoke(newRoundPlayer);
             }
         }
 
@@ -40,16 +40,11 @@ namespace LudoConsole.Main
         public List<IGamePlayer> Players { get; set; }
         private int iCurrentTeam { get; set; }
         public void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
-        public void NextPlayer()
+        public IGamePlayer NextPlayer()
         {
             iCurrentTeam++;
             iCurrentTeam = iCurrentTeam >= Players.Count ? 0 : iCurrentTeam;
-        }
-        public TeamColor CachedPlayer()
-        {
-            int i = iCurrentTeam + 1;
-            i = i >= Players.Count ? 0 : i;
-            return OrderOfTeams[i];
+            return CurrentPlayer();
         }
         public IGamePlayer CurrentPlayer() => Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
 

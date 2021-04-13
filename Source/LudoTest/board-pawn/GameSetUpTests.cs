@@ -21,7 +21,7 @@ namespace LudoTest.board_pawn
                 YPosition = 4,
                 Color = TeamColor.Blue
             };
-            var loaded = GameBuilder.StartBuild()
+            GameBuilder.StartBuild()
                 .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
                 .AddDice(new Dice(1, 6))
                 .SetControl(null)
@@ -77,7 +77,6 @@ namespace LudoTest.board_pawn
             .LoadPawns(new List<PawnSavePoint> { savePoint })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
-            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
             .DisableSaving()
             .ToGamePlay();
 
@@ -121,7 +120,6 @@ namespace LudoTest.board_pawn
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
-            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
             .DisableSaving()
             .ToGamePlay();
 
