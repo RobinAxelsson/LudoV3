@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
 
@@ -24,6 +25,7 @@ namespace LudoConsole.Main
             GameStartEvent?.Invoke(this);
             while (true)
             {
+                var test = CurrentPlayer();
                 CurrentPlayer().Play(dice);
                 OnPlayerEndsRoundEvent?.Invoke();
                 NextPlayer();
@@ -42,16 +44,19 @@ namespace LudoConsole.Main
         public void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
         public void NextPlayer()
         {
+            StageSaving.CurrentTeam = iCurrentTeam;
             iCurrentTeam++;
             iCurrentTeam = iCurrentTeam >= Players.Count ? 0 : iCurrentTeam;
         }
-        public TeamColor CachedPlayer()
+        public TeamColor NextPlayerForSave()
         {
             int i = iCurrentTeam + 1;
             i = i >= Players.Count ? 0 : i;
             return OrderOfTeams[i];
         }
         public IGamePlayer CurrentPlayer() => Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
+        public IGamePlayer CurrentPlayer(bool stageSaving) => Players.Find(x => x.Color == OrderOfTeams[StageSaving.CurrentTeam]);
+
 
     }
 }

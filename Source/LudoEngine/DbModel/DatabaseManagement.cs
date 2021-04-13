@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using LudoEngine.BoardUnits.Main;
 using System.Threading;
 using LudoConsole.Main;
+using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine.DbModel
 {
@@ -52,26 +53,6 @@ namespace LudoEngine.DbModel
             db.SaveChanges();
         }
 
-        public static void SavePawn(TeamColor color, int xPosition, int yPosition, Game gameID)
-        {
-            using var db = new LudoContext();
-
-            var pawn = new PawnSavePoint { Color = color, XPosition = xPosition, YPosition = yPosition, GameId = gameID.Id };
-
-            db.Update(pawn);
-            db.SaveChanges();
-        }
-
-        public static void SaveGame(TeamColor currentTurn, int firstplace, int secondPlace, int thirdPlace, int fourthPlace)
-        {
-            using var db = new LudoContext();
-
-            var game = new Game { CurrentTurn = currentTurn, FirstPlace = firstplace, SecondPlace = secondPlace, ThirdPlace = thirdPlace, FourthPlace = fourthPlace };
-
-            db.Add(game);
-            db.SaveChanges();
-        }
-
         public static void SaveAndGetGame(TeamColor currentTurn)
         {
             using var db = new LudoContext();
@@ -108,7 +89,6 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-
             var player = db.Players;
             var gamePlayers = db.GamePlayers;
 
@@ -131,20 +111,28 @@ namespace LudoEngine.DbModel
             }
         }
 
-        public static List<(TeamColor color, (int X, int Y) position)> GetPawnPositionsInGame(Game gameId)
+        public static List<PawnSavePoint> GetPawnPositionsInGame(Game gameId)
         {
             using var db = new LudoContext();
 
             var savePoints = db.PawnSavePoints
                 .Where(x => x.GameId == gameId.Id);
 
-            List<(TeamColor color, (int X, int Y) position)> savepointList = new();
+            List<PawnSavePoint> savepointList = new();
 
             foreach (var item in savePoints)
             {
-                savepointList.Add((item.Color, (item.XPosition, item.YPosition)));
+                PawnSavePoint savepoint = new PawnSavePoint()
+                {
+                    Id = item.Id,
+                    GameId = item.GameId,
+                    Color = item.Color,
+                    PlayerType = item.PlayerType,
+                    XPosition = item.XPosition,
+                    YPosition = item.YPosition
+                };
+                savepointList.Add(savepoint);
             }
-
             return savepointList;
         }
 
@@ -169,51 +157,64 @@ namespace LudoEngine.DbModel
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
             List<Pawn> pawns = StageSaving.Pawns;
-            Game game = StageSaving.Game;
+            Game game = new();
+            if (StageSaving.Game != null)
+            {
+                game = StageSaving.Game;
+            }
+            else
+            {
+                SaveAndGetGame(currentTeam);
+                game = StageSaving.Game;
+            }
             using var db = new LudoContext();
 
-            foreach (var item in pawns)
+            
+            if (db.PawnSavePoints.Any(x => x.Color == currentTeam && x.GameId == game.Id))
             {
                 var querry = db.PawnSavePoints
-                    .Where(x => x.GameId == game.Id && x.PawnId == item.Id && x.Color == item.Color)
-                    .FirstOrDefault();
-                if (querry != null)
+                .Where(x => x.Color == currentTeam && x.GameId == game.Id);
+
+                Pawn[] pawnsArray = pawns.ToArray();
+                int i = 0;
+                foreach (var dbData in querry)
                 {
-                    querry.XPosition = item.CurrentSquare().BoardX;
-                    querry.YPosition = item.CurrentSquare().BoardY;
+                    dbData.Color = pawnsArray[i].Color;
+                    dbData.XPosition = pawnsArray[i].CurrentSquare().BoardX;
+                    dbData.YPosition = pawnsArray[i].CurrentSquare().BoardY;
+                    dbData.GameId = game.Id;
+                    i++;
                 }
-                else
-                {
-                    var pawnPosition = new PawnSavePoint { PawnId = item.Id, Color = item.Color, XPosition = item.CurrentSquare().BoardX, YPosition = item.CurrentSquare().BoardY, GameId = game.Id };
-                    db.Add(pawnPosition);
-                }
-            db.SaveChanges();
             }
+            else
+            {
+                foreach (var pawn in pawns)
+                {
+                    Type playerType = _gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
+                    int iPlayerType = -1;
+                    if (playerType == typeof(HumanPlayer)) iPlayerType = 0;
+                    if(playerType == typeof(Stephan)) iPlayerType = 1;
+                    if (iPlayerType == -1) throw new Exception("Playertype is not available");
+
+                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, GameId = game.Id, PlayerType = iPlayerType};
+
+                    db.Update(pawnPosition);
+                }
+            }
+            db.SaveChanges();
 
             var result = db.Games
                 .Where(x => x.Id == game.Id)
                 .SingleOrDefault();
             if (result != null)
             {
-                result.CurrentTurn = gamePlay.CachedPlayer();
+                result.CurrentTurn = _gamePlay.NextPlayerForSave();
                 result.LastSaved = DateTime.Now;
                 db.Games.Attach(result);
                 db.Entry(result).State = EntityState.Modified;
                 db.SaveChanges();
             }
         }
-
-
-    }
-
-    public static class StageSaving {
-        public static List<Pawn> Pawns { get; set;}
-
-        public static Game Game { get; set; }
-
-        public static List<Player> Players { get; set; }
-
-        public static List<(TeamColor color, (int X, int Y) position)> TeamPosition { get; set; }
     }
 
 }

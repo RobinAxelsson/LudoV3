@@ -7,6 +7,7 @@ using LudoEngine.GameLogic.Dice;
 using LudoEngine.Creation;
 using System.Collections.Generic;
 using LudoConsole.UI.Controls;
+using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoTest.board_pawn
 {
@@ -66,7 +67,7 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColor.Blue
+                Color = TeamColor.Blue,
             };
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
@@ -128,6 +129,43 @@ namespace LudoTest.board_pawn
             var players = game.Players;
 
             Assert.True(players.Count == 3);
+        }
+        [Fact]
+        public void Load1HumanPlayer1Ai_AssertTrue()
+        {
+            var savePointHuman = new PawnSavePoint()
+            {
+                XPosition = 4,
+                YPosition = 4,
+                Color = TeamColor.Blue,
+                PlayerType = 0
+                
+            };
+            var savePointStephan = new PawnSavePoint()
+            {
+                XPosition = 4,
+                YPosition = 3,
+                Color = TeamColor.Red,
+                PlayerType = 1
+
+            };
+            
+            var game = GameBuilder.StartBuild()
+            .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
+            .AddDice(new Dice(1, 6))
+            .SetControl(ConsoleDefaults.KeyboardControl)
+            .SetInfoDisplay(ConsoleDefaults.display)
+            .LoadGame()
+            .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
+            .LoadPlayers()
+            .StartingColor(TeamColor.Blue)
+            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            .ToGamePlay();
+
+            var gamePlayers = game.Players;
+            var aiExists = game.Players.Exists(x => x is Stephan);
+
+            Assert.True(aiExists == true);
         }
 
     }
