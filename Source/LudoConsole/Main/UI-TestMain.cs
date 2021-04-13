@@ -20,10 +20,9 @@ namespace LudoConsole.Main
 
         private static void WriterThreadStart()
         {
-            var writerThread = UiBuilder.StartBuild()
+            var writerThread = UiThreadBuilder.StartBuild()
                 .ColorSettings(UiControl.SetDefault)
                 .DrawBoardConvert(Board.BoardSquares)
-                .LoopCondition(() => true)
                 .ToWriterThread();
 
             writerThread.Start();
@@ -52,34 +51,30 @@ namespace LudoConsole.Main
                 var game = builder
                       .SetUpPawns()
                       .StartingColor(TeamColor.Blue)
-                      .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+                      .EnableSavingToDb()
                       .ToGamePlay();
 
 
                 WriterThreadStart();
-                game.Start(saveEnabled: true);
+                game.Start();
+
             }
             else if (drawGameBoard == 1)
             {
-                Color = TeamColor.Red,
-                XPosition = 5,
-                YPosition = 0
-            };
-
-            var loadGame = GameBuilder.StartBuild()
-                .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new RiggedDice(new[] { 4 }))
-                .SetControl(ConsoleDefaults.KeyboardControl)
-                .SetInfoDisplay(ConsoleDefaults.display)
-                .LoadGame()
-                .LoadPawns(new List<PawnSavePoint> { startPoint, startPoint2 })
-                .LoadPlayers()
-                .StartingColor(TeamColor.Blue)
-                .DisableSaving()
-                .ToGamePlay();
+                var loadGame = GameBuilder.StartBuild()
+                    .MapBoard(@"LudoORM/Map/BoardMap.txt")
+                    .AddDice(new Dice(1, 6))
+                    .SetControl(ConsoleDefaults.KeyboardControl)
+                    .SetInfoDisplay(ConsoleDefaults.display)
+                    .LoadGame()
+                    .LoadPawns(StageSaving.TeamPosition)
+                    .LoadPlayers()
+                    .StartingColor(StageSaving.Game.CurrentTurn)
+                    .EnableSavingToDb()
+                    .ToGamePlay();
 
                 WriterThreadStart();
-                loadGame.Start(saveEnabled: true);
+                loadGame.Start();
             }
             else if (drawGameBoard == 2)
             {
@@ -90,13 +85,6 @@ namespace LudoConsole.Main
                 Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
                 Console.WriteLine();
             }
-            var writerThread = UiThreadBuilder.StartBuild()
-                .ColorSettings(UiControl.SetDefault)
-                .DrawBoardConvert(Board.BoardSquares)
-                .ToWriterThread();
-            
-            writerThread.Start();
-            loadGame.Start();
         }
     }
 }
