@@ -68,7 +68,7 @@ namespace LudoConsole.Main
                 var game = builder
                       .SetUpPawns()
                       .StartingColor(TeamColor.Blue)
-                      .DisableSaving()
+                      .EnableSavingToDb()
                       .ToGamePlay();
 
 
@@ -86,7 +86,7 @@ namespace LudoConsole.Main
                     .LoadPawns(StageSaving.TeamPosition)
                     .LoadPlayers(ConsoleDefaults.KeyboardControl)
                     .StartingColor(StageSaving.Game.CurrentTurn)
-                    .DisableSaving()
+                    .EnableSavingToDb()
                     .ToGamePlay();
 
                 WriterThreadStart();

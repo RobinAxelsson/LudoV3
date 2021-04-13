@@ -13,12 +13,12 @@ namespace LudoEngine.GameLogic.GamePlayers
         private IController Controller { get; set; }
         public static event Action<IGamePlayer, int> HumanThrowEvent;
         public static event Action<IGamePlayer> OnTakeOutTwoPossibleEvent;
-        public static event Action<IGamePlayer> OnMovedSixEvent;
         public TeamColor Color { get; set; }
         private int _result { get; set; }
         private List<Pawn> _pawnsToMove { get; set; } = new();
         private int _pawnIndex { get; set; }
         private IDice _dice { get; set; }
+        private bool _tookOutTwo { get; set; }
         public HumanPlayer(TeamColor color, IController eventController)
         {
             Controller = eventController;
@@ -46,9 +46,13 @@ namespace LudoEngine.GameLogic.GamePlayers
             {
                 OnTakeOutTwoPossibleEvent?.Invoke(this);
                 Controller.TakeOutTwoPressEvent += TakeOutTwo;
-                Controller.OnConfirmEvent += PlayAgain;
             }
             Controller.Activate();
+            if (_tookOutTwo == false && result == 6)
+            {
+                Controller.TakeOutTwoPressEvent -= TakeOutTwo;
+                Play(dice);
+            }
         }
         private void PlayAgain()
         {
@@ -85,10 +89,12 @@ namespace LudoEngine.GameLogic.GamePlayers
             DeselectAll();
             _pawnsToMove[pawnIndex].IsSelected = true;
         }
+
         private void TakeOutTwo()
         {
             for (int i = 0; i < 2; i++)
                 Board.PawnsInBase(Color)[0].Move(1);
+            _tookOutTwo = true;
             Controller.TakeOutTwoPressEvent -= TakeOutTwo;
         }
 
