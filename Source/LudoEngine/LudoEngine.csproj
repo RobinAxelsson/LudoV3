@@ -5,11 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="BoardUnits\Map\BoardMap.txt" />
+      <None Remove="LudoORM\Map\BoardMap.txt" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="BoardUnits\Map\BoardMap.txt">
+      <Content Include="LudoORM\Map\BoardMap.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
