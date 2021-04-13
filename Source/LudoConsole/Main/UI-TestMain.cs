@@ -60,20 +60,6 @@ namespace LudoConsole.Main
             }
             else if (drawGameBoard == 1)
             {
-                var startPoint = new PawnSavePoint()
-                {
-                    Color = TeamColor.Blue,
-                    XPosition = 4,
-                    YPosition = 0
-                };
-
-                var startPoint2 = new PawnSavePoint()
-                {
-                    Color = TeamColor.Red,
-                    XPosition = 5,
-                    YPosition = 0
-                };
-
                 var loadGame = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
                     .AddDice(new Dice(1, 6))

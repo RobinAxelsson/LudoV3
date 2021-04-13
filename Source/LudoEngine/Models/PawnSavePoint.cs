@@ -12,7 +12,7 @@ namespace LudoEngine.Models
         public int Id { get; set; }
         public int GameId { get; set; }
         public TeamColor Color { get; set; }
-        //int PlayerType
+        int PlayerType { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
     }

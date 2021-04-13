@@ -89,7 +89,6 @@ namespace LudoEngine.DbModel
         {
             using var db = new LudoContext();
 
-
             var player = db.Players;
             var gamePlayers = db.GamePlayers;
 
@@ -133,7 +132,6 @@ namespace LudoEngine.DbModel
                 };
                 savepointList.Add(savepoint);
             }
-
             return savepointList;
         }
 
@@ -154,7 +152,6 @@ namespace LudoEngine.DbModel
 
         private static void save()
         {
-            
             TeamColor currentTeam = _gamePlay.CurrentPlayer(stageSaving: true).Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
@@ -177,19 +174,15 @@ namespace LudoEngine.DbModel
                 var querry = db.PawnSavePoints
                 .Where(x => x.Color == currentTeam && x.GameId == game.Id);
 
-                var pawnsArray = pawns.ToArray();
+                Pawn[] pawnsArray = pawns.ToArray();
+                int i = 0;
                 foreach (var dbData in querry)
                 {
-                    for (int i = 0; i < 1; i++)
-                    {
-                        dbData.Color = pawnsArray[i].Color;
-                        dbData.XPosition = pawnsArray[i].CurrentSquare().BoardX;
-                        dbData.YPosition = pawnsArray[i].CurrentSquare().BoardY;
-                        dbData.GameId = game.Id;
-
-                        db.PawnSavePoints.Attach(dbData);
-                        db.Entry(dbData).State = EntityState.Modified;
-                    }
+                    dbData.Color = pawnsArray[i].Color;
+                    dbData.XPosition = pawnsArray[i].CurrentSquare().BoardX;
+                    dbData.YPosition = pawnsArray[i].CurrentSquare().BoardY;
+                    dbData.GameId = game.Id;
+                    i++;
                 }
             }
             else
@@ -201,25 +194,7 @@ namespace LudoEngine.DbModel
                     db.Update(pawnPosition);
                 }
             }
-
             db.SaveChanges();
-
-            //foreach (var item in pawns)
-            //{
-                //var querry = db.PawnSavePoints
-                //    .Where(x => x.GameId == game.Id && x.PawnId == item.Id && x.Color == item.Color)
-                //    .FirstOrDefault();
-                //if (querry != null)
-                //{
-                //    querry.XPosition = item.CurrentSquare().BoardX;
-                //    querry.YPosition = item.CurrentSquare().BoardY;
-                //}
-                //else
-                //{
-                //    var pawnPosition = new PawnSavePoint { PawnId = item.Id, Color = item.Color, XPosition = item.CurrentSquare().BoardX, YPosition = item.CurrentSquare().BoardY, GameId = game.Id };
-                //    db.Add(pawnPosition);
-                //}
-            //}
 
             var result = db.Games
                 .Where(x => x.Id == game.Id)
@@ -233,8 +208,6 @@ namespace LudoEngine.DbModel
                 db.SaveChanges();
             }
         }
-
-
     }
 
     public static class StageSaving {
