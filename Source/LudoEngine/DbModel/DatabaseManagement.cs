@@ -20,7 +20,7 @@ namespace LudoEngine.DbModel
         public static void SaveInit(GamePlay gamePlay)
         {
             _gamePlay = gamePlay;
-            SaveThread = new Thread(new ThreadStart(() => save(gamePlay.CurrentPlayer())));
+            SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
             SaveThread.IsBackground = true;
             GamePlay.OnPlayerEndsRoundEvent += Save;
         }
@@ -152,7 +152,7 @@ namespace LudoEngine.DbModel
                      ).ToList();
         }
 
-        private static void save(IGamePlayer newRoundPlayer)
+        private static void save(GamePlay gamePlay)
         {
             TeamColor currentTeam = _gamePlay.CurrentPlayer().Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);

@@ -27,8 +27,28 @@ namespace LudoConsole.Main
 
             writerThread.Start();
         }
+        public static void setupNoSave()
+        {
+            var builder = GameBuilder.StartBuild()
+                    .MapBoard(@"LudoORM/Map/BoardMap.txt")
+                    .AddDice(new RiggedDice(new int[] { 6 }))
+                    .SetControl(ConsoleDefaults.KeyboardControl)
+                    .SetInfoDisplay(ConsoleDefaults.display)
+                    .NewGame()
+                    .AddHumanPlayer(TeamColor.Blue)
+                    .AddAIPlayer(TeamColor.Green, false);
+
+            var game = builder
+                  .SetUpPawns()
+                  .StartingColor(TeamColor.Blue)
+                  .EnableSavingToDb()
+                  .ToGamePlay();
+            WriterThreadStart();
+            game.Start();
+        }
         private static void Main(string[] args)
         {
+            setupNoSave();
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
             var drawGameBoard = Menu.SelectedOptions(selected);
 
@@ -37,7 +57,7 @@ namespace LudoConsole.Main
 
                 var builder = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new RiggedDice(new int[] { 1, 3, 6 }))
+                    .AddDice(new RiggedDice(new int[] { 6 }))
                     .SetControl(ConsoleDefaults.KeyboardControl)
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .NewGame();

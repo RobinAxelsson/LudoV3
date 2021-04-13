@@ -37,7 +37,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             if(selected.Count == 2)
             {
                 selected[0].Move(1);
-                selected[0].Move(1);
+                selected[1].Move(1); //0, 1 on selected
                 tookOutTwo = true;
             }
             if (selected.Count == 1)
