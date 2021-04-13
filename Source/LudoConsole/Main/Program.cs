@@ -71,7 +71,11 @@ namespace LudoConsole.Main
                 Console.WriteLine("Use arrow keys to change beween the pawns");
                 Console.WriteLine("Enter is for selecting what pawn to play");
                 Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
-                Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+
+                selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
+                drawGameBoard = Menu.SelectedOptions(selected);
             }
         }
         private static void WriterThreadStart()

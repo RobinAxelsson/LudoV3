@@ -71,6 +71,7 @@ namespace LudoEngine.GameLogic
         {
             if (selected == 0)
             {
+                Console.Clear();
                 Console.WriteLine("Write a number between 1 and 4");
                 Console.Write("How many players are you: ");
                 int players = Convert.ToInt32(Console.ReadLine());
