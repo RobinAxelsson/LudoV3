@@ -12,13 +12,12 @@ namespace LudoEngine.GameLogic.GamePlayers
     public class Stephan : IGamePlayer
     {
         public TeamColor Color { get; set; }
-        private Action<TeamColor, int, Action> DisplayDice { get; set; }
+        public static event Action<Stephan, int> StephanThrowEvent;
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, Action<TeamColor, int, Action> displayDice, ILog log = null)
+        public Stephan(TeamColor color, ILog log = null)
         {
             Color = color;
-            DisplayDice = displayDice;
 
             if (log != null)
                 WriteLogging = log.Log;
@@ -38,7 +37,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             var diceRoll = dice.Roll();
             LoggerMessage = $"\n\n[Method: Play] New instance\n\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Rolled: {diceRoll}";
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculating play...";
-            DisplayDice?.Invoke(Color, diceRoll, () => Thread.Sleep(1000));
+            StephanThrowEvent?.Invoke(this, diceRoll);
             var result = CalculatePlay(diceRoll);
             if (result.takeout)
             {

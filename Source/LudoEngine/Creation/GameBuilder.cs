@@ -33,7 +33,6 @@ namespace LudoEngine.Creation
         private List<PawnSavePoint> _pawnSavePoints { get; set; } = new();
         private TeamColor _first { get; set; }
         private List<IGamePlayer> _gamePlayers { get; set; } = new();
-        private Func<bool> _runsWhileCondtition { get; set; }
         private bool _enableSaving { get; set; }
         private void AddColor(TeamColor color)
         {

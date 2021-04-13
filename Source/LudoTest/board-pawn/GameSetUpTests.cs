@@ -78,7 +78,6 @@ namespace LudoTest.board_pawn
             .LoadPawns(new List<PawnSavePoint> { savePoint })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
-            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
             .DisableSaving()
             .ToGamePlay();
 
@@ -122,7 +121,6 @@ namespace LudoTest.board_pawn
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
-            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
             .DisableSaving()
             .ToGamePlay();
 
@@ -159,7 +157,7 @@ namespace LudoTest.board_pawn
             .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
             .LoadPlayers()
             .StartingColor(TeamColor.Blue)
-            .GameRunsWhile(Board.IsMoreThenOneTeamLeft)
+            .EnableSavingToDb()
             .ToGamePlay();
 
             var gamePlayers = game.Players;
