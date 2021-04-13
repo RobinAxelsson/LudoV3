@@ -12,11 +12,13 @@ namespace LudoEngine.GameLogic.GamePlayers
     public class Stephan : IGamePlayer
     {
         public TeamColor Color { get; set; }
+        private Action<TeamColor, int, Action> DisplayDice { get; set; }
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, ILog log = null)
+        public Stephan(TeamColor color, Action<TeamColor, int, Action> displayDice, ILog log = null)
         {
             Color = color;
+            DisplayDice = displayDice;
 
             if (log != null)
                 WriteLogging = log.Log;
@@ -27,12 +29,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             WriteLogging(LoggerMessage);
             LoggerMessage = "";
         }
-        public void Play(IDice dice)
-        {
-            int diceRoll = dice.Roll();
-            
-            if(DisplayDice != null)
-            DisplayDice(Color, diceRoll, () => Thread.Sleep(1000));
+
 
 
 
@@ -52,7 +49,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                     var basePawns = Board.PawnsInBase(Color);
                     basePawns[0].Move(1);
                     basePawns[0].Move(1);
-                    
+
                 }
                 else if (result.takeoutCount == 1)
                 {
@@ -69,19 +66,19 @@ namespace LudoEngine.GameLogic.GamePlayers
                 WriteLogging(LoggerMessage);
                 result.pawnToMove?.Move(diceRoll);
             }
-           
+
         }
         private (Pawn pawnToMove, bool pass, bool takeout, int takeoutCount) CalculatePlay(int dice)
         {
             var Pawns = Board.OutOfBasePawns(Color);
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking how many friendly pawns is on board. Result: {Pawns.Count.ToString()}";
-            
+
             //Declaring deconstructed variable for CheckIfPawnCanBeTakenOut which will be called upon later
             (int Count, bool IsPossible) takeOut;
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Count is equal to {Pawns.Count}";
             if (Pawns.Count > 0)
             {
-               
+
                 //Check for possible eradication
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking if a pawn has the possibility to eradicate another pawn";
                 var pawnToEradicateWith = CheckForPossibleEradication(dice).PawnToEradicateWith;
@@ -89,8 +86,8 @@ namespace LudoEngine.GameLogic.GamePlayers
                     return (pawnToEradicateWith, false, false, 0); //Returning eradication move. Method will break here
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] CheckForPossibleEradication returned a null pawn. Continuing";
 
-                
-                
+
+
                 //Check if pawn(s) can be taken out
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking if pawn can be taken out";
                 takeOut = CheckIfPawnCanBeTakenOut(dice);
@@ -105,9 +102,9 @@ namespace LudoEngine.GameLogic.GamePlayers
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] CheckIfPawnCanBeTakenOut returned false. Moving piece instead";
                 return (ReturnWhatPieceToMove(Pawns, dice), false, false, 0); //Returning piece from Method which calculates best piece to move.
             }
-            
-            
-           
+
+
+
             //Check if pawn(s) can be taken out
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking if pawn can be taken out";
             takeOut = CheckIfPawnCanBeTakenOut(dice);
