@@ -12,7 +12,7 @@ namespace LudoEngine.GameLogic.Interfaces
     public interface IInfoDisplay
     {
         void Update(string newString);
-        public void UpdateDiceRoll(HumanPlayer player, int result);
+        public void UpdateDiceRoll(IGamePlayer player, int result);
         public void UpdateDiceRoll(Stephan stephan, int result);
     }
 }

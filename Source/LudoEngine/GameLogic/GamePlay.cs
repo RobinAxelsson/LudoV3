@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoEngine.BoardUnits.Main;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
@@ -25,8 +26,8 @@ namespace LudoConsole.Main
             GameStartEvent?.Invoke(this);
             while (true)
             {
-                var test = CurrentPlayer();
                 CurrentPlayer().Play(dice);
+                Board.AllPlayingPawns().ForEach(x => x.IsSelected = false);
                 OnPlayerEndsRoundEvent?.Invoke(this);
                 NextPlayer();
             }

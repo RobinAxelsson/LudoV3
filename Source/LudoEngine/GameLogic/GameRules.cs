@@ -21,6 +21,5 @@ namespace LudoEngine.GameLogic
         }
         public static void SaveFirstTime(TeamColor currentTurn) => DatabaseManagement.SaveAndGetGame(currentTurn);
         public static bool CanTakeOutTwo(TeamColor color, int diceRoll) => Board.PawnsInBase(color).Count > 1 && diceRoll == 6;
-       
     }
 }
