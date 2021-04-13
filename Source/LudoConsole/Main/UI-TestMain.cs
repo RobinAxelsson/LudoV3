@@ -45,10 +45,13 @@ namespace LudoConsole.Main
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .NewGame();
 
-                var game = builder.AddAIPlayer(TeamColor.Blue, true)
-                      .AddAIPlayer(TeamColor.Green, true)
-                      .AddHumanPlayer(TeamColor.Red)
-                      .AddHumanPlayer(TeamColor.Yellow)
+                var humanColors = Menu.humanColor;
+                var aiColors = Menu.aiColor;
+
+                humanColors.ForEach(x => builder.AddHumanPlayer(x));
+                aiColors.ForEach(x => builder.AddAIPlayer(x, true));
+
+                var game = builder
                       .SetUpPawns()
                       .StartingColor(TeamColor.Blue)
                       .GameRunsWhile(Board.IsMoreThenOneTeamLeft)

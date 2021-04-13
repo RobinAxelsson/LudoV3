@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using LudoEngine.BoardUnits.Main;
 using System.Threading;
 using LudoConsole.Main;
+using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine.DbModel
 {
@@ -189,7 +190,13 @@ namespace LudoEngine.DbModel
             {
                 foreach (var pawn in pawns)
                 {
-                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, GameId = game.Id };
+                    Type playerType = _gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
+                    int iPlayerType = -1;
+                    if (playerType == typeof(HumanPlayer)) iPlayerType = 0;
+                    if(playerType == typeof(Stephan)) iPlayerType = 1;
+                    if (iPlayerType == -1) throw new Exception("Playertype is not available");
+
+                    var pawnPosition = new PawnSavePoint { Color = pawn.Color, XPosition = pawn.CurrentSquare().BoardX, YPosition = pawn.CurrentSquare().BoardY, GameId = game.Id, PlayerType = iPlayerType};
 
                     db.Update(pawnPosition);
                 }
