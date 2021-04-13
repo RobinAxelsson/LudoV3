@@ -124,10 +124,11 @@ namespace LudoEngine.DbModel
             foreach (var item in savePoints)
             {
                 PawnSavePoint savepoint = new PawnSavePoint()
-                { 
+                {
                     Id = item.Id,
                     GameId = item.GameId,
                     Color = item.Color,
+                    PlayerType = item.PlayerType,
                     XPosition = item.XPosition,
                     YPosition = item.YPosition
                 };
@@ -215,18 +216,6 @@ namespace LudoEngine.DbModel
                 db.SaveChanges();
             }
         }
-    }
-
-    public static class StageSaving {
-        public static List<Pawn> Pawns { get; set;}
-
-        public static Game Game { get; set; }
-
-        public static List<Player> Players { get; set; }
-
-        public static List<PawnSavePoint> TeamPosition { get; set; }
-
-        public static int CurrentTeam { get; set; }
     }
 
 }

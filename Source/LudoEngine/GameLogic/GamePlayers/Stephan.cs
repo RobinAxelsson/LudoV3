@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using LudoConsole.Main;
-using LudoEngine.BoardUnits.Intefaces;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;

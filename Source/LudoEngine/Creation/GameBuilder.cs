@@ -95,6 +95,7 @@ namespace LudoEngine.Creation
         {
             if (color != null && _teamColors.Contains((TeamColor)color)) _first = (TeamColor)color;
             else _first = _teamColors[0];
+
             if (!_teamColors.Contains((TeamColor)color)) throw new Exception("Teamcolor for first player is not present in the game");
 
             return this;

@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using LudoConsole.UI.Controls;
 using LudoEngine.BoardUnits.Main;
@@ -9,7 +8,6 @@ using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.Dice;
-using LudoEngine.Models;
 
 namespace LudoConsole.Main
 {
