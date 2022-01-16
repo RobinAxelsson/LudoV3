@@ -6,13 +6,13 @@ Console Ludo Board game is a project made during our vocational studies to .NET 
 
 Project authors:
 
-Albin Alm -> [github repo](https://github.com/albinalm)
+Albin Alm -> [github page](https://github.com/albinalm)
 
-Robin Axelsson -> [github repo](https://github.com/robinaxelsson)
+Robin Axelsson -> [github page](https://github.com/robinaxelsson)
 
-Kristian Jimmefors -> [github repo](https://github.com/Kristianjimmefors)
+Kristian Jimmefors -> [github page](https://github.com/Kristianjimmefors)
 
-Robin Ferm -> [github repo](https://github.com/Robin-Ferm)
+Robin Ferm -> [github page](https://github.com/Robin-Ferm)
 
 ---
 
