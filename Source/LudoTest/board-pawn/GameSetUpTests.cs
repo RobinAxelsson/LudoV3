@@ -8,11 +8,33 @@ using LudoEngine.Creation;
 using System.Collections.Generic;
 using LudoConsole.UI.Controls;
 using LudoEngine.GameLogic.GamePlayers;
+using System.Linq;
 
 namespace LudoTest.board_pawn
 {
     public class GameSetupTests
     {
+        [Fact]
+        public void Dice_throws_even()
+        {
+            var dice = new Dice(1, 6);
+            var diceRolls = Enumerable.Range(1, 6000).Aggregate(new List<int>(), (list, next) =>
+             {
+                 list.Add(dice.Roll());
+                 return list;
+             });
+            var ones = diceRolls.Where(x => x == 1).ToList();
+            var twos = diceRolls.Where(x => x == 2).ToList();
+            var threes = diceRolls.Where(x => x == 3).ToList();
+            var fours = diceRolls.Where(x => x == 4).ToList();
+            var fifths = diceRolls.Where(x => x == 5).ToList();
+            var sixths = diceRolls.Where(x => x == 6).ToList();
+            var other = diceRolls.Where(x => x > 6 || x < 1).ToList();
+
+            Assert.Empty(other);
+            Assert.True(ones.Count() > 800);
+
+        }
         [Fact]
         public void LoadOnePawn_AssertTrue()
         {

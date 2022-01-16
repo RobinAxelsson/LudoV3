@@ -12,7 +12,7 @@ namespace LudoEngine.GameLogic.Dice
         private Random random { get; set; }
         public Dice(int lowest, int highest)
         {
-            Highest = highest;
+            Highest = highest+1;
             Lowest = lowest;
             random = new Random();
         }

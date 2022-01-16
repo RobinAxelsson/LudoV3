@@ -27,7 +27,7 @@ namespace LudoConsole.Main
 
                 var builder = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new RiggedDice(new int[] { 6 }))
+                    .AddDice(new Dice(1,6))
                     .SetInfoDisplay(ConsoleDefaults.display)
                     .NewGame();
 
@@ -40,7 +40,8 @@ namespace LudoConsole.Main
                 var game = builder
                       .SetUpPawns()
                       .StartingColor(TeamColor.Blue)
-                      .EnableSavingToDb()
+                      .DisableSaving()
+                      //.EnableSavingToDb()
                       .ToGamePlay();
 
 

@@ -1,82 +1,46 @@
-# The ludo game - avslutande projekt
+# Console Ludo Board Game
 
-I detta projekt ska ni implementera ett fia spel (Ludo på engelska), med knuff. Spelet **ska** vara en .net core konsol applikation.
+![ludo.gif](ludo.gif)
 
-Det ska gå att spela spelet via en konsol applikation, två till fyra spelare vid samma dator.
+Console Ludo Board game is a project made during our vocational studies to .NET Developer. The project is a part of the Course Data Access in .NET and were made i the timespan 29 March - 13th of April. Focus of the project were to apply SOLID principles in c# as well as implementing a SQL database with Entity Framework.
 
-Koden ska vara uppdelat i en konsol applikation och en class library som innehåller all logik, låt oss kalla det vår spelmotor / game engine.
+Project authors:
 
-Spelet ska spara i en databas (med code first och Entity Framework), så att det går att ta fram historik på alla tidigare spel. Om applikationen skulle stängas ner, ska det gå att komma tillbaka in i spelet.
+Albin Alm -> [github repo](https://github.com/albinalm)
 
-# Programmering
+Robin Axelsson -> [github repo](https://github.com/robinaxelsson)
 
-Kod ska ligga i mappen **Source**, varje team får enbart ha en solution fil!!
+Kristian Jimmefors -> [github repo](https://github.com/Kristianjimmefors)
 
-Se till att skåpa unit tests för spelet.
+Robin Ferm -> [github repo](https://github.com/Robin-Ferm)
 
-## Spelmotor (GameEngine)
+---
 
-Spelmotorn styra alla regler i spelet och kollar t.ex. om en spelpjäs får flyttas, om en spelar har vunnit, den initiala uppställning av alla spelpjäser på brädet, vilken spelar som är den nästa, hur en tärning ska bete sig, etc.
+## Main Specifications
 
-Implementera spelmotorn i ett separat klass bibliotek.
+To create a Console based Ludo game where you can save, load and create new games (in a database). An AI player can be implemented to be a part of the game.
 
-En instans av spelmotorn innehåller staten av ett helt spel, det skall vara möjligt att initialisera spelet med en given state, t.ek. om ska kunna spara och inläsa ett spel.
+## User Stories
 
-Skriv enhetstester på spelmotorn
+- As a user I want my pawns to move according to my dice throw
+- As a user I want to push another players pawns from the board
+- As a user I want to take out two pawns if I get a six
+- As a user I want everyone to be limited to the the rules of the game (no cheating allowed)
+- As a user I want to be able to play solo against AI-players.
+- As a user I want to be able to save and load games.
 
-# Dokumentation
+## Notable class files
 
-Skriv [user stories](https://www.mountaingoatsoftware.com/agile/user-stories) (i docs mappen), och starta inte koda något innan in har skrivet minst 3 user stories, men helst så det täcker hela fia spelet, men se hela tiden till att lägga till fler user stories.
+- Stephan.cs - handles our AI.
+- DatabaseManagement.cs - Static class that serves as our database repository.
+- Board.cs - Static class with all the important in-game LINQ-queries for player, board and pawns.
+- Pawn.cs - Represents a pawn, holds the important 'Move' function.
+- StephanLogs.cs - a Logg class to track Stephans "thought traces".
+- RiggedDice.cs - A class used for unit testing, has the same interface as the default dice.
+- GamePlay.cs - Game master of the game, tracks whos turn it is and if you are allowed to throw again or take out two pawns.
+- GameBuilder.cs - A builder class that configures a GamePlay object.
+- InfoDisplay.cs - Manages the game comments on screen. 
 
-Om ni använder någon externa källor (båda kod och annat) ange dom i dokumentationen.
+## End Result
 
-Dokumentation ska skrivas med markdown (.md), ni väljer själv om ni vill skriva på svenska eller engelska, markdown filerna placeras i **docs** mappen.
-
-# Betygsättning
-
-Tillsammans med projektet ska skåpas en [video](video_presentaion.md) som beskriver projektet.
-
-**Deadline, video i Stream**: 2021-04-12, kl 23:59
-
-**Deadline, kod på GitHub**: 2021-04-13, kl 23:59
-
-## Koden
-Ni kan göra så många branches baserat på *master* som ni önskar. När projektet är slut är det innehållet av main på ert **GitHub**-repo som räknas.
-
-## Element i bedömning
-
-* Process (**viktigt**), hur har ni kommat fram till det slutliga resultat
-* Solutionen-filen ska beså av tre projekt:
-  * En .NET 5 console-application
-  * Class Library med en game engine / spel motor
-  * Test projekt
-* Koden kompilera och det går att köra projektet lokalt
-* All logik som rör spelet, även kast av tärning, är placerat i spelmotorn
-* Dokumentation av hur spelets element, klasser och funktionalitet (**viktigt**)
-  * Ska finnas i Documentation-mappen
-  * Dokumentationen måste uppdateras löpande
-* Spelet ska spara i en databas (med code first och Entity Framework) (**viktigt**)
-* Det ska gå att skåpa ett eller fler spel
-* Det ska gå att försätta spela ett oavslutat eksisterende spel
-* Automatiserade tester (**viktigt**) av spelmotor
-  * Unit test
-* Async kod (om det gir mening)
-* Fluent API (om det gir mening)
-
-Dom fyra element som är markerat med **viktigt** är så klart dom som är viktigast i samband med bedömningen. Och det är det som ni ska fokusera på i eran video presentation.
-
-## Frivilliga element (kan göras som extra)
-
-* Dokument databas
-* Prestanda optimering
-* Datatjänst
-* AI spelare (så att man spela mot datorn) 
-* Grafik representation av spelbräda (i konsollen)
-
-# Tips
-
-Tänka inte visuellt/grafisk när ni gör eran datamodell!
-
-Där er <u>ingen krav</u> på verken Async eller fluent api, det viktigaste är att data sparas i en databas, att koden är testat med automatiserade test och att koden är lätt läst.
-
-Gör en dagbok (journal / log) varje dag, också om ni gör något själv på en kväll, så att ni har koll på processen, och kan dokumentera den. Förslag gör det som markdown-dokument i *Dokumentation*-mappen.
+A graphic console based Ludo with full support for multi player and single player with Bots (Stephans). We also managed to implement the integration with a SQL database and Entity Framework to save and load a game.
