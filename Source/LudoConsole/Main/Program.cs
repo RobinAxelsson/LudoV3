@@ -17,68 +17,87 @@ namespace LudoConsole.Main
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
+        private static void StartNewGame()
+        {
+            var builder = GameBuilder.StartBuild()
+                .MapBoard(@"LudoORM/Map/BoardMap.txt")
+                .AddDice(new Dice(1, 6))
+                .SetInfoDisplay(ConsoleDefaults.display)
+                .NewGame();
+
+            var humanColors = Menu.humanColor;
+            var aiColors = Menu.aiColor;
+
+            humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
+            aiColors.ForEach(x => builder.AddAIPlayer(x, true));
+
+            var game = builder
+                .SetUpPawns()
+                .StartingColor(TeamColor.Blue)
+                .DisableSaving()
+                //.EnableSavingToDb()
+                .ToGamePlay();
+
+
+            WriterThreadStart();
+            game.Start();
+        }
+
         private static void Main(string[] args)
         {
             var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
-            var drawGameBoard = Menu.SelectedOptions(selected);
+            int drawGameBoard;
 
-            if (drawGameBoard == 0)
+            do
             {
-
-                var builder = GameBuilder.StartBuild()
-                    .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new Dice(1,6))
-                    .SetInfoDisplay(ConsoleDefaults.display)
-                    .NewGame();
-
-                var humanColors = Menu.humanColor;
-                var aiColors = Menu.aiColor;
-
-                humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
-                aiColors.ForEach(x => builder.AddAIPlayer(x, true));
-
-                var game = builder
-                      .SetUpPawns()
-                      .StartingColor(TeamColor.Blue)
-                      .DisableSaving()
-                      //.EnableSavingToDb()
-                      .ToGamePlay();
-
-
-                WriterThreadStart();
-                game.Start();
-
-            }
-            else if (drawGameBoard == 1)
-            {
-                var loadGame = GameBuilder.StartBuild()
-                    .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new Dice(1, 6))
-                    .SetInfoDisplay(ConsoleDefaults.display)
-                    .LoadGame()
-                    .LoadPawns(StageSaving.TeamPosition)
-                    .LoadPlayers(ConsoleDefaults.KeyboardControl)
-                    .StartingColor(StageSaving.Game.CurrentTurn)
-                    .EnableSavingToDb()
-                    .ToGamePlay();
-
-                WriterThreadStart();
-                loadGame.Start();
-            }
-            else if (drawGameBoard == 2)
-            {
-                Console.Clear();
-                Console.WriteLine("Here are all the controlls for the game.\n");
-                Console.WriteLine("Use arrow keys to change beween the pawns");
-                Console.WriteLine("Enter is for selecting what pawn to play");
-                Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
-
-                selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
                 drawGameBoard = Menu.SelectedOptions(selected);
-            }
+
+                if (drawGameBoard == 0)
+                {
+                    StartNewGame();
+                }
+                else if (drawGameBoard == 1)
+                {
+                    LoadGame();
+                }
+                else if (drawGameBoard == 2)
+                {
+                    WriteControlInfo();
+                    Console.ReadKey();
+
+                    selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
+                }
+            } while (drawGameBoard != 3);
+            
         }
+
+        private static void WriteControlInfo()
+        {
+            Console.Clear();
+            Console.WriteLine("Here are all the controls for the game.\n");
+            Console.WriteLine("Use arrow keys to change between the pawns");
+            Console.WriteLine("Enter is for selecting what pawn to play");
+            Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
+            Console.WriteLine("Press any key to continue...");
+        }
+
+        private static void LoadGame()
+        {
+            var loadGame = GameBuilder.StartBuild()
+                .MapBoard(@"LudoORM/Map/BoardMap.txt")
+                .AddDice(new Dice(1, 6))
+                .SetInfoDisplay(ConsoleDefaults.display)
+                .LoadGame()
+                .LoadPawns(StageSaving.TeamPosition)
+                .LoadPlayers(ConsoleDefaults.KeyboardControl)
+                .StartingColor(StageSaving.Game.CurrentTurn)
+                .EnableSavingToDb()
+                .ToGamePlay();
+
+            WriterThreadStart();
+            loadGame.Start();
+        }
+
         private static void WriterThreadStart()
         {
             var writerThread = UiThreadBuilder.StartBuild()

@@ -44,14 +44,15 @@ namespace LudoConsole.UI.Models
         }
         private List<IDrawable> DrawPawns(List<Pawn> pawns)
         {
-            if (pawns.Count < 0 || pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
+            if (pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
             var pawnColor = UiControl.TranslateColor(Square.Pawns[0].Color);
+            
             for (int i = 0; i < pawns.Count; i++)
             {
                 PawnDrawable newPawn = null;
-                if (pawns[i].IsSelected == true)
+                if (pawns[i].IsSelected)
                     newPawn = new PawnDrawable(PawnCoords[i], UiControl.RandomColor(), ThisBackgroundColor());
                 else
                     newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
