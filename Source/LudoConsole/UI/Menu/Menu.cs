@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoConsole.Main;
 using LudoEngine.DbModel;
 
 namespace LudoEngine.GameLogic
@@ -14,7 +15,7 @@ namespace LudoEngine.GameLogic
         public static int DisplayMainMenuGetSelection()
         {
             return ShowMenu("Welcome to this awesome Ludo game! \n",
-                new[] {"New Game", "Load Game", "Controls", "Exit"});
+                System.Enum.GetNames(typeof(MainMenuOptions)));
         }
 
         public static int ShowMenu(string info, IReadOnlyList<string> options)

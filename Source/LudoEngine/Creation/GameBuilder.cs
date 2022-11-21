@@ -52,7 +52,7 @@ namespace LudoEngine.Creation
             
             return this;
         }
-        public GameBuilder LoadPlayers(Func<IController> humanController)
+        public GameBuilder LoadPlayers(IController humanController)
         {
             var colorTypeList = _pawnSavePoints.Select(x => (x.Color, x.PlayerType)).Distinct().ToList();
 
@@ -60,7 +60,7 @@ namespace LudoEngine.Creation
             {
                 if (colorType.PlayerType == 0)
                 {
-                    AddHumanPlayer(colorType.Color, humanController());
+                    AddHumanPlayer(colorType.Color, humanController);
                 }
                 if (colorType.PlayerType == 1)
                 {

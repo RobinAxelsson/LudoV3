@@ -5,11 +5,7 @@ namespace LudoConsole.UI.Controls
 {
     public static class ConsoleDefaults
     {
-        public static IInfoDisplay display { get; set; }
-        public static IController KeyboardControl() => new KeyboardController();
-        static ConsoleDefaults()
-        {
-            display = new InfoDisplay(0, 9);
-        }
+        public static IInfoDisplay Display => new InfoDisplay(0, 9);
+        public static IController KeyboardControl => new KeyboardController();
     }
 }

@@ -1,5 +1,4 @@
-﻿using LudoConsole.Main;
-using LudoConsole.UI.Interfaces;
+﻿using LudoConsole.UI.Interfaces;
 using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace LudoConsole.UI.Controls
         {
             _squareDrawables = squareDrawables;
             Pawn.GameOverEvent += OnGameOver;
-            _thread = new Thread(new ThreadStart(() =>
+            _thread = new Thread((() =>
             {
                 while (IsRunning)
                 {
