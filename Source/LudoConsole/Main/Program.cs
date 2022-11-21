@@ -61,7 +61,7 @@ namespace LudoConsole.Main
                         var builder = GameBuilder.StartBuild();
                         builder.MapBoard(@"LudoORM/Map/BoardMap.txt");
                         builder.AddDice(new Dice(1, 6));
-                        builder.SetInfoDisplay(ConsoleDefaults.Display);
+                        
                         builder.NewGame();
 
                         var humanColors = Menu.HumanColor;
@@ -76,7 +76,7 @@ namespace LudoConsole.Main
 
                         var game = builder.ToGamePlay();
                         WriterThreadStart();
-
+                        
                         game.Start();
                         break;
                     }
@@ -101,7 +101,7 @@ namespace LudoConsole.Main
 
 
                         gameBuilder.AddDice(new Dice(1, 6));
-                        gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
+                        //gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
                         gameBuilder.LoadGame();
                         gameBuilder.LoadPawns(savingDto.TeamPosition);
                         gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
@@ -156,7 +156,7 @@ namespace LudoConsole.Main
             var builder = GameBuilder.StartBuild()
                 .MapBoard(@"LudoORM/Map/BoardMap.txt")
                 .AddDice(new Dice(1, 6))
-                .SetInfoDisplay(ConsoleDefaults.Display)
+                
                 .NewGame();
 
             var humanColors = Menu.HumanColor;
@@ -193,7 +193,7 @@ namespace LudoConsole.Main
             var loadGame = GameBuilder.StartBuild()
                 .MapBoard(@"LudoORM/Map/BoardMap.txt")
                 .AddDice(new Dice(1, 6))
-                .SetInfoDisplay(ConsoleDefaults.Display)
+                
                 .LoadGame()
                 .LoadPawns(StageSaving.TeamPosition)
                 .LoadPlayers(ConsoleDefaults.KeyboardControl)
@@ -207,6 +207,7 @@ namespace LudoConsole.Main
 
         private static void WriterThreadStart()
         {
+            _ = ConsoleDefaults.Display;
             var writerThread = UiThreadBuilder.StartBuild()
                 .ColorSettings(UiControl.SetDefault)
                 .DrawBoardConvert(Board.BoardSquares)
@@ -219,7 +220,7 @@ namespace LudoConsole.Main
             var game = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
                     .AddDice(new RiggedDice(new int[] { 1, 6, 2 }))
-                    .SetInfoDisplay(ConsoleDefaults.Display)
+                    
                     .NewGame()
                     .AddHumanPlayer(TeamColor.Blue, ConsoleDefaults.KeyboardControl)
                     .AddHumanPlayer(TeamColor.Green, ConsoleDefaults.KeyboardControl)

@@ -7,6 +7,7 @@ using LudoEngine.GameLogic;
 
 namespace LudoTest.board_pawn
 {
+    [Collection(nameof(StaticTestCollection))]
     public class BoardPawnTests
     {
         [Fact]

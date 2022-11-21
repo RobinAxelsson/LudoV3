@@ -37,10 +37,10 @@ namespace LudoEngine.Creation
             _dice = dice;
             return this;
         }
-        public GameBuilder SetInfoDisplay(IInfoDisplay infoDisplay)
-        {
-            return this;
-        }
+        //public GameBuilder SetInfoDisplay(IInfoDisplay infoDisplay)
+        //{
+        //    return this;
+        //}
         public GameBuilder LoadGame()
         {
             return this;

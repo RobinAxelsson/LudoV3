@@ -5,7 +5,6 @@ using System.Linq;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
-using LudoEngine.GameLogic.Interfaces;
 
 namespace LudoEngine
 {
@@ -39,11 +38,6 @@ namespace LudoEngine
                 TeamColor.Red,
                 TeamColor.Yellow,
                 TeamColor.Green});
-        }
-
-        public static void SetInfoDisplay(IInfoDisplay infoDisplay)
-        {
-
         }
 
         //public static void AddPlayer()

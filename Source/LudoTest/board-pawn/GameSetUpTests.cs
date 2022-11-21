@@ -12,6 +12,7 @@ using System.Linq;
 
 namespace LudoTest.board_pawn
 {
+    [Collection(nameof(StaticTestCollection))]
     public class GameSetupTests
     {
         [Fact]
@@ -47,7 +48,7 @@ namespace LudoTest.board_pawn
             GameBuilder.StartBuild()
                 .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
                 .AddDice(new Dice(1, 6))
-                .SetInfoDisplay(null)
+                
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint });
 
@@ -72,7 +73,7 @@ namespace LudoTest.board_pawn
             var loaded = GameBuilder.StartBuild()
                 .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
                 .AddDice(new Dice(1, 6))
-                .SetInfoDisplay(null)
+                
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2 });
 
@@ -92,7 +93,7 @@ namespace LudoTest.board_pawn
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
             .AddDice(new Dice(1, 6))
-            .SetInfoDisplay(ConsoleDefaults.Display)
+            
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint })
             .LoadPlayers(ConsoleDefaults.KeyboardControl)
@@ -134,7 +135,7 @@ namespace LudoTest.board_pawn
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
             .AddDice(new Dice(1, 6))
-            .SetInfoDisplay(ConsoleDefaults.Display)
+            
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
             .LoadPlayers(ConsoleDefaults.KeyboardControl)
@@ -169,7 +170,7 @@ namespace LudoTest.board_pawn
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
             .AddDice(new Dice(1, 6))
-            .SetInfoDisplay(ConsoleDefaults.Display)
+            
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
             .LoadPlayers(ConsoleDefaults.KeyboardControl)

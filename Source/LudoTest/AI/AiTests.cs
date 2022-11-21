@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 namespace LudoTest.AI
 {
+    [Collection(nameof(StaticTestCollection))]
     public class AiTests
     {
         [Fact]
