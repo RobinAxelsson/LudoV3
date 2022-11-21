@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.Interfaces;
@@ -42,7 +41,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 {
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculations finished. Committing move";
                     WriteLogging(LoggerMessage);
-                    var basePawns = Board.PawnsInBase(Color);
+                    var basePawns = BoardPawnFinder.PawnsInBase(Board.BoardSquares, Color);
                     basePawns[0].Move(1);
                     basePawns[0].Move(1);
 
@@ -53,7 +52,7 @@ namespace LudoEngine.GameLogic.GamePlayers
 
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculations finished. Committing move";
                     WriteLogging(LoggerMessage);
-                    Board.PawnsInBase(Color)[0].Move(diceRoll);
+                    BoardPawnFinder.PawnsInBase(Board.BoardSquares, Color)[0].Move(diceRoll);
                 }
             }
             else
@@ -66,7 +65,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         }
         private (Pawn pawnToMove, bool pass, bool takeout, int takeoutCount) CalculatePlay(int dice)
         {
-            var Pawns = Board.OutOfBasePawns(Color);
+            var Pawns = BoardPawnFinder.OutOfBasePawns(Board.BoardSquares, Color);
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CalculatePlay] Checking how many friendly pawns is on board. Result: {Pawns.Count.ToString()}";
 
             //Declaring deconstructed variable for CheckIfPawnCanBeTakenOut which will be called upon later
@@ -173,7 +172,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         {
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: ReturnFarthestPawn] Calculating farthest pawn";
             Pawn pawn = null;
-            foreach (var square in Board.TeamPath(Color).Where(square => square.Pawns.Count > 0 &&
+            foreach (var square in BoardNavigation.TeamPath(Board.BoardSquares,Color).Where(square => square.Pawns.Count > 0 &&
                                                                          square.Pawns[0].Color == Color &&
                                                                          square.GetType() != typeof(GoalSquare))) { pawn = square.Pawns[0]; }
             return pawn;
@@ -183,17 +182,18 @@ namespace LudoEngine.GameLogic.GamePlayers
         #region Checking methods
         private (bool result, List<Pawn> pawnsToNotMove) CheckIfPawnWillEndUpInEnemySpawn(int dice)
         {
-            var Pawns = Board.OutOfBasePawns(Color);
+            var Pawns = BoardPawnFinder.OutOfBasePawns(Board.BoardSquares, Color);
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnWillEndUpInEnemySpawn] Doing calculations to see what friendly pawns can end up in enemy spawn square";
             var Result = false;
             var PawnsNotToMove = new List<Pawn>();
-            var squarePosition = Board.StartSquare(Color); //Start at spawn
+            var squarePosition = BoardNavigation.StartSquare(Board.BoardSquares, Color); //Start at spawn
             foreach (var pawn in Pawns)
             {
                 squarePosition = pawn.CurrentSquare();
                 for (var i = 0; i <= dice - 1; i++)
                 {
-                    squarePosition = Board.GetNext(Board.BoardSquares, squarePosition, Color);
+                    //squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
+                    squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
                 }
                 if (squarePosition is StartSquare && squarePosition.Color != Color)
                 {
@@ -205,7 +205,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         }
         private (int Count, bool IsPossible) CheckIfPawnCanBeTakenOut(int dice)
         {
-            var Pawns = Board.OutOfBasePawns(Color);
+            var Pawns = BoardPawnFinder.OutOfBasePawns(Board.BoardSquares, Color);
             if (dice == 6)
             {
                 LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanBeTakenOut] Dice resulted in a 6\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanBeTakenOut] Checking how many friendly pawns is on board. Result: {Pawns.Count}";
@@ -250,7 +250,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 var squarePositionCalc = squarePosition;
                 for (var i = 0; i <= dice; i++)
                 {
-                    squarePositionCalc = Board.GetNext(Board.BoardSquares, squarePositionCalc, Color);
+                    squarePositionCalc = BoardNavigation.GetNext(Board.BoardSquares, squarePositionCalc, Color);
                     if (squarePositionCalc.GetType() != typeof(SafezoneSquare)) continue;
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanReachSafezone] Can reach a Safezone-square. Returning move";
                     if (squarePosition != null) return squarePosition.Pawns.Find(pawn => pawn.Color == Color);
@@ -267,7 +267,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 var squarePositionCalc = squarePosition;
                 for (var i = 0; i <= dice; i++)
                 {
-                    squarePositionCalc = Board.GetNext(Board.BoardSquares, squarePositionCalc, Color);
+                    squarePositionCalc = BoardNavigation.GetNext(Board.BoardSquares, squarePositionCalc, Color);
                     if (squarePositionCalc.GetType() != typeof(GoalSquare)) continue;
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanReachGoal] Can reach a Goal-square. Returning move";
                     if (squarePosition != null) return squarePosition.Pawns.Find(pawn => pawn.Color == Color);
@@ -278,7 +278,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         private Pawn CheckIfPawnIsBlockingSpawn()
         {
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnIsBlockingSpawn] Checking if there is pawns in base";
-            if (Board.BaseSquare(Color).Pawns.Count <= 0)
+            if (BoardNavigation.BaseSquare(Board.BoardSquares, Color).Pawns.Count <= 0)
             {
                 LoggerMessage +=
                     $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnIsBlockingSpawn] No pawns where found in base, returning null";
@@ -286,7 +286,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             }
 
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnIsBlockingSpawn] Checking if a friendly pawn is blocking Spawn-point";
-            var pawnInTakeOut = Board.StartSquare(Color).Pawns.Find(pawn => pawn.Color == Color);
+            var pawnInTakeOut = BoardNavigation.StartSquare(Board.BoardSquares, Color).Pawns.Find(pawn => pawn.Color == Color);
             return pawnInTakeOut;
         }
         private Pawn CheckIfPawnDistanceIsTooGreat()
@@ -295,20 +295,20 @@ namespace LudoEngine.GameLogic.GamePlayers
             var distance = 0;
             Pawn closestPawn = null;
             var farthestPawn = ReturnFarthestPawn();
-            var squarePosition = Board.StartSquare(Color); //Start at spawn
+            var squarePosition = BoardNavigation.StartSquare(Board.BoardSquares, Color); //Start at spawn
             var furthestIndex = 0;
-            for (var i = 0; i <= Board.TeamPath(Color).Count; i++)
+            for (var i = 0; i <= BoardNavigation.TeamPath(Board.BoardSquares, Color).Count; i++)
             {
-                squarePosition = Board.GetNext(Board.BoardSquares, squarePosition, Color);
+                squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
                 if (squarePosition.Pawns.Contains(farthestPawn))
                 {
                     furthestIndex = i;
                 }
             }
-            squarePosition = Board.StartSquare(Color); //Start at spawn
+            squarePosition = BoardNavigation.StartSquare(Board.BoardSquares, Color); //Start at spawn
             for (var i = 0; i <= furthestIndex; i++)
             {
-                squarePosition = Board.GetNext(Board.BoardSquares, squarePosition, Color);
+                squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
                 if (closestPawn != null)
                 {
                     distance++;
@@ -326,7 +326,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         }
         private (bool CanEradicate, Pawn PawnToEradicateWith) CheckForPossibleEradication(int dice)
         {
-            var Pawns = Board.OutOfBasePawns(Color);
+            var Pawns = BoardPawnFinder.OutOfBasePawns(Board.BoardSquares, Color);
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckForPossibleEradication] Calculating possible eradication";
             var eradication = false;
             Pawn eradicationPawn = null;
@@ -335,7 +335,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 var squarePosition = pawn.CurrentSquare(); //Start at spawn
                 for (var i = 0; i <= dice - 1; i++)
                 {
-                    squarePosition = Board.GetNext(Board.BoardSquares, squarePosition, Color);
+                    squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
                 }
 
                 if (squarePosition.Pawns.Find(p => p.Color != Color) == null) continue;

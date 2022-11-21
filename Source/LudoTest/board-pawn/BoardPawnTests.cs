@@ -15,7 +15,7 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map1.txt");
             var bluePawn = new Pawn(TeamColor.Blue);
-            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            var baseSquare = BoardNavigation.BaseSquare(Board.BoardSquares, TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
 
             bluePawn.Move(7);
@@ -28,7 +28,7 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map1.txt");
             var bluePawn = new Pawn(TeamColor.Blue);
-            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            var baseSquare = BoardNavigation.BaseSquare(Board.BoardSquares, TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
 
             bluePawn.Move(8);
@@ -41,7 +41,7 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map4.txt");
             var bluePawn = new Pawn(TeamColor.Blue);
-            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            var baseSquare = BoardNavigation.BaseSquare(Board.BoardSquares, TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
             bluePawn.Move(7);
             var expectedSquare = Board.BoardSquares[1];
@@ -54,11 +54,11 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map3.txt");
             var redPawn = new Pawn(TeamColor.Red);
-            var startSquare = Board.StartSquare(TeamColor.Red);
+            var startSquare = BoardNavigation.StartSquare(Board.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
             redPawn.Move(1);
-            var square = Board.FindPawnSquare(redPawn);
+            var square = BoardPawnFinder.FindPawnSquare(Board.BoardSquares, redPawn);
             Assert.IsType<ExitSquare>(square);
         }
         [Fact]
@@ -66,11 +66,11 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map3.txt");
             var redPawn = new Pawn(TeamColor.Red);
-            var startSquare = Board.StartSquare(TeamColor.Red);
+            var startSquare = BoardNavigation.StartSquare(Board.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
             redPawn.Move(2);
-            var square = Board.FindPawnSquare(redPawn);
+            var square = BoardPawnFinder.FindPawnSquare(Board.BoardSquares, redPawn);
             Assert.IsType<SafezoneSquare>(square);
         }
         [Fact]
@@ -78,11 +78,11 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map3.txt");
             var redPawn = new Pawn(TeamColor.Red);
-            var startSquare = Board.StartSquare(TeamColor.Red);
+            var startSquare = BoardNavigation.StartSquare(Board.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
             redPawn.Move(3);
-            var pawns = Board.AllBaseAndPlayingPawns();
+            var pawns = BoardPawnFinder.AllBaseAndPlayingPawns(Board.BoardSquares);
             Assert.True(pawns.Count == 0);
         }
         [Fact]
@@ -90,7 +90,7 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map3.txt");
             var redPawn = new Pawn(TeamColor.Red);
-            var startSquare = Board.StartSquare(TeamColor.Red);
+            var startSquare = BoardNavigation.StartSquare(Board.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
             var squarse = Board.BoardSquares;
@@ -104,7 +104,7 @@ namespace LudoTest.board_pawn
         {
             Board.Init(@"board-pawn/test-map3.txt");
             var redPawn = new Pawn(TeamColor.Red);
-            var startSquare = Board.StartSquare(TeamColor.Red);
+            var startSquare = BoardNavigation.StartSquare(Board.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
             var squares = Board.BoardSquares;
@@ -133,7 +133,7 @@ namespace LudoTest.board_pawn
             Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
-            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            var baseSquare = BoardNavigation.BaseSquare(Board.BoardSquares, TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
 
             var redPawn = new Pawn(TeamColor.Red);
@@ -151,7 +151,7 @@ namespace LudoTest.board_pawn
             Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             var bluePawn = new Pawn(TeamColor.Blue);
-            var baseSquare = Board.BaseSquare(TeamColor.Blue);
+            var baseSquare = BoardNavigation.BaseSquare(Board.BoardSquares, TeamColor.Blue);
             baseSquare.Pawns.Add(bluePawn);
 
             var redPawn = new Pawn(TeamColor.Red);
@@ -161,7 +161,7 @@ namespace LudoTest.board_pawn
             start.Pawns.Add(redPawn2);
 
             bluePawn.Move(1);
-            var redsBased = Board.PawnsInBase(TeamColor.Red);
+            var redsBased = BoardPawnFinder.PawnsInBase(Board.BoardSquares, TeamColor.Red);
 
             Assert.True(redsBased.Count == 2);
         }
@@ -171,7 +171,7 @@ namespace LudoTest.board_pawn
             Board.Init(@"board-pawn/test-map1.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Red });
-            var redsBased = Board.PawnsInBase(TeamColor.Red);
+            var redsBased = BoardPawnFinder.PawnsInBase(Board.BoardSquares, TeamColor.Red);
 
             Assert.True(redsBased.Count == 4);
         }
@@ -181,7 +181,7 @@ namespace LudoTest.board_pawn
             Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
-            var bluesBased = Board.PawnsInBase(TeamColor.Blue);
+            var bluesBased = BoardPawnFinder.PawnsInBase(Board.BoardSquares, TeamColor.Blue);
 
             Assert.True(bluesBased.Count == 4);
         }
@@ -191,7 +191,7 @@ namespace LudoTest.board_pawn
             Board.Init(@"board-pawn/test-map-2p.txt");
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
-            var greensBased = Board.PawnsInBase(TeamColor.Green);
+            var greensBased = BoardPawnFinder.PawnsInBase(Board.BoardSquares, TeamColor.Green);
 
             Assert.True(greensBased.Count == 4);
         }
@@ -202,7 +202,7 @@ namespace LudoTest.board_pawn
             var squares = Board.BoardSquares;
             GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
 
-            var bluePawns = Board.GetTeamPawns(TeamColor.Blue);
+            var bluePawns = BoardPawnFinder.GetTeamPawns(Board.BoardSquares, TeamColor.Blue);
 
             Assert.True(bluePawns.Count == 4);
         }

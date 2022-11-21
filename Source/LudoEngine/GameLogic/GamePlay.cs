@@ -27,7 +27,7 @@ namespace LudoConsole.Main
             while (true)
             {
                 CurrentPlayer().Play(dice);
-                Board.AllPlayingPawns().ForEach(x => x.IsSelected = false);
+                BoardPawnFinder.AllPlayingPawns(Board.BoardSquares).ForEach(x => x.IsSelected = false);
                 OnPlayerEndsRoundEvent?.Invoke(this);
                 NextPlayer();
             }

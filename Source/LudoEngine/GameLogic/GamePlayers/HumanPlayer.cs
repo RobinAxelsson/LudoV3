@@ -93,7 +93,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         private void TakeOutTwo()
         {
             for (int i = 0; i < 2; i++)
-                Board.PawnsInBase(Color)[0].Move(1);
+                BoardPawnFinder.PawnsInBase(Board.BoardSquares, Color)[0].Move(1);
             _tookOutTwo = true;
             Controller.TakeOutTwoPressEvent -= TakeOutTwo;
         }

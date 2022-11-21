@@ -28,6 +28,14 @@ namespace LudoConsole.UI.Controls
                 }
             }));
         }
+
+        public static BoardRenderer StartRender(List<IGameSquare> gameSquares)
+        {
+            var boardRenderer = new BoardRenderer(gameSquares);
+            boardRenderer.Start();
+            return boardRenderer;
+        }
+
         public void Start()
         {
             UiColorConfiguration.SetDefault();

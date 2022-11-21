@@ -19,6 +19,7 @@ namespace LudoEngine.GameLogic
             foreach (var sp in savePoints)
             {
                 var squareToPut = Board.BoardSquares.Find(bs => sp.XPosition == bs.BoardX && sp.YPosition == bs.BoardY);
+
                 squareToPut.Pawns.Add(new Pawn(sp.Color));
             }
         }

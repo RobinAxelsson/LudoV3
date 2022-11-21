@@ -27,7 +27,7 @@ namespace LudoEngine.Models
         public bool IsSelected { get; set; }
         public TeamColor Color { get; set; }
         public IGameSquare CurrentSquare() => Board.BoardSquares.Find(x => x.Pawns.Contains(this));
-        public bool Based() => Board.PawnsInBase(Color).Contains(this); //Kolla om Pawn ligger i basen
+        public bool Based() => BoardPawnFinder.PawnsInBase(Board.BoardSquares, Color).Contains(this);
         public void Move(int dice)
         {
             var tempSquare = CurrentSquare();
@@ -43,26 +43,26 @@ namespace LudoEngine.Models
 
                 if (tempSquare is GoalSquare || bounced == true)
                 {
-                    tempSquare = Board.GetBack(Board.BoardSquares, tempSquare, Color);
+                    tempSquare = BoardNavigation.GetBack(Board.BoardSquares, tempSquare, Color);
                     bounced = true;
                 }
                 else
                 {
-                    tempSquare = Board.GetNext(Board.BoardSquares, tempSquare, Color);
+                    tempSquare = BoardNavigation.GetNext(Board.BoardSquares, tempSquare, Color);
                 }
                 if (lastIteration == true && tempSquare is GoalSquare)
                 {
                     this.IsSelected = false;
 
-                    if (Board.GetTeamPawns(Color).Count == 0)
+                    if (BoardPawnFinder.GetTeamPawns(Board.BoardSquares, Color).Count == 0)
                         OnAllTeamPawnsOutEvent?.Invoke(this);
                     else
-                        OnGoalEvent?.Invoke(this, Board.GetTeamPawns(Color).Count);
+                        OnGoalEvent?.Invoke(this, BoardPawnFinder.GetTeamPawns(Board.BoardSquares, Color).Count);
 
-                    bool onlyOneTeamLeft = Board.AllPlayingPawns().Select(x => x.Color).ToList().Count == 1;
+                    bool onlyOneTeamLeft = BoardPawnFinder.AllPlayingPawns(Board.BoardSquares).Select(x => x.Color).ToList().Count == 1;
                     if (onlyOneTeamLeft)
                     {
-                        GameLoserEvent?.Invoke(Board.AllPlayingPawns().Select(x => x.Color).ToList()[0]);
+                        GameLoserEvent?.Invoke(BoardPawnFinder.AllPlayingPawns(Board.BoardSquares).Select(x => x.Color).ToList()[0]);
                         GameOverEvent?.Invoke();
                     }
                     return;
@@ -75,7 +75,7 @@ namespace LudoEngine.Models
             {
                 enemyColor = tempSquare.Pawns[0].Color;
                 pawnsToEradicate = tempSquare.Pawns.Count;
-                var eradicateBase = Board.BaseSquare((TeamColor)enemyColor);
+                var eradicateBase = BoardNavigation.BaseSquare(Board.BoardSquares, (TeamColor)enemyColor);
                 eradicateBase.Pawns.AddRange(tempSquare.Pawns);
                 tempSquare.Pawns.Clear();
             }
