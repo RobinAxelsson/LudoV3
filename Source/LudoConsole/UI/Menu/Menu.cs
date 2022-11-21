@@ -135,31 +135,24 @@ namespace LudoEngine.GameLogic
         private static int AskForNumberOfHumanPlayers()
         {
             Console.Clear();
-            Console.WriteLine("Write a number between 1 and 4");
-            Console.Write("How many players are you: ");
-            var players = Convert.ToInt32(Console.ReadLine());
-            return players;
+            var playerCount = ShowMenu("How many players are you: ", new[] {"1", "2", "3", "4"}) + 1;
+            return playerCount;
         }
 
-        private static void HighlightMenuOption(string info, object[] options, int index)
+        private static void HighlightMenuOption(string info, IReadOnlyList<string> options, int index)
         {
-            //Clear the console so it doesn't print the new values on new lines, but instead replaces current values with new values on respective line
             Console.Clear();
 
-            //print info once again
             Console.WriteLine(info);
 
-            for (int i = 0; i < options.Length; i++)
+            for (var i = 0; i < options.Count; i++)
             {
-                //if i equals the index value we are highlighting, print it in green color with an arrow to show that THIS is the value we are on
                 if (i == index)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("> " + options[i]);
-                    //reset text color back to gray
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
-                //else simply print the value
                 else
                 {
                     Console.WriteLine(options[i]);
