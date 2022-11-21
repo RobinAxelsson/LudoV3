@@ -32,7 +32,7 @@ namespace LudoConsole.Main
                     {
                         Console.Clear();
                         LudoEngineFacade.SetBoard();
-                        BoardRenderer.StartRender(Board.BoardSquares);
+                        BoardRenderer.StartRender(StaticBoard.BoardSquares);
 
                         Console.ReadKey();
                         break;
@@ -62,7 +62,7 @@ namespace LudoConsole.Main
 
                         var game = builder.ToGamePlay();
 
-                        BoardRenderer.StartRender(Board.BoardSquares);
+                        BoardRenderer.StartRender(StaticBoard.BoardSquares);
                         game.Start();
 
                         break;
@@ -84,7 +84,7 @@ namespace LudoConsole.Main
                             var gameBuilder = GameBuilder.StartBuild();
                             gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
 
-                            BoardRenderer.StartRender(Board.BoardSquares);
+                            BoardRenderer.StartRender(StaticBoard.BoardSquares);
 
                             gameBuilder.AddDice(new Dice(1, 6));
                             //gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
@@ -127,7 +127,7 @@ namespace LudoConsole.Main
                 .EnableSavingToDb()
                 .ToGamePlay();
 
-            BoardRenderer.StartRender(Board.BoardSquares);
+            BoardRenderer.StartRender(StaticBoard.BoardSquares);
             loadGame.Start();
         }
     }

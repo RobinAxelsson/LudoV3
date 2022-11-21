@@ -52,7 +52,7 @@ namespace LudoTest.board_pawn
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint });
 
-            var pawns = BoardPawnFinder.GetTeamPawns(Board.BoardSquares, TeamColor.Blue);
+            var pawns = BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, TeamColor.Blue);
             Assert.True(pawns.Count == 1);
         }
         [Fact]
@@ -77,7 +77,7 @@ namespace LudoTest.board_pawn
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2 });
 
-            var square = Board.BoardSquares.Find(x => x.BoardX == savePoint.XPosition && x.BoardY == savePoint.YPosition);
+            var square = StaticBoard.BoardSquares.Find(x => x.BoardX == savePoint.XPosition && x.BoardY == savePoint.YPosition);
 
             Assert.True(square.Pawns.Count == 2);
         }
