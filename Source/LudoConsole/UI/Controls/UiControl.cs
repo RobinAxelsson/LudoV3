@@ -1,24 +1,17 @@
-﻿using LudoConsole.UI.Models;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.BoardUnits.Main;
-using LudoEngine.Enum;
+﻿using LudoEngine.Enum;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LudoConsole.UI.Controls
 {
     public static class UiControl
     {
-        public const ConsoleColor LightAccent = ConsoleColor.Gray;
-        public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
-        public const ConsoleColor DefaultForegroundColor = ConsoleColor.White;
-        public const ConsoleColor DefaultBoardChars = ConsoleColor.Black;
-        public const ConsoleColor DropShadow = ConsoleColor.Black;
-        public const ConsoleColor PawnInverseColor = ConsoleColor.White;
-        public const ConsoleColor DarkAccent = ConsoleColor.Black;
+        internal const ConsoleColor LightAccent = ConsoleColor.Gray;
+        internal const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
+        internal const ConsoleColor DefaultForegroundColor = ConsoleColor.White;
+        internal const ConsoleColor DefaultBoardChars = ConsoleColor.Black;
+        internal const ConsoleColor DropShadow = ConsoleColor.Black;
+        internal const ConsoleColor PawnInverseColor = ConsoleColor.White;
+        internal const ConsoleColor DarkAccent = ConsoleColor.Black;
 
         public static Random random = new Random();
         public static ConsoleColor RandomColor() => (ConsoleColor)random.Next(0, 15);

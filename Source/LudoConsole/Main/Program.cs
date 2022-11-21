@@ -34,7 +34,6 @@ namespace LudoConsole.Main
                         LudoEngineFacade.SetBoard();
                         WriterThreadStart();
 
-
                         Console.ReadKey();
                         break;
                     }
@@ -75,8 +74,8 @@ namespace LudoConsole.Main
                         builder.DisableSaving();
 
                         var game = builder.ToGamePlay();
-                        WriterThreadStart();
                         
+                        WriterThreadStart();
                         game.Start();
                         break;
                     }
@@ -207,19 +206,14 @@ namespace LudoConsole.Main
 
         private static void WriterThreadStart()
         {
-            _ = ConsoleDefaults.Display;
-            var writerThread = UiThreadBuilder.StartBuild()
-                .ColorSettings(UiControl.SetDefault)
-                .DrawBoardConvert(Board.BoardSquares)
-                .ToWriterThread();
-
-            writerThread.Start();
+            var boardRenderer = new BoardRenderer(Board.BoardSquares);
+            boardRenderer.Start();
         }
         public static void SetupNoSave()
         {
             var game = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                    .AddDice(new RiggedDice(new int[] { 1, 6, 2 }))
+                    .AddDice(new RiggedDice(new [] { 1, 6, 2 }))
                     
                     .NewGame()
                     .AddHumanPlayer(TeamColor.Blue, ConsoleDefaults.KeyboardControl)

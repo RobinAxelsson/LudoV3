@@ -1,5 +1,4 @@
-﻿using LudoConsole.Main;
-using LudoConsole.UI.Interfaces;
+﻿using LudoConsole.UI.Interfaces;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.GamePlayers;
 using LudoEngine.GameLogic.Interfaces;
@@ -10,7 +9,7 @@ using System.Threading;
 
 namespace LudoConsole.UI.Controls
 {
-    public class InfoDisplay : IInfoDisplay
+    public class InfoDisplay
     {
         public InfoDisplay(int x, int y)
         {
@@ -114,6 +113,11 @@ namespace LudoConsole.UI.Controls
                 x++;
             }
             ConsoleWriter.TryAppend(drawables);
+        }
+
+        public static void Init()
+        {
+            _ = new InfoDisplay(0, 9);
         }
     }
 }

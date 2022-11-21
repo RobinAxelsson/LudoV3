@@ -20,6 +20,6 @@ namespace LudoConsole.UI.Interfaces
     }
     public interface UiBuilderToWriterThread
     {
-        public WriterThread ToWriterThread();
+        public BoardRenderer ToWriterThread();
     }
 }
