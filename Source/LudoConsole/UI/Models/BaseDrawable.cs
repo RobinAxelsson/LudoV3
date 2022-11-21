@@ -28,7 +28,7 @@ namespace LudoConsole.UI.Models
             for (int i = 0; i < CharCoords.Count; i++)
             {
                 var charCoord = CharCoords[i];
-                var color = charCoord.chr != ' ' ? ThisBackgroundColor() : UiControl.LightAccent;
+                var color = charCoord.chr != ' ' ? ThisBackgroundColor() : UiColorConfiguration.LightAccent;
                 toRefresh.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
             }
             int pawnCount = Square.Pawns.Count;
@@ -47,16 +47,16 @@ namespace LudoConsole.UI.Models
             if (pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
-            var pawnColor = UiControl.TranslateColor(Square.Pawns[0].Color);
+            var pawnColor = UiColorConfiguration.TranslateColor(Square.Pawns[0].Color);
             
             for (int i = 0; i < pawns.Count; i++)
             {
                 PawnDrawable newPawn = null;
                 if (pawns[i].IsSelected)
-                    newPawn = new PawnDrawable(PawnCoords[i], UiControl.RandomColor(), ThisBackgroundColor());
+                    newPawn = new PawnDrawable(PawnCoords[i], UiColorConfiguration.RandomColor(), ThisBackgroundColor());
                 else
                     newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
-                var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiControl.LightAccent, UiControl.DropShadow);
+                var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColorConfiguration.LightAccent, UiColorConfiguration.DropShadow);
                 drawPawns.Add(newPawn);
                 drawPawns.Add(dropShadow);
             }
@@ -103,6 +103,6 @@ namespace LudoConsole.UI.Models
             }
             return charCoords;
         }
-        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiControl.TranslateColor((TeamColor)Square.Color) : UiControl.LightAccent;
+        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiColorConfiguration.TranslateColor((TeamColor)Square.Color) : UiColorConfiguration.LightAccent;
     }
 }

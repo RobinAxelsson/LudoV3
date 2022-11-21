@@ -10,6 +10,8 @@ namespace LudoEngine
 {
     public static class LudoEngineFacade
     {
+
+
         public static IReadOnlyList<GameDto> GetSavedGames()
         {
             var games = DatabaseManagement.GetGames();

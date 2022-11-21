@@ -3,7 +3,7 @@ using System;
 
 namespace LudoConsole.UI.Controls
 {
-    public static class UiControl
+    public static class UiColorConfiguration
     {
         internal const ConsoleColor LightAccent = ConsoleColor.Gray;
         internal const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;

@@ -10,8 +10,8 @@ namespace LudoConsole.UI.Models
         {
             CoordinateX = coords.x;
             CoordinateY = coords.y;
-            BackgroundColor = pawnColor == squareColor ? UiControl.PawnInverseColor : pawnColor;
-            ForegroundColor = pawnColor == squareColor ? pawnColor : UiControl.DarkAccent;
+            BackgroundColor = pawnColor == squareColor ? UiColorConfiguration.PawnInverseColor : pawnColor;
+            ForegroundColor = pawnColor == squareColor ? pawnColor : UiColorConfiguration.DarkAccent;
             Chars = pawnColor == squareColor ? "x" : chr.ToString();
         }
         public int CoordinateX { get; set; }

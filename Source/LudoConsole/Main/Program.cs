@@ -47,6 +47,8 @@ namespace LudoConsole.Main
                         
                         var builder = GameBuilder.StartBuild();
                         builder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                       
+                        
                         builder.AddDice(new Dice(1, 6));
                         
                         builder.NewGame();

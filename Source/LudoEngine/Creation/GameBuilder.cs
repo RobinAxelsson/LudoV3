@@ -37,10 +37,7 @@ namespace LudoEngine.Creation
             _dice = dice;
             return this;
         }
-        //public GameBuilder SetInfoDisplay(IInfoDisplay infoDisplay)
-        //{
-        //    return this;
-        //}
+
         public GameBuilder LoadGame()
         {
             return this;
@@ -68,11 +65,6 @@ namespace LudoEngine.Creation
                 }
             }
             return this;
-        }
-
-        private void AddHumanPlayer(TeamColor color, object consoleDefaults)
-        {
-            throw new NotImplementedException();
         }
 
         public GameBuilder NewGame()

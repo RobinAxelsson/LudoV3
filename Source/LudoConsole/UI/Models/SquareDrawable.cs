@@ -56,12 +56,12 @@ namespace LudoConsole.UI.Models
             if (pawns.Count < 0 || pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
-            var pawnColor = UiControl.TranslateColor(Square.Pawns[0].Color);
+            var pawnColor = UiColorConfiguration.TranslateColor(Square.Pawns[0].Color);
             for (int i = 0; i < pawns.Count; i++)
             { 
                 PawnDrawable newPawn = null;
                 if (pawns[i].IsSelected == true)
-                    newPawn = new PawnDrawable(PawnCoords[i], UiControl.RandomColor(), ThisBackgroundColor());
+                    newPawn = new PawnDrawable(PawnCoords[i], UiColorConfiguration.RandomColor(), ThisBackgroundColor());
                 else
                     newPawn = new PawnDrawable(PawnCoords[i], pawnColor, ThisBackgroundColor());
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), ThisBackgroundColor());
@@ -109,7 +109,7 @@ namespace LudoConsole.UI.Models
             }
             return charCoords;
         }
-        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiControl.TranslateColor((TeamColor)Square.Color) : UiControl.LightAccent;
+        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiColorConfiguration.TranslateColor((TeamColor)Square.Color) : UiColorConfiguration.LightAccent;
        
     }
 }
