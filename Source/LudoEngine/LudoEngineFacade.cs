@@ -35,11 +35,7 @@ namespace LudoEngine
         public static void SetBoard()
         {
             Board.BoardSquares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
-            GameSetup.NewGame(Board.BoardSquares, new []{
-                TeamColor.Blue,
-                TeamColor.Red,
-                TeamColor.Yellow,
-                TeamColor.Green});
+            GameSetup.NewGame(Board.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
         //public static void AddPlayer()

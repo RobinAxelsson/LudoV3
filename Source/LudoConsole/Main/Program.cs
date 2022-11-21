@@ -46,8 +46,8 @@ namespace LudoConsole.Main
                         Console.Clear();
                         
                         var builder = GameBuilder.StartBuild();
-                        builder.MapBoard(@"LudoORM/Map/BoardMap.txt");
-                       
+                        
+                        LudoEngineFacade.SetBoard();
                         
                         builder.AddDice(new Dice(1, 6));
                         
@@ -68,40 +68,39 @@ namespace LudoConsole.Main
                     }
                     case MainMenuOptions.LoadGame:
                     {
-                        var savedGames = LudoEngineFacade.GetSavedGames();
+                        //var savedGames = LudoEngineFacade.GetSavedGames();
                         
-                        var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
+                        //var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
                         
-                        var gameIndex = Menu.ShowMenu("Saved games: \n", timeSaved);
-                        Console.Clear();
+                        //var gameIndex = Menu.ShowMenu("Saved games: \n", timeSaved);
+                        //Console.Clear();
 
-                        var game = savedGames[gameIndex];
-                        var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
+                        //var game = savedGames[gameIndex];
+                        //var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
 
-                        //StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
+                        ////StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
 
-                        var gameBuilder = GameBuilder.StartBuild();
-                        gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                        //var gameBuilder = GameBuilder.StartBuild();
+                        //gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
 
-                        WriterThreadStart();
+                        //WriterThreadStart();
 
-
-                        gameBuilder.AddDice(new Dice(1, 6));
-                        //gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
-                        gameBuilder.LoadGame();
-                        gameBuilder.LoadPawns(savingDto.TeamPosition);
-                        gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
-                        gameBuilder.StartingColor(savingDto.Game.CurrentTurn);
-                        gameBuilder.EnableSavingToDb();
+                        //gameBuilder.AddDice(new Dice(1, 6));
+                        ////gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
+                        //gameBuilder.LoadGame();
+                        //gameBuilder.LoadPawns(savingDto.TeamPosition);
+                        //gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
+                        //gameBuilder.StartingColor(savingDto.Game.CurrentTurn);
+                        //gameBuilder.EnableSavingToDb();
                         
-                        var loadGame = gameBuilder.ToGamePlay();
+                        //var loadGame = gameBuilder.ToGamePlay();
 
-                        loadGame.Start();
+                        //loadGame.Start();
                         break;
                     }
 
                     case MainMenuOptions.Controls:
-                        DisplayControls();
+                        ConsoleInfo.DisplayControlInfo();
                         break;
 
                     case MainMenuOptions.Exit:
@@ -112,40 +111,6 @@ namespace LudoConsole.Main
                         throw new Exceptions.LudoConsoleException("Options out of range.");
                 }
             }
-        }
-
-        //private static void SetUpPlayers()
-        //{
-        //    var playerCount = Menu.AskForNumberOfHumanPlayers();
-        //    var availableColors = Menu.SetColorSelection(playerCount);
-        //    AddRemainingAis(playerCount - 4, availableColors);
-        //    Console.Clear();
-        //}
-
-        //private static void AddRemainingAis(int numberOfAis, string[] availableColors)
-        //{
-        //    if (numberOfAis != 0)
-        //    {
-        //        foreach (var item in availableColors)
-        //        {
-        //            var colorAdd = item == "blue" ? TeamColor.Blue :
-        //                item == "Red" ? TeamColor.Red :
-        //                item == "Green" ? TeamColor.Green :
-        //                TeamColor.Yellow;
-        //            Menu.AiColor.Add(colorAdd);
-        //        }
-        //    }
-        //}
-
-        private static void DisplayControls()
-        {
-            Console.Clear();
-            Console.WriteLine("Here are all the controls for the game.\n");
-            Console.WriteLine("Use arrow keys to change between the pawns");
-            Console.WriteLine("Enter is for selecting what pawn to play");
-            Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
         }
 
         private static void LoadGame()

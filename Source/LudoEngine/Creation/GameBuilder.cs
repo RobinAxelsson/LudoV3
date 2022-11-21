@@ -29,7 +29,7 @@ namespace LudoEngine.Creation
         public static GameBuilder StartBuild() => new GameBuilder();
         public GameBuilder MapBoard(string filePath)
         {
-            Board.BoardSquares = BoardOrm.Map(filePath);
+            //Board.BoardSquares = BoardOrm.Map(filePath);
             return this;
         }
         public GameBuilder AddDice(IDice dice)
@@ -97,7 +97,7 @@ namespace LudoEngine.Creation
         }
         public GameBuilder SetUpPawns()
         {
-            GameSetup.NewGame(Board.BoardSquares, _teamColors.ToArray());
+            //GameSetup.NewGame(Board.BoardSquares, _teamColors.ToArray());
             return this;
         }
         public GameBuilder DisableSaving() => this;
