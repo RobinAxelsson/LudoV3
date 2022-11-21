@@ -9,10 +9,16 @@ namespace LudoEngine.GameLogic
 {
     public static class Menu
     {
-        public static List<TeamColor> humanColor = new();
-        public static List<TeamColor> aiColor = new();
+        public static List<TeamColor> HumanColor { get; } = new();
+        public static List<TeamColor> AiColor { get; } = new();
 
-        public static int ShowMenu(string info, object[] options)
+        public static int AskForMainMenuSelection()
+        {
+            return ShowMenu("Welcome to this awesome Ludo game! \n",
+                new[] {"New Game", "Load Game", "Controls", "Exit"});
+        }
+
+        private static int ShowMenu(string info, object[] options)
         {
             Console.CursorVisible = false;
             int selected = 0;
@@ -74,30 +80,30 @@ namespace LudoEngine.GameLogic
                 Console.Clear();
                 Console.WriteLine("Write a number between 1 and 4");
                 Console.Write("How many players are you: ");
-                int players = Convert.ToInt32(Console.ReadLine());
-                string[] selectebleColors = new string[] { "Blue", "Red", "Green", "Yellow" };
+                var players = Convert.ToInt32(Console.ReadLine());
+                var selectableColors = new[] { "Blue", "Red", "Green", "Yellow" };
                 
-                for (int i = 0; i < players; i++)
+                for (var i = 0; i < players; i++)
                 {
-                    int removeIdex = ShowMenu("Select player color: \n", selectebleColors);
-                    var colorAdd = selectebleColors[removeIdex] == "Blue" ? TeamColor.Blue :
-                        selectebleColors[removeIdex] == "Red" ? TeamColor.Red :
-                        selectebleColors[removeIdex] == "Green" ? TeamColor.Green :
+                    var removeIndex = ShowMenu("Select player color: \n", selectableColors);
+                    var colorAdd = selectableColors[removeIndex] == "Blue" ? TeamColor.Blue :
+                        selectableColors[removeIndex] == "Red" ? TeamColor.Red :
+                        selectableColors[removeIndex] == "Green" ? TeamColor.Green :
                         TeamColor.Yellow;
-                    humanColor.Add(colorAdd);
-                    selectebleColors = selectebleColors.Where((source, index) => index != removeIdex).ToArray();
+                    HumanColor.Add(colorAdd);
+                    selectableColors = selectableColors.Where((source, index) => index != removeIndex).ToArray();
                 }
 
                 int numberOfAis = Convert.ToInt32(players) - 4;
                 if (numberOfAis != 0)
                 {
-                    foreach (var item in selectebleColors)
+                    foreach (var item in selectableColors)
                     {
                         var colorAdd = item == "blue" ? TeamColor.Blue :
                         item == "Red" ? TeamColor.Red :
                         item == "Green" ? TeamColor.Green :
                         TeamColor.Yellow;
-                        aiColor.Add(colorAdd);
+                        AiColor.Add(colorAdd);
                     }
                 }
                 Console.Clear();

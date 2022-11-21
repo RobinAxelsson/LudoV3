@@ -17,40 +17,14 @@ namespace LudoConsole.Main
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
-        private static void StartNewGame()
-        {
-            var builder = GameBuilder.StartBuild()
-                .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new Dice(1, 6))
-                .SetInfoDisplay(ConsoleDefaults.display)
-                .NewGame();
-
-            var humanColors = Menu.humanColor;
-            var aiColors = Menu.aiColor;
-
-            humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
-            aiColors.ForEach(x => builder.AddAIPlayer(x, true));
-
-            var game = builder
-                .SetUpPawns()
-                .StartingColor(TeamColor.Blue)
-                .DisableSaving()
-                //.EnableSavingToDb()
-                .ToGamePlay();
-
-
-            WriterThreadStart();
-            game.Start();
-        }
-
         private static void Main(string[] args)
         {
-            var selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
+            var selectedOption = Menu.AskForMainMenuSelection();
             int drawGameBoard;
 
             do
             {
-                drawGameBoard = Menu.SelectedOptions(selected);
+                drawGameBoard = Menu.SelectedOptions(selectedOption);
 
                 if (drawGameBoard == 0)
                 {
@@ -65,10 +39,36 @@ namespace LudoConsole.Main
                     WriteControlInfo();
                     Console.ReadKey();
 
-                    selected = Menu.ShowMenu("Welcome to this awsome Ludo game! \n", new string[] { "New Game", "Load Game", "Controls", "Exit" });
+                    selectedOption = Menu.AskForMainMenuSelection();
                 }
             } while (drawGameBoard != 3);
             
+        }
+
+        private static void StartNewGame()
+        {
+            var builder = GameBuilder.StartBuild()
+                .MapBoard(@"LudoORM/Map/BoardMap.txt")
+                .AddDice(new Dice(1, 6))
+                .SetInfoDisplay(ConsoleDefaults.display)
+                .NewGame();
+
+            var humanColors = Menu.HumanColor;
+            var aiColors = Menu.AiColor;
+
+            humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
+            aiColors.ForEach(x => builder.AddAIPlayer(x, true));
+
+            var game = builder
+                .SetUpPawns()
+                .StartingColor(TeamColor.Blue)
+                .DisableSaving()
+                //.EnableSavingToDb()
+                .ToGamePlay();
+
+
+            WriterThreadStart();
+            game.Start();
         }
 
         private static void WriteControlInfo()
@@ -107,7 +107,7 @@ namespace LudoConsole.Main
 
             writerThread.Start();
         }
-        public static void setupNoSave()
+        public static void SetupNoSave()
         {
             var game = GameBuilder.StartBuild()
                     .MapBoard(@"LudoORM/Map/BoardMap.txt")
