@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using LudoConsole.UI.Models;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.BoardUnits.Main;
 
 namespace LudoConsole.UI.Controls
 {
@@ -15,7 +13,7 @@ namespace LudoConsole.UI.Controls
         private readonly IEnumerable<ISquareDrawable> _squareDrawables;
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
-        public BoardRenderer(List<IGameSquare> gameSquares)
+        public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
         {
             _squareDrawables = DrawBoardConvert(gameSquares);
             Pawn.GameOverEvent += OnGameOver;
@@ -29,7 +27,7 @@ namespace LudoConsole.UI.Controls
             }));
         }
 
-        public static BoardRenderer StartRender(List<IGameSquare> gameSquares)
+        public static BoardRenderer StartRender(IEnumerable<ConsoleGameSquare> gameSquares)
         {
             var boardRenderer = new BoardRenderer(gameSquares);
             boardRenderer.Start();
@@ -51,26 +49,21 @@ namespace LudoConsole.UI.Controls
             Console.ReadKey();
         }
 
-        private IEnumerable<ISquareDrawable> DrawBoardConvert(List<IGameSquare> squares)
+        private IEnumerable<ISquareDrawable> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
         {
-            var squareDrawables = GetNonBaseSquareDrawables(squares).ToArray();
+            var squareDraws = squares.Where(x => !x.IsBase).Select(x => new SquareDrawable(x));
+            
+            var squareDrawables = squareDraws.ToArray();
 
             var x = squareDrawables.Select(x => x.MaxCoord()).Max(x => x.X);
             var y = squareDrawables.Select(x => x.MaxCoord()).Max(x => x.Y);
 
             var baseDraws = squares
-                .Where(x => x.GetType() == typeof(BaseSquare))
+                .Where(x => x.IsBase)
                 .Select(square => new BaseDrawable(square, (x, y)))
                 .Select(x => (ISquareDrawable)x);
 
             return squareDrawables.Select(x => (ISquareDrawable)x).Concat(baseDraws).ToList();
-        }
-
-        private static IEnumerable<SquareDrawable> GetNonBaseSquareDrawables(List<IGameSquare> squares)
-        {
-            var squareDraws =
-                squares.Where(x => x.GetType() != typeof(BaseSquare)).Select(x => new SquareDrawable(x));
-            return squareDraws;
         }
     }
 }

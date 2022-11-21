@@ -13,6 +13,7 @@ namespace LudoEngine.BoardUnits.Main
             BoardY = boardY;
             DefaultDirection = direction;
         }
+
         public TeamColor? Color { get; set; } = null;
         public int BoardX { get; set; }
         public int BoardY { get; set; }

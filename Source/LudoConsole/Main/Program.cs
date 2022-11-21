@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using LudoEngine.GameLogic;
-using LudoEngine.DbModel;
-using LudoEngine.Enum;
-using LudoEngine.Creation;
-using LudoEngine.GameLogic.Dice;
 using LudoConsole.UI.Controls;
 using LudoEngine;
-using LudoEngine.BoardUnits.Main;
 
 namespace LudoConsole.Main
 {
@@ -31,7 +25,8 @@ namespace LudoConsole.Main
                     case MainMenuOptions.TestRender:
                     {
                         Console.Clear();
-                        var squares = LudoEngineFacade.GetBoardSquares();
+                        var facadeSquares = LudoEngineFacade.GetBoardSquares();
+                        var squares = ConsoleDtoMapping.Map(facadeSquares);
                         BoardRenderer.StartRender(squares);
 
                         Console.ReadKey();
@@ -40,60 +35,60 @@ namespace LudoConsole.Main
 
                     case MainMenuOptions.NewGame:
                     {
-                        var playerCount = Menu.AskForNumberOfHumanPlayers();
-                        var teamColors = Menu.SetColorSelection(playerCount);
+                        //var playerCount = Menu.AskForNumberOfHumanPlayers();
+                        //var teamColors = Menu.SetColorSelection(playerCount);
 
-                        Console.Clear();
+                        //Console.Clear();
                         
-                        var builder = GameBuilder.StartBuild();
+                        //var builder = GameBuilder.StartBuild();
                         
-                        LudoEngineFacade.SetBoard();
+                        //LudoEngineFacade.SetBoard();
                         
-                        builder.AddDice(new Dice(1, 6));
+                        //builder.AddDice(new Dice(1, 6));
                         
-                        builder.NewGame();
+                        //builder.NewGame();
 
-                        teamColors.human.ToList().ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
-                        teamColors.ai.ToList().ForEach(x => builder.AddAIPlayer(x, true));
+                        //teamColors.human.ToList().ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
+                        //teamColors.ai.ToList().ForEach(x => builder.AddAIPlayer(x, true));
 
-                        builder.SetUpPawns();
-                        builder.StartingColor(TeamColor.Blue);
-                        builder.DisableSaving();
+                        //builder.SetUpPawns();
+                        //builder.StartingColor(TeamColor.Blue);
+                        //builder.DisableSaving();
 
-                        var game = builder.ToGamePlay();
+                        //var game = builder.ToGamePlay();
 
-                        BoardRenderer.StartRender(StaticBoard.BoardSquares);
-                        game.Start();
+                        //BoardRenderer.StartRender(StaticBoard.BoardSquares);
+                        //game.Start();
 
                         break;
                     }
                     case MainMenuOptions.LoadGame:
                     {
-                            var savedGames = LudoEngineFacade.GetSavedGames();
+                            //var savedGames = LudoEngineFacade.GetSavedGames();
 
-                            var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
+                            //var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
 
-                            var gameIndex = Menu.ShowMenu("Saved games: \n", timeSaved);
-                            Console.Clear();
+                            //var gameIndex = Menu.ShowMenu("Saved games: \n", timeSaved);
+                            //Console.Clear();
 
-                            var game = savedGames[gameIndex];
-                            var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
+                            //var game = savedGames[gameIndex];
+                            //var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
 
-                            var gameBuilder = GameBuilder.StartBuild();
-                            gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                            //var gameBuilder = GameBuilder.StartBuild();
+                            //gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
 
-                            BoardRenderer.StartRender(StaticBoard.BoardSquares);
+                            //BoardRenderer.StartRender(StaticBoard.BoardSquares);
 
-                            gameBuilder.AddDice(new Dice(1, 6));
-                            gameBuilder.LoadGame();
-                            gameBuilder.LoadPawns(savingDto.TeamPosition);
-                            gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
-                            gameBuilder.StartingColor(savingDto.Game.CurrentTurn);
-                            gameBuilder.EnableSavingToDb();
+                            //gameBuilder.AddDice(new Dice(1, 6));
+                            //gameBuilder.LoadGame();
+                            //gameBuilder.LoadPawns(savingDto.TeamPosition);
+                            //gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
+                            //gameBuilder.StartingColor(savingDto.Game.CurrentTurn);
+                            //gameBuilder.EnableSavingToDb();
 
-                            var loadGame = gameBuilder.ToGamePlay();
+                            //var loadGame = gameBuilder.ToGamePlay();
 
-                            loadGame.Start();
+                            //loadGame.Start();
                             break;
                     }
 
@@ -111,21 +106,21 @@ namespace LudoConsole.Main
             }
         }
 
-        private static void LoadGame()
-        {
-            var loadGame = GameBuilder.StartBuild()
-                .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new Dice(1, 6))
+        //private static void LoadGame()
+        //{
+        //    var loadGame = GameBuilder.StartBuild()
+        //        .MapBoard(@"LudoORM/Map/BoardMap.txt")
+        //        .AddDice(new Dice(1, 6))
                 
-                .LoadGame()
-                .LoadPawns(StageSaving.TeamPosition)
-                .LoadPlayers(ConsoleDefaults.KeyboardControl)
-                .StartingColor(StageSaving.Game.CurrentTurn)
-                .EnableSavingToDb()
-                .ToGamePlay();
+        //        .LoadGame()
+        //        .LoadPawns(StageSaving.TeamPosition)
+        //        .LoadPlayers(ConsoleDefaults.KeyboardControl)
+        //        .StartingColor(StageSaving.Game.CurrentTurn)
+        //        .EnableSavingToDb()
+        //        .ToGamePlay();
 
-            BoardRenderer.StartRender(StaticBoard.BoardSquares);
-            loadGame.Start();
-        }
+        //    BoardRenderer.StartRender(StaticBoard.BoardSquares);
+        //    loadGame.Start();
+        //}
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LudoConsole.Main;
 using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
@@ -14,21 +15,21 @@ namespace LudoConsole.UI.Models
     {
         private const string _filepath = @"UI/Map/square.txt";
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
-        public IGameSquare Square { get; set; }
+        public ConsoleGameSquare Square { get; set; }
         public (int X, int Y) MaxCoord() 
         {
-            int x = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.X);
-            int y = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.Y);
+            var x = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.X);
+            var y = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.Y);
             return (x, y);
         }
 
-        public SquareDrawable(IGameSquare square, string filePath = _filepath)
+        public SquareDrawable(ConsoleGameSquare square, string filePath = _filepath)
         {
             Square = square;
             CharCoords = ReadCharCoords(filePath);
         }
         private (int X, int Y) TrueUpLeft { get; set; }
-        private List<(int X, int Y)> PawnCoords { get; set; } = new List<(int X, int Y)>();
+        private List<(int X, int Y)> PawnCoords { get; set; } = new ();
         public object UiControls { get; private set; }
 
         public List<IDrawable> Refresh()
@@ -51,7 +52,7 @@ namespace LudoConsole.UI.Models
             }
             return toRefresh;
         }
-        private List<IDrawable> DrawPawns(List<Pawn> pawns)
+        private List<IDrawable> DrawPawns(List<ConsolePawnDto> pawns)
         {
             if (pawns.Count < 0 || pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
@@ -109,7 +110,7 @@ namespace LudoConsole.UI.Models
             }
             return charCoords;
         }
-        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiColorConfiguration.TranslateColor((TeamColor)Square.Color) : UiColorConfiguration.LightAccent;
+        private ConsoleColor ThisBackgroundColor() => UiColorConfiguration.TranslateColor(Square.Color);
        
     }
 }

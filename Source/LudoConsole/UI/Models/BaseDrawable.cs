@@ -1,12 +1,10 @@
 ﻿using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.Enum;
-using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LudoConsole.Main;
 
 namespace LudoConsole.UI.Models
 {
@@ -14,42 +12,43 @@ namespace LudoConsole.UI.Models
     {
         private const string _filepath = @"UI/Map/base.txt";
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
-        public IGameSquare Square { get; set; }
+        public ConsoleGameSquare Square { get; set; }
         public (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
-        public BaseDrawable(IGameSquare square, (int X, int Y) frameSize, string filePath = _filepath)
+        public BaseDrawable(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath)
         {
             Square = square;
             CharCoords = ReadCharCoords(frameSize, filePath);
         }
-        private List<(int X, int Y)> PawnCoords { get; set; } = new List<(int X, int Y)>();
+        private List<(int X, int Y)> PawnCoords { get; } = new();
         public List<IDrawable> Refresh()
         {
             var toRefresh = new List<IDrawable>();
-            for (int i = 0; i < CharCoords.Count; i++)
+
+            foreach (var charCoord in CharCoords)
             {
-                var charCoord = CharCoords[i];
                 var color = charCoord.chr != ' ' ? ThisBackgroundColor() : UiColorConfiguration.LightAccent;
                 toRefresh.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
             }
-            int pawnCount = Square.Pawns.Count;
-            if (pawnCount > 0)
-            {
-                var pawnDraws = DrawPawns(Square.Pawns);
-                var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
-                int count = toRefresh.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
-                if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
-                toRefresh.AddRange(pawnDraws);
-            }
+
+            if (!Square.Pawns.Any()) return toRefresh;
+
+            var pawnDraws = DrawPawns(Square.Pawns);
+            
+            var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
+            var count = toRefresh.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
+            if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count}");
+            toRefresh.AddRange(pawnDraws);
+
             return toRefresh;
         }
-        private List<IDrawable> DrawPawns(List<Pawn> pawns)
+        private List<IDrawable> DrawPawns(List<ConsolePawnDto> pawns)
         {
             if (pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
             var pawnColor = UiColorConfiguration.TranslateColor(Square.Pawns[0].Color);
             
-            for (int i = 0; i < pawns.Count; i++)
+            for (var i = 0; i < pawns.Count; i++)
             {
                 PawnDrawable newPawn = null;
                 if (pawns[i].IsSelected)
@@ -71,10 +70,10 @@ namespace LudoConsole.UI.Models
             int xMax = lines.ToList().Select(x => x.Length).Max();
             int yMax = lines.Length;
 
-            (int X, int Y) trueUpLeft = Square.Color == TeamColor.Red ? (frameSize.X - xMax + 1, 0) :
-            Square.Color == TeamColor.Blue ? (0, 0) :
-            Square.Color == TeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
-            Square.Color == TeamColor.Yellow ? (0, frameSize.Y - yMax + 1) : throw new Exception("Base must have a team color.");
+            (int X, int Y) trueUpLeft = Square.Color == ConsoleTeamColor.Red ? (frameSize.X - xMax + 1, 0) :
+            Square.Color == ConsoleTeamColor.Blue ? (0, 0) :
+            Square.Color == ConsoleTeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
+            Square.Color == ConsoleTeamColor.Yellow ? (0, frameSize.Y - yMax + 1) : throw new Exception("Base must have a team color.");
 
             int x = 0;
             int y = 0;
@@ -103,6 +102,7 @@ namespace LudoConsole.UI.Models
             }
             return charCoords;
         }
-        private ConsoleColor ThisBackgroundColor() => Square.Color != null ? UiColorConfiguration.TranslateColor((TeamColor)Square.Color) : UiColorConfiguration.LightAccent;
+
+        private ConsoleColor ThisBackgroundColor() => UiColorConfiguration.TranslateColor(Square.Color);
     }
 }

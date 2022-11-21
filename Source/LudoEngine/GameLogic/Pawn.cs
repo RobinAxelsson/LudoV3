@@ -9,14 +9,17 @@ namespace LudoEngine.Models
     public class Pawn
     {
         private static int highestId { get; set; }
-        static Pawn() => highestId = 0;
-        public int Id { get; } //Game Id not SQL
         public Pawn(TeamColor color)
         {
             Color = color;
             Id = highestId;
             highestId++;
         }
+        static Pawn() => highestId = 0;
+        public int Id { get; } //Game Id not SQL
+        public bool IsSelected { get; set; }
+        public TeamColor Color { get; set; }
+
         public static event Action<Pawn> OnBounceEvent;
         public static event Action<Pawn, int> OnGoalEvent;
         public static event Action<Pawn> OnAllTeamPawnsOutEvent;
@@ -24,8 +27,7 @@ namespace LudoEngine.Models
         public static event Action<TeamColor> GameLoserEvent;
         public static event Action GameOverEvent;
         public static event Action<Pawn> OnSafeZoneEvent;
-        public bool IsSelected { get; set; }
-        public TeamColor Color { get; set; }
+
         public IGameSquare CurrentSquare() => StaticBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
         public bool Based() => BoardPawnFinder.PawnsInBase(StaticBoard.BoardSquares, Color).Contains(this);
         public void Move(int dice)

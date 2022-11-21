@@ -1,5 +1,6 @@
 ﻿using LudoEngine.Enum;
 using System;
+using LudoConsole.UI.Models;
 
 namespace LudoConsole.UI.Controls
 {
@@ -23,11 +24,25 @@ namespace LudoConsole.UI.Controls
             Console.WindowWidth = 89;
             Console.WindowHeight = 38;
         }
-        public static ConsoleColor TranslateColor(TeamColor color) =>
-           color == TeamColor.Blue ? ConsoleColor.DarkBlue :
-           color == TeamColor.Green ? ConsoleColor.Green :
-           color == TeamColor.Red ? ConsoleColor.Red :
-           color == TeamColor.Yellow ? ConsoleColor.Yellow : LightAccent;
+
+        public static ConsoleColor TranslateColor(ConsoleTeamColor color)
+        {
+            return color switch
+            {
+                ConsoleTeamColor.Blue => ConsoleColor.DarkBlue,
+                ConsoleTeamColor.Red => ConsoleColor.Red,
+                ConsoleTeamColor.Yellow => ConsoleColor.Yellow,
+                ConsoleTeamColor.Green => ConsoleColor.Green,
+                ConsoleTeamColor.Default => LightAccent,
+                _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
+            };
+        }
+
+        //public static ConsoleColor TranslateColor(TeamColor color) =>
+        //   color == TeamColor.Blue ? ConsoleColor.DarkBlue :
+        //   color == TeamColor.Green ? ConsoleColor.Green :
+        //   color == TeamColor.Red ? ConsoleColor.Red :
+        //   color == TeamColor.Yellow ? ConsoleColor.Yellow : LightAccent;
 
     }
 }
