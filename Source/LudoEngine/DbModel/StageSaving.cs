@@ -15,4 +15,16 @@ namespace LudoEngine.DbModel
         public static int CurrentTeam { get; set; }
     }
 
+    public sealed class StageSavingDto
+    {
+        public  List<Pawn> Pawns { get; init; }
+
+        public  Game Game { get; init; }
+
+        public  List<Player> Players { get; init; }
+
+        public  List<PawnSavePoint> TeamPosition { get; init; }
+
+        public  int CurrentTeam { get; init; }
+    }
 }

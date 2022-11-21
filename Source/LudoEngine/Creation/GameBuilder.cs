@@ -13,18 +13,7 @@ using System.Linq;
 
 namespace LudoEngine.Creation
 {
-    public class GameBuilder :
-        IGameBuilderMapBoard,
-        IGameBuilderAddDice,
-        IGameBuilderSetInfoDisplay,
-        IGameBuilderLoadOrNew,
-        IGameBuilderNewGame,
-        IGameBuilderLoadPawns,
-        IGameBuilderGamePlay,
-        IGameBuilderNewGamePlay,
-        IGameBuilderStartingColor,
-        IGameBuilderLoadPlayers,
-        IGameBuilderSaveConfig
+    public class GameBuilder
     {
         private IDice _dice { get; set; }
         private List<TeamColor> _teamColors { get; set; } = new();
@@ -37,33 +26,33 @@ namespace LudoEngine.Creation
             if (_teamColors.Contains(color)) throw new Exception("There can only be one player per color");
             _teamColors.Add(color);
         }
-        public static IGameBuilderMapBoard StartBuild() => new GameBuilder();
-        public IGameBuilderAddDice MapBoard(string filePath)
+        public static GameBuilder StartBuild() => new GameBuilder();
+        public GameBuilder MapBoard(string filePath)
         {
             Board.BoardSquares = BoardOrm.Map(filePath);
             return this;
         }
-        public IGameBuilderSetInfoDisplay AddDice(IDice dice)
+        public GameBuilder AddDice(IDice dice)
         {
             _dice = dice;
             return this;
         }
-        public IGameBuilderLoadOrNew SetInfoDisplay(IInfoDisplay infoDisplay)
+        public GameBuilder SetInfoDisplay(IInfoDisplay infoDisplay)
         {
             return this;
         }
-        public IGameBuilderLoadPawns LoadGame()
+        public GameBuilder LoadGame()
         {
             return this;
         }
-        public IGameBuilderLoadPlayers LoadPawns(List<PawnSavePoint> savePoints)
+        public GameBuilder LoadPawns(List<PawnSavePoint> savePoints)
         {
             GameSetup.LoadSavedPawns(savePoints);
             _pawnSavePoints = savePoints;
             
             return this;
         }
-        public IGameBuilderStartingColor LoadPlayers(Func<IController> humanController)
+        public GameBuilder LoadPlayers(Func<IController> humanController)
         {
             var colorTypeList = _pawnSavePoints.Select(x => (x.Color, x.PlayerType)).Distinct().ToList();
 
@@ -86,11 +75,11 @@ namespace LudoEngine.Creation
             throw new NotImplementedException();
         }
 
-        public IGameBuilderNewGame NewGame()
+        public GameBuilder NewGame()
         {
             return this;
         }
-        public IGameBuilderSaveConfig StartingColor(TeamColor? color)
+        public GameBuilder StartingColor(TeamColor? color)
         {
             if (color != null && _teamColors.Contains((TeamColor)color)) _first = (TeamColor)color;
             else _first = _teamColors[0];
@@ -98,13 +87,13 @@ namespace LudoEngine.Creation
 
             return this;
         }
-        public IGameBuilderNewGamePlay AddHumanPlayer(TeamColor color, IController control)
+        public GameBuilder AddHumanPlayer(TeamColor color, IController control)
         {
             AddColor(color);
             _gamePlayers.Add(new HumanPlayer(color,  control));
             return this;
         }
-        public IGameBuilderNewGamePlay AddAIPlayer(TeamColor color, bool log = false)
+        public GameBuilder AddAIPlayer(TeamColor color, bool log = false)
         {
             AddColor(color);
 
@@ -114,13 +103,13 @@ namespace LudoEngine.Creation
                 _gamePlayers.Add(new Stephan(color));
             return this;
         }
-        public IGameBuilderStartingColor SetUpPawns()
+        public GameBuilder SetUpPawns()
         {
             GameSetup.NewGame(Board.BoardSquares, _teamColors.ToArray());
             return this;
         }
-        public IGameBuilderGamePlay DisableSaving() => this;
-        public IGameBuilderGamePlay EnableSavingToDb()
+        public GameBuilder DisableSaving() => this;
+        public GameBuilder EnableSavingToDb()
         {
             _enableSaving = true;
             return this;

@@ -20,17 +20,16 @@ namespace LudoEngine.DbModel
         public static void SaveInit(GamePlay gamePlay)
         {
             _gamePlay = gamePlay;
-            SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
+            SaveThread = new Thread((() => save(gamePlay)));
             SaveThread.IsBackground = true;
             GamePlay.OnPlayerEndsRoundEvent += Save;
         }
         public static void Save(GamePlay gamePlay)
         {
-            if (!SaveThread.IsAlive)
-            {
-                SaveThread = new Thread(new ThreadStart(() => save(gamePlay)));
-                SaveThread.Start();
-            }
+            if (SaveThread.IsAlive) return;
+
+            SaveThread = new Thread((() => save(gamePlay)));
+            SaveThread.Start();
         }
 
         public static void ReadConnectionString(string filepath)
@@ -77,7 +76,7 @@ namespace LudoEngine.DbModel
                 .Select(x => x)
                 .OrderByDescending(x => x.LastSaved);
 
-            List<Game> games = new();
+            var games = new List<Game>();
             if (game != null)
             {
                 games.AddRange(game);
@@ -119,11 +118,11 @@ namespace LudoEngine.DbModel
             var savePoints = db.PawnSavePoints
                 .Where(x => x.Game == game);
 
-            List<PawnSavePoint> savepointList = new();
+            var savepointList = new List<PawnSavePoint>();
 
             foreach (var item in savePoints)
             {
-                PawnSavePoint savepoint = new PawnSavePoint()
+                var savepoint = new PawnSavePoint()
                 {
                     Id = item.Id,
                     Game = item.Game,
@@ -154,10 +153,10 @@ namespace LudoEngine.DbModel
 
         private static void save(GamePlay gamePlay)
         {
-            TeamColor currentTeam = _gamePlay.CurrentPlayer().Color;
+            var currentTeam = _gamePlay.CurrentPlayer().Color;
             StageSaving.Pawns = Board.GetTeamPawns(currentTeam);
 
-            List<Pawn> pawns = StageSaving.Pawns;
+            var pawns = StageSaving.Pawns;
             Game game = new();
             if (StageSaving.Game != null)
             {
@@ -176,8 +175,8 @@ namespace LudoEngine.DbModel
                 var querry = db.PawnSavePoints
                 .Where(x => x.Color == currentTeam && x.Game == game);
 
-                Pawn[] pawnsArray = pawns.ToArray();
-                int i = 0;
+                var pawnsArray = pawns.ToArray();
+                var i = 0;
                 foreach (var dbData in querry)
                 {
                     dbData.Color = pawnsArray[i].Color;
@@ -191,8 +190,8 @@ namespace LudoEngine.DbModel
             {
                 foreach (var pawn in pawns)
                 {
-                    Type playerType = gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
-                    int iPlayerType = -1;
+                    var playerType = gamePlay.Players.Find(x => x.Color == pawn.Color).GetType();
+                    var iPlayerType = -1;
                     if (playerType == typeof(HumanPlayer)) iPlayerType = 0;
                     if(playerType == typeof(Stephan)) iPlayerType = 1;
                     if (iPlayerType == -1) throw new Exception("Playertype is not available");

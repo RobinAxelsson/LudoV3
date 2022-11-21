@@ -1,25 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using LudoConsole.Exceptions;
+using System.Linq;
 using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
 using LudoEngine.Creation;
 using LudoEngine.GameLogic.Dice;
 using LudoConsole.UI.Controls;
+using LudoEngine;
 using LudoEngine.BoardUnits.Main;
 
 namespace LudoConsole.Main
 {
-    public enum MainMenuOptions
-    {
-        NewGame = 0,
-        LoadGame = 1,
-        Controls = 2,
-        Exit = 3
-    }
-
     internal static class Program
     {
         static Program()
@@ -39,33 +31,60 @@ namespace LudoConsole.Main
                     case MainMenuOptions.NewGame:
                     {
                         SetUpPlayers();
-                        StartNewGame();
+
+                        var builder = GameBuilder.StartBuild();
+                        builder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                        builder.AddDice(new Dice(1, 6));
+                        builder.SetInfoDisplay(ConsoleDefaults.display);
+                        builder.NewGame();
+
+                        var humanColors = Menu.HumanColor;
+                        var aiColors = Menu.AiColor;
+
+                        humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl()));
+                        aiColors.ForEach(x => builder.AddAIPlayer(x, true));
+
+                        builder.SetUpPawns();
+                        builder.StartingColor(TeamColor.Blue);
+                        builder.DisableSaving();
+
+                        //.EnableSavingToDb()
+                        
+                        var game = builder.ToGamePlay();
+
+
+                        WriterThreadStart();
+                        game.Start();
                         break;
                     }
                     case MainMenuOptions.LoadGame:
                     {
-                        var games = DatabaseManagement.GetGames();
-                        var savedGames = new List<string>();
-
-                        if (games.Count > 0)
-                        {
-                            foreach (var item in games)
-                            {
-                                savedGames.Add(item.LastSaved.ToString("yyy/MM/dd HH:mm"));
-                            }
-                        }
-                        else
-                        {
-                            savedGames.Add("You have no saved games.");
-                        }
-                
-                        var selectedGame = Menu.ShowMenu("Select save: \n", savedGames.ToArray());
+                        var savedGames = LudoEngineFacade.GetSavedGames();
+                        
+                        var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
+                        
+                        var gameIndex = Menu.ShowMenu("Saved games: \n", timeSaved);
                         Console.Clear();
-                        StageSaving.Game = games.ToArray()[selectedGame];
 
-                        StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
+                        var game = savedGames[gameIndex];
+                        var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
 
-                        LoadGame();
+                        //StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
+
+                        var gameBuilder = GameBuilder.StartBuild();
+                        gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                        gameBuilder.AddDice(new Dice(1, 6));
+                        gameBuilder.SetInfoDisplay(ConsoleDefaults.display);
+                        gameBuilder.LoadGame();
+                        gameBuilder.LoadPawns(savingDto.TeamPosition);
+                        gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);
+                        gameBuilder.StartingColor(savingDto.Game.CurrentTurn);
+                        gameBuilder.EnableSavingToDb();
+                        
+                        var loadGame = gameBuilder.ToGamePlay();
+
+                        WriterThreadStart();
+                        loadGame.Start();
                         break;
                     }
 
