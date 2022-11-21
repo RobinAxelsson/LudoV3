@@ -2,7 +2,7 @@
 {
     public enum MainMenuOptions
     {
-        Test = 0,
+        TestRender = 0,
         NewGame = 1,
         LoadGame = 2,
         Controls = 3,

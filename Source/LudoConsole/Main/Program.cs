@@ -28,11 +28,11 @@ namespace LudoConsole.Main
 
                 switch (selectedOption)
                 {
-                    case MainMenuOptions.Test:
+                    case MainMenuOptions.TestRender:
                     {
                         Console.Clear();
-                        LudoEngineFacade.SetBoard();
-                        BoardRenderer.StartRender(StaticBoard.BoardSquares);
+                        var squares = LudoEngineFacade.GetBoardSquares();
+                        BoardRenderer.StartRender(squares);
 
                         Console.ReadKey();
                         break;
@@ -79,15 +79,12 @@ namespace LudoConsole.Main
                             var game = savedGames[gameIndex];
                             var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
 
-                            //StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
-
                             var gameBuilder = GameBuilder.StartBuild();
                             gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
 
                             BoardRenderer.StartRender(StaticBoard.BoardSquares);
 
                             gameBuilder.AddDice(new Dice(1, 6));
-                            //gameBuilder.SetInfoDisplay(ConsoleDefaults.Display);
                             gameBuilder.LoadGame();
                             gameBuilder.LoadPawns(savingDto.TeamPosition);
                             gameBuilder.LoadPlayers(ConsoleDefaults.KeyboardControl);

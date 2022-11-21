@@ -5,13 +5,12 @@ using System.Linq;
 using LudoEngine.BoardUnits.Main;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
+using LudoEngine.BoardUnits.Interfaces;
 
 namespace LudoEngine
 {
     public static class LudoEngineFacade
     {
-
-
         public static IReadOnlyList<GameDto> GetSavedGames()
         {
             var games = DatabaseManagement.GetGames();
@@ -36,6 +35,11 @@ namespace LudoEngine
         {
             StaticBoard.BoardSquares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
             GameSetup.NewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
+        }
+
+        public static List<IGameSquare> GetBoardSquares()
+        {
+            return BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
         }
 
         //public static void AddPlayer()

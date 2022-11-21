@@ -9,6 +9,7 @@ using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoEngine.BoardUnits.Main;
 
 namespace LudoEngine.Creation
 {
@@ -28,7 +29,7 @@ namespace LudoEngine.Creation
         public static GameBuilder StartBuild() => new GameBuilder();
         public GameBuilder MapBoard(string filePath)
         {
-            //Board.BoardSquares = BoardOrm.Map(filePath);
+            StaticBoard.BoardSquares = BoardOrm.Map(filePath);
             return this;
         }
         public GameBuilder AddDice(IDice dice)

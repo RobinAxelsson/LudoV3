@@ -4,7 +4,6 @@ using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
-using LudoConsole.Main;
 using LudoEngine.GameLogic.Dice;
 using System;
 using System.Collections.Generic;
@@ -15,18 +14,12 @@ namespace LudoTest.AI
     [Collection(nameof(StaticTestCollection))]
     public class AiTests
     {
-
-        public AiTests()
-        {
-            BoardSquares = new Board(@"AI/ai-test-map1.txt").BoardSquares;
-        }
-
-        private List<IGameSquare> BoardSquares { get; set; }
+        private List<IGameSquare> BoardSquares => StaticBoard.BoardSquares;
 
         [Fact]
         public void Stephan_Choices_AssertErradicate()
         {
-            //StaticBoard.Init(@"AI/ai-test-map1.txt");
+            StaticBoard.Init(@"AI/ai-test-map1.txt");
 
             var stephan = new Stephan(TeamColor.Blue, null);
             var dice = new RiggedDice(new[] { 2 });
@@ -45,20 +38,20 @@ namespace LudoTest.AI
 
             stephan.Play(dice);
 
-            Assert.True(squarePawn1.Pawns.Count == 0);
+            Assert.Empty(squarePawn1.Pawns);
 
         }
         [Fact]
         public void StephanRollSix_AssertTakeOutTwo()
         {
             StaticBoard.Init(@"AI/ai-test-map1.txt");
-            var squares = StaticBoard.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue });
+            var squares = BoardSquares;
+            GameSetup.NewGame(squares, new [] { TeamColor.Blue });
             var dice = new RiggedDice(new[] { 6, 1});
 
             var stephan = new Stephan(TeamColor.Blue, null);
             stephan.Play(dice);
-            var startSquare = BoardNavigation.StartSquare(StaticBoard.BoardSquares, TeamColor.Blue);
+            var startSquare = BoardNavigation.StartSquare(BoardSquares, TeamColor.Blue);
             var pawns = startSquare.Pawns;
             Assert.True(pawns.Count == 2);
         }
