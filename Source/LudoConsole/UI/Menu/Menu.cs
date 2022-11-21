@@ -12,13 +12,13 @@ namespace LudoEngine.GameLogic
         public static List<TeamColor> HumanColor { get; } = new();
         public static List<TeamColor> AiColor { get; } = new();
 
-        public static int AskForMainMenuSelection()
+        public static int DisplayMainMenuGetSelection()
         {
             return ShowMenu("Welcome to this awesome Ludo game! \n",
                 new[] {"New Game", "Load Game", "Controls", "Exit"});
         }
 
-        private static int ShowMenu(string info, object[] options)
+        private static int ShowMenu(string info, string[] options)
         {
             Console.CursorVisible = false;
             int selected = 0;
@@ -47,65 +47,17 @@ namespace LudoEngine.GameLogic
 
         }
 
-        public static void HighlightMenuOption(string info, object[] options, int index)
-        {
-            //Clear the console so it doesn't print the new values on new lines, but instead replaces current values with new values on respective line
-            Console.Clear();
-
-            //print info once again
-            Console.WriteLine(info);
-
-            for (int i = 0; i < options.Length; i++)
-            {
-                //if i equals the index value we are highlighting, print it in green color with an arrow to show that THIS is the value we are on
-                if (i == index)
-                {
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("> " + options[i]);
-                    //reset text color back to gray
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                }
-                //else simply print the value
-                else
-                {
-                    Console.WriteLine(options[i]);
-                }
-            }
-        }
-
         public static int SelectedOptions(int selected)
         {
             if (selected == 0)
             {
-                Console.Clear();
-                Console.WriteLine("Write a number between 1 and 4");
-                Console.Write("How many players are you: ");
-                var players = Convert.ToInt32(Console.ReadLine());
-                var selectableColors = new[] { "Blue", "Red", "Green", "Yellow" };
+                var players = AskForNumberOfHumanPlayers();
+                var availableColors = AskForColorSelection(players);
                 
-                for (var i = 0; i < players; i++)
-                {
-                    var removeIndex = ShowMenu("Select player color: \n", selectableColors);
-                    var colorAdd = selectableColors[removeIndex] == "Blue" ? TeamColor.Blue :
-                        selectableColors[removeIndex] == "Red" ? TeamColor.Red :
-                        selectableColors[removeIndex] == "Green" ? TeamColor.Green :
-                        TeamColor.Yellow;
-                    HumanColor.Add(colorAdd);
-                    selectableColors = selectableColors.Where((source, index) => index != removeIndex).ToArray();
-                }
-
-                int numberOfAis = Convert.ToInt32(players) - 4;
+                var numberOfAis = players - 4;
                 if (numberOfAis != 0)
-                {
-                    foreach (var item in selectableColors)
-                    {
-                        var colorAdd = item == "blue" ? TeamColor.Blue :
-                        item == "Red" ? TeamColor.Red :
-                        item == "Green" ? TeamColor.Green :
-                        TeamColor.Yellow;
-                        AiColor.Add(colorAdd);
-                    }
-                }
+                    AddRemainingColorsAsAi(numberOfAis, availableColors);
+
                 Console.Clear();
 
 
@@ -147,6 +99,71 @@ namespace LudoEngine.GameLogic
             {
                 Environment.Exit(0);
                 return 3;
+            }
+        }
+
+        private static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
+        {
+                foreach (var item in availableColors)
+                {
+                    var colorAdd = item == "blue" ? TeamColor.Blue :
+                        item == "Red" ? TeamColor.Red :
+                        item == "Green" ? TeamColor.Green :
+                        TeamColor.Yellow;
+                    AiColor.Add(colorAdd);
+                }
+        }
+
+        private static string[] AskForColorSelection(int players)
+        {
+            var selectableColors = new[] {"Blue", "Red", "Green", "Yellow"};
+
+            for (var i = 0; i < players; i++)
+            {
+                var removeIndex = ShowMenu("Select player color: \n", selectableColors);
+                var colorAdd = selectableColors[removeIndex] == "Blue" ? TeamColor.Blue :
+                    selectableColors[removeIndex] == "Red" ? TeamColor.Red :
+                    selectableColors[removeIndex] == "Green" ? TeamColor.Green :
+                    TeamColor.Yellow;
+                HumanColor.Add(colorAdd);
+                selectableColors = selectableColors.Where((source, index) => index != removeIndex).ToArray();
+            }
+
+            return selectableColors;
+        }
+
+        private static int AskForNumberOfHumanPlayers()
+        {
+            Console.Clear();
+            Console.WriteLine("Write a number between 1 and 4");
+            Console.Write("How many players are you: ");
+            var players = Convert.ToInt32(Console.ReadLine());
+            return players;
+        }
+
+        private static void HighlightMenuOption(string info, object[] options, int index)
+        {
+            //Clear the console so it doesn't print the new values on new lines, but instead replaces current values with new values on respective line
+            Console.Clear();
+
+            //print info once again
+            Console.WriteLine(info);
+
+            for (int i = 0; i < options.Length; i++)
+            {
+                //if i equals the index value we are highlighting, print it in green color with an arrow to show that THIS is the value we are on
+                if (i == index)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("> " + options[i]);
+                    //reset text color back to gray
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                //else simply print the value
+                else
+                {
+                    Console.WriteLine(options[i]);
+                }
             }
         }
     }

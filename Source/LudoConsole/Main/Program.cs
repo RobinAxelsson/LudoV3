@@ -19,7 +19,7 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            var selectedOption = Menu.AskForMainMenuSelection();
+            var selectedOption = Menu.DisplayMainMenuGetSelection();
             int drawGameBoard;
 
             do
@@ -39,7 +39,7 @@ namespace LudoConsole.Main
                     WriteControlInfo();
                     Console.ReadKey();
 
-                    selectedOption = Menu.AskForMainMenuSelection();
+                    selectedOption = Menu.DisplayMainMenuGetSelection();
                 }
             } while (drawGameBoard != 3);
             
