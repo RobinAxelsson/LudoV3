@@ -9,8 +9,8 @@ namespace LudoEngine.GameLogic
 {
     public static class Menu
     {
-        public static List<TeamColor> HumanColor { get; } = new();
-        public static List<TeamColor> AiColor { get; } = new();
+        private static List<TeamColor> HumanColor { get; } = new();
+        private static List<TeamColor> AiColor { get; } = new();
 
         public static int DisplayMainMenuGetSelection()
         {
@@ -48,60 +48,60 @@ namespace LudoEngine.GameLogic
 
         }
 
-        public static int SelectedOptions(int selected)
-        {
-            if (selected == 0)
-            {
-                var players = AskForNumberOfHumanPlayers();
-                var availableColors = AskForColorSelection(players);
+        //public static int SelectedOptions(int selected)
+        //{
+        //    if (selected == 0)
+        //    {
+        //        var players = AskForNumberOfHumanPlayers();
+        //        var availableColors = SetColorSelection(players);
                 
-                var numberOfAis = players - 4;
-                if (numberOfAis != 0)
-                    AddRemainingColorsAsAi(numberOfAis, availableColors);
+        //        var numberOfAis = players - 4;
+        //        if (numberOfAis != 0)
+        //            AddRemainingColorsAsAi(numberOfAis, availableColors);
 
-                Console.Clear();
+        //        Console.Clear();
 
 
-                return 0;
-            }
-            if (selected == 1)
-            {
-                //Gets the Saved games
-                var games = DatabaseManagement.GetGames();
-                var savedGames = new List<string>();
-                //Lists the games if there are any saved games
-                if (games.Count > 0)
-                {
-                    foreach (var item in games)
-                    {
-                        savedGames.Add(item.LastSaved.ToString("yyy/MM/dd HH:mm"));
-                    }
-                }
-                else
-                {
-                    savedGames.Add("You have no saved games.");
-                }
+        //        return 0;
+        //    }
+        //    if (selected == 1)
+        //    {
+        //        //Gets the Saved games
+        //        var games = DatabaseManagement.GetGames();
+        //        var savedGames = new List<string>();
+        //        //Lists the games if there are any saved games
+        //        if (games.Count > 0)
+        //        {
+        //            foreach (var item in games)
+        //            {
+        //                savedGames.Add(item.LastSaved.ToString("yyy/MM/dd HH:mm"));
+        //            }
+        //        }
+        //        else
+        //        {
+        //            savedGames.Add("You have no saved games.");
+        //        }
                 
-                int selectedGame = ShowMenu("Select save: \n", savedGames.ToArray());
-                Console.Clear();
-                //Sets the stageSaving class so we can access the game later
-                StageSaving.Game = games.ToArray()[selectedGame];
+        //        int selectedGame = ShowMenu("Select save: \n", savedGames.ToArray());
+        //        Console.Clear();
+        //        //Sets the stageSaving class so we can access the game later
+        //        StageSaving.Game = games.ToArray()[selectedGame];
 
-                //Gets the pawn positions for the selected game and saves them to the stageSaving class
-                StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
+        //        //Gets the pawn positions for the selected game and saves them to the stageSaving class
+        //        StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
 
-                return 1;
-            }
-            else if (selected == 2)
-            {
-                return 2;
-            }
-            else
-            {
-                Environment.Exit(0);
-                return 3;
-            }
-        }
+        //        return 1;
+        //    }
+        //    else if (selected == 2)
+        //    {
+        //        return 2;
+        //    }
+        //    else
+        //    {
+        //        Environment.Exit(0);
+        //        return 3;
+        //    }
+        //}
 
         public static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
         {
@@ -115,22 +115,21 @@ namespace LudoEngine.GameLogic
                 }
         }
 
-        public static string[] AskForColorSelection(int playerCount)
+        public static (IEnumerable<TeamColor> human, IEnumerable<TeamColor> ai) SetColorSelection(int playerCount)
         {
-            var selectableColors = new[] {"Blue", "Red", "Green", "Yellow"};
+            var selectableColors = System.Enum.GetValues<TeamColor>().ToList();
 
             for (var i = 0; i < playerCount; i++)
             {
-                var removeIndex = ShowMenu("Select player color: \n", selectableColors);
-                var colorAdd = selectableColors[removeIndex] == "Blue" ? TeamColor.Blue :
-                    selectableColors[removeIndex] == "Red" ? TeamColor.Red :
-                    selectableColors[removeIndex] == "Green" ? TeamColor.Green :
-                    TeamColor.Yellow;
-                HumanColor.Add(colorAdd);
-                selectableColors = selectableColors.Where((source, index) => index != removeIndex).ToArray();
+                var colorIndex = ShowMenu("Select player color: \n", selectableColors.Select(x => x.ToString()).ToArray());
+                var color = selectableColors[colorIndex];
+                HumanColor.Add(color);
+                selectableColors.Remove(color);
             }
 
-            return selectableColors;
+            AiColor.AddRange(selectableColors);
+
+            return (HumanColor, AiColor);
         }
 
         public static int AskForNumberOfHumanPlayers()

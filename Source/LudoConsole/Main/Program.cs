@@ -41,19 +41,7 @@ namespace LudoConsole.Main
                     case MainMenuOptions.NewGame:
                     {
                         var playerCount = Menu.AskForNumberOfHumanPlayers();
-                        var availableColors = Menu.AskForColorSelection(playerCount);
-                        
-                        if (playerCount - 4 != 0)
-                        {
-                            foreach (var item in availableColors)
-                            {
-                                var colorAdd = item == "blue" ? TeamColor.Blue :
-                                    item == "Red" ? TeamColor.Red :
-                                    item == "Green" ? TeamColor.Green :
-                                    TeamColor.Yellow;
-                                Menu.AiColor.Add(colorAdd);
-                            }
-                        }
+                        var teamColors = Menu.SetColorSelection(playerCount);
 
                         Console.Clear();
                         
@@ -63,11 +51,8 @@ namespace LudoConsole.Main
                         
                         builder.NewGame();
 
-                        var humanColors = Menu.HumanColor;
-                        var aiColors = Menu.AiColor;
-
-                        humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
-                        aiColors.ForEach(x => builder.AddAIPlayer(x, true));
+                        teamColors.human.ToList().ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
+                        teamColors.ai.ToList().ForEach(x => builder.AddAIPlayer(x, true));
 
                         builder.SetUpPawns();
                         builder.StartingColor(TeamColor.Blue);
@@ -127,54 +112,28 @@ namespace LudoConsole.Main
             }
         }
 
-        private static void SetUpPlayers()
-        {
-            var playerCount = Menu.AskForNumberOfHumanPlayers();
-            var availableColors = Menu.AskForColorSelection(playerCount);
-            AddRemainingAis(playerCount - 4, availableColors);
-            Console.Clear();
-        }
+        //private static void SetUpPlayers()
+        //{
+        //    var playerCount = Menu.AskForNumberOfHumanPlayers();
+        //    var availableColors = Menu.SetColorSelection(playerCount);
+        //    AddRemainingAis(playerCount - 4, availableColors);
+        //    Console.Clear();
+        //}
 
-        private static void AddRemainingAis(int numberOfAis, string[] availableColors)
-        {
-            if (numberOfAis != 0)
-            {
-                foreach (var item in availableColors)
-                {
-                    var colorAdd = item == "blue" ? TeamColor.Blue :
-                        item == "Red" ? TeamColor.Red :
-                        item == "Green" ? TeamColor.Green :
-                        TeamColor.Yellow;
-                    Menu.AiColor.Add(colorAdd);
-                }
-            }
-        }
-
-        private static void StartNewGame()
-        {
-            var builder = GameBuilder.StartBuild()
-                .MapBoard(@"LudoORM/Map/BoardMap.txt")
-                .AddDice(new Dice(1, 6))
-                
-                .NewGame();
-
-            var humanColors = Menu.HumanColor;
-            var aiColors = Menu.AiColor;
-
-            humanColors.ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
-            aiColors.ForEach(x => builder.AddAIPlayer(x, true));
-
-            var game = builder
-                .SetUpPawns()
-                .StartingColor(TeamColor.Blue)
-                .DisableSaving()
-                //.EnableSavingToDb()
-                .ToGamePlay();
-
-
-            WriterThreadStart();
-            game.Start();
-        }
+        //private static void AddRemainingAis(int numberOfAis, string[] availableColors)
+        //{
+        //    if (numberOfAis != 0)
+        //    {
+        //        foreach (var item in availableColors)
+        //        {
+        //            var colorAdd = item == "blue" ? TeamColor.Blue :
+        //                item == "Red" ? TeamColor.Red :
+        //                item == "Green" ? TeamColor.Green :
+        //                TeamColor.Yellow;
+        //            Menu.AiColor.Add(colorAdd);
+        //        }
+        //    }
+        //}
 
         private static void DisplayControls()
         {
@@ -226,9 +185,5 @@ namespace LudoConsole.Main
             WriterThreadStart();
             game.Start();
         }
-    }
-
-    internal class LudoConsoleException : Exception
-    {
     }
 }
