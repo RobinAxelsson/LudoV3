@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.DbModel;
-using LudoEngine.Models;
 
 namespace LudoEngine.GameLogic
 {
@@ -18,7 +17,7 @@ namespace LudoEngine.GameLogic
                 new[] {"New Game", "Load Game", "Controls", "Exit"});
         }
 
-        private static int ShowMenu(string info, IReadOnlyList<string> options)
+        public static int ShowMenu(string info, IReadOnlyList<string> options)
         {
             Console.CursorVisible = false;
             var selected = 0;
@@ -29,15 +28,16 @@ namespace LudoEngine.GameLogic
 
             while (key != ConsoleKey.Enter)
             {
-                if (key == ConsoleKey.UpArrow && selected > 0)
+                switch (key)
                 {
-                    selected--;
-                    HighlightMenuOption(info, options, selected);
-                }
-                else if (key == ConsoleKey.DownArrow && selected < options.Count - 1)
-                {
-                    selected++;
-                    HighlightMenuOption(info, options, selected);
+                    case ConsoleKey.UpArrow when selected > 0:
+                        selected--;
+                        HighlightMenuOption(info, options, selected);
+                        break;
+                    case ConsoleKey.DownArrow when selected < options.Count - 1:
+                        selected++;
+                        HighlightMenuOption(info, options, selected);
+                        break;
                 }
 
                 key = Console.ReadKey(true).Key;
@@ -63,7 +63,7 @@ namespace LudoEngine.GameLogic
 
                 return 0;
             }
-            else if (selected == 1)
+            if (selected == 1)
             {
                 //Gets the Saved games
                 var games = DatabaseManagement.GetGames();
@@ -102,7 +102,7 @@ namespace LudoEngine.GameLogic
             }
         }
 
-        private static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
+        public static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
         {
                 foreach (var item in availableColors)
                 {
@@ -114,7 +114,7 @@ namespace LudoEngine.GameLogic
                 }
         }
 
-        private static string[] AskForColorSelection(int playerCount)
+        public static string[] AskForColorSelection(int playerCount)
         {
             var selectableColors = new[] {"Blue", "Red", "Green", "Yellow"};
 
@@ -132,14 +132,14 @@ namespace LudoEngine.GameLogic
             return selectableColors;
         }
 
-        private static int AskForNumberOfHumanPlayers()
+        public static int AskForNumberOfHumanPlayers()
         {
             Console.Clear();
             var playerCount = ShowMenu("How many players are you: ", new[] {"1", "2", "3", "4"}) + 1;
             return playerCount;
         }
 
-        private static void HighlightMenuOption(string info, IReadOnlyList<string> options, int index)
+        public static void HighlightMenuOption(string info, IReadOnlyList<string> options, int index)
         {
             Console.Clear();
 

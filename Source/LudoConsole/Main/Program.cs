@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using LudoConsole.Exceptions;
 using LudoEngine.GameLogic;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
@@ -10,6 +12,14 @@ using LudoEngine.BoardUnits.Main;
 
 namespace LudoConsole.Main
 {
+    public enum MainMenuOptions
+    {
+        NewGame = 0,
+        LoadGame = 1,
+        Controls = 2,
+        Exit = 3
+    }
+
     internal static class Program
     {
         static Program()
@@ -19,30 +29,81 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            var selectedOption = Menu.DisplayMainMenuGetSelection();
-            int drawGameBoard;
-
-            do
-            {
-                drawGameBoard = Menu.SelectedOptions(selectedOption);
-
-                if (drawGameBoard == 0)
-                {
-                    StartNewGame();
-                }
-                else if (drawGameBoard == 1)
-                {
-                    LoadGame();
-                }
-                else if (drawGameBoard == 2)
-                {
-                    WriteControlInfo();
-                    Console.ReadKey();
-
-                    selectedOption = Menu.DisplayMainMenuGetSelection();
-                }
-            } while (drawGameBoard != 3);
             
+            while(true)
+            {
+                var selectedOption = (MainMenuOptions)Menu.DisplayMainMenuGetSelection();
+
+                switch (selectedOption)
+                {
+                    case MainMenuOptions.NewGame:
+                    {
+                        SetUpPlayers();
+                        StartNewGame();
+                        break;
+                    }
+                    case MainMenuOptions.LoadGame:
+                    {
+                        var games = DatabaseManagement.GetGames();
+                        var savedGames = new List<string>();
+
+                        if (games.Count > 0)
+                        {
+                            foreach (var item in games)
+                            {
+                                savedGames.Add(item.LastSaved.ToString("yyy/MM/dd HH:mm"));
+                            }
+                        }
+                        else
+                        {
+                            savedGames.Add("You have no saved games.");
+                        }
+                
+                        var selectedGame = Menu.ShowMenu("Select save: \n", savedGames.ToArray());
+                        Console.Clear();
+                        StageSaving.Game = games.ToArray()[selectedGame];
+
+                        StageSaving.TeamPosition = DatabaseManagement.GetPawnPositionsInGame(StageSaving.Game);
+
+                        LoadGame();
+                        break;
+                    }
+
+                    case MainMenuOptions.Controls:
+                        DisplayControls();
+                        break;
+
+                    case MainMenuOptions.Exit:
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        throw new Exceptions.LudoConsoleException("Options out of range.");
+                }
+            }
+        }
+
+        private static void SetUpPlayers()
+        {
+            var playerCount = Menu.AskForNumberOfHumanPlayers();
+            var availableColors = Menu.AskForColorSelection(playerCount);
+            AddRemainingAis(playerCount - 4, availableColors);
+            Console.Clear();
+        }
+
+        private static void AddRemainingAis(int numberOfAis, string[] availableColors)
+        {
+            if (numberOfAis != 0)
+            {
+                foreach (var item in availableColors)
+                {
+                    var colorAdd = item == "blue" ? TeamColor.Blue :
+                        item == "Red" ? TeamColor.Red :
+                        item == "Green" ? TeamColor.Green :
+                        TeamColor.Yellow;
+                    Menu.AiColor.Add(colorAdd);
+                }
+            }
         }
 
         private static void StartNewGame()
@@ -71,7 +132,7 @@ namespace LudoConsole.Main
             game.Start();
         }
 
-        private static void WriteControlInfo()
+        private static void DisplayControls()
         {
             Console.Clear();
             Console.WriteLine("Here are all the controls for the game.\n");
@@ -79,6 +140,7 @@ namespace LudoConsole.Main
             Console.WriteLine("Enter is for selecting what pawn to play");
             Console.WriteLine("Press 'X' to select two pawns when you want to move out two pawns at the time \n");
             Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
 
         private static void LoadGame()
@@ -124,5 +186,9 @@ namespace LudoConsole.Main
             WriterThreadStart();
             game.Start();
         }
+    }
+
+    internal class LudoConsoleException : Exception
+    {
     }
 }
