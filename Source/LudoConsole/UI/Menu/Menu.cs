@@ -18,14 +18,14 @@ namespace LudoEngine.GameLogic
                 new[] {"New Game", "Load Game", "Controls", "Exit"});
         }
 
-        private static int ShowMenu(string info, string[] options)
+        private static int ShowMenu(string info, IReadOnlyList<string> options)
         {
             Console.CursorVisible = false;
-            int selected = 0;
+            var selected = 0;
 
             HighlightMenuOption(info, options, selected);
 
-            ConsoleKey key = Console.ReadKey(true).Key;
+            var key = Console.ReadKey(true).Key;
 
             while (key != ConsoleKey.Enter)
             {
@@ -34,7 +34,7 @@ namespace LudoEngine.GameLogic
                     selected--;
                     HighlightMenuOption(info, options, selected);
                 }
-                else if (key == ConsoleKey.DownArrow && selected < options.Length - 1)
+                else if (key == ConsoleKey.DownArrow && selected < options.Count - 1)
                 {
                     selected++;
                     HighlightMenuOption(info, options, selected);
@@ -66,8 +66,8 @@ namespace LudoEngine.GameLogic
             else if (selected == 1)
             {
                 //Gets the Saved games
-                List<Game> games = DatabaseManagement.GetGames();
-                List<string> savedGames = new ();
+                var games = DatabaseManagement.GetGames();
+                var savedGames = new List<string>();
                 //Lists the games if there are any saved games
                 if (games.Count > 0)
                 {
@@ -114,11 +114,11 @@ namespace LudoEngine.GameLogic
                 }
         }
 
-        private static string[] AskForColorSelection(int players)
+        private static string[] AskForColorSelection(int playerCount)
         {
             var selectableColors = new[] {"Blue", "Red", "Green", "Yellow"};
 
-            for (var i = 0; i < players; i++)
+            for (var i = 0; i < playerCount; i++)
             {
                 var removeIndex = ShowMenu("Select player color: \n", selectableColors);
                 var colorAdd = selectableColors[removeIndex] == "Blue" ? TeamColor.Blue :
