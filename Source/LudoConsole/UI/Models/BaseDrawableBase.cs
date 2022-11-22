@@ -8,19 +8,26 @@ using LudoConsole.Main;
 
 namespace LudoConsole.UI.Models
 {
-    public class BaseDrawable : ISquareDrawable
+
+    public class BaseDrawable : SquareDrawableBase
     {
         private const string _filepath = @"UI/Map/base.txt";
-        private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
+        private ConsoleColor ThisBackgroundColor() => UiColor.TranslateColor(Square.Color);
+
+        private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
         public ConsoleGameSquare Square { get; set; }
-        public (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
+
+        public override (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
+
         public BaseDrawable(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath)
         {
             Square = square;
             CharCoords = ReadCharCoords(frameSize, filePath);
         }
+
         private List<(int X, int Y)> PawnCoords { get; } = new();
-        public List<IDrawable> Refresh()
+
+        public override List<IDrawable> Refresh()
         {
             var toRefresh = new List<IDrawable>();
 
@@ -41,24 +48,26 @@ namespace LudoConsole.UI.Models
 
             return toRefresh;
         }
-        private List<IDrawable> DrawPawns(List<ConsolePawnDto> pawns)
+
+        private List<IDrawable> DrawPawns(IReadOnlyList<ConsolePawnDto> pawns)
         {
             if (pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
 
             var drawPawns = new List<IDrawable>();
+            
             var pawnColor = UiColor.TranslateColor(Square.Pawns[0].Color);
             
             for (var i = 0; i < pawns.Count; i++)
             {
-                PawnDrawable newPawn = null;
-                if (pawns[i].IsSelected)
-                    newPawn = new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), ThisBackgroundColor());
-                else
-                    newPawn = new PawnDrawable(PawnCoords[i], pawnColor, null);
+                var newPawn = pawns[i].IsSelected ? 
+                    new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), ThisBackgroundColor()) 
+                    : new PawnDrawable(PawnCoords[i], pawnColor, null);
+                
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent, UiColor.DropShadow);
                 drawPawns.Add(newPawn);
                 drawPawns.Add(dropShadow);
             }
+
             return drawPawns;
         }
         private List<(char chr, (int X, int Y) coords)> ReadCharCoords((int X, int Y) frameSize, string filePath)
@@ -103,6 +112,5 @@ namespace LudoConsole.UI.Models
             return charCoords;
         }
 
-        private ConsoleColor ThisBackgroundColor() => UiColor.TranslateColor(Square.Color);
     }
 }

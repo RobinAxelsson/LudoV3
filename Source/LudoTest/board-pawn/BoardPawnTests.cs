@@ -170,7 +170,7 @@ namespace LudoTest.board_pawn
         {
             StaticBoard.Init(@"board-pawn/test-map1.txt");
             var squares = StaticBoard.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Red });
+            GameSetup.SetUpPawnsNewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Red });
             var redsBased = BoardPawnFinder.PawnsInBase(StaticBoard.BoardSquares, TeamColor.Red);
 
             Assert.True(redsBased.Count == 4);
@@ -180,7 +180,7 @@ namespace LudoTest.board_pawn
         {
             StaticBoard.Init(@"board-pawn/test-map-2p.txt");
             var squares = StaticBoard.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            GameSetup.SetUpPawnsNewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
             var bluesBased = BoardPawnFinder.PawnsInBase(StaticBoard.BoardSquares, TeamColor.Blue);
 
             Assert.True(bluesBased.Count == 4);
@@ -190,7 +190,7 @@ namespace LudoTest.board_pawn
         {
             StaticBoard.Init(@"board-pawn/test-map-2p.txt");
             var squares = StaticBoard.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            GameSetup.SetUpPawnsNewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
             var greensBased = BoardPawnFinder.PawnsInBase(StaticBoard.BoardSquares, TeamColor.Green);
 
             Assert.True(greensBased.Count == 4);
@@ -200,7 +200,7 @@ namespace LudoTest.board_pawn
         {
             StaticBoard.Init(@"board-pawn/test-map-2p.txt");
             var squares = StaticBoard.BoardSquares;
-            GameSetup.NewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
+            GameSetup.SetUpPawnsNewGame(squares, new TeamColor[] { TeamColor.Blue, TeamColor.Green });
 
             var bluePawns = BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, TeamColor.Blue);
 

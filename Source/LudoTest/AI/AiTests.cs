@@ -46,7 +46,7 @@ namespace LudoTest.AI
         {
             StaticBoard.Init(@"AI/ai-test-map1.txt");
             var squares = BoardSquares;
-            GameSetup.NewGame(squares, new [] { TeamColor.Blue });
+            GameSetup.SetUpPawnsNewGame(squares, new [] { TeamColor.Blue });
             var dice = new RiggedDice(new[] { 6, 1});
 
             var stephan = new Stephan(TeamColor.Blue, null);

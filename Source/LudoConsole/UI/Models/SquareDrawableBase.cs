@@ -1,7 +1,4 @@
 ﻿using LudoConsole.UI.Controls;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.Enum;
-using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +8,12 @@ using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
 {
-    public class SquareDrawable : ISquareDrawable
+    public class SquareDrawable : SquareDrawableBase
     {
         private const string _filepath = @"UI/Map/square.txt";
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
         public ConsoleGameSquare Square { get; set; }
-        public (int X, int Y) MaxCoord() 
+        public override (int X, int Y) MaxCoord() 
         {
             var x = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.X);
             var y = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.Y);
@@ -32,7 +29,7 @@ namespace LudoConsole.UI.Models
         private List<(int X, int Y)> PawnCoords { get; set; } = new ();
         public object UiControls { get; private set; }
 
-        public List<IDrawable> Refresh()
+        public override List<IDrawable> Refresh()
         {
             var toRefresh = new List<IDrawable>();
             for (int i = 0; i < CharCoords.Count; i++)
@@ -71,6 +68,7 @@ namespace LudoConsole.UI.Models
             }
             return drawPawns;
         }
+
         private List<(char chr, (int X, int Y) coords)> ReadCharCoords(string filePath)
         {
             var charCoords = new List<(char chr, (int X, int Y) coords)>();
@@ -114,3 +112,4 @@ namespace LudoConsole.UI.Models
        
     }
 }
+

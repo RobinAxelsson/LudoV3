@@ -34,15 +34,15 @@ namespace LudoEngine
         public static void SetBoard()
         {
             StaticBoard.BoardSquares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
-            GameSetup.NewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
+            GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
-        public static List<IGameSquare> GetBoardSquares()
+        public static List<IGameSquare> GetNewGameBoardSquares()
         {
-            return BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
+            var squares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
+            GameSetup.SetUpPawnsNewGame(squares);
+            return squares;
         }
-
-        //public static void AddPlayer()
     }
 
     public record GameDto(int Id, DateTime LastSaved);

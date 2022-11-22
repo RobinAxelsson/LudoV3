@@ -10,7 +10,7 @@ namespace LudoConsole.UI.Controls
 {
     public class BoardRenderer
     {
-        private readonly IEnumerable<ISquareDrawable> _squareDrawables;
+        private readonly IEnumerable<SquareDrawableBase> _squareDrawables;
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
         public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
@@ -49,7 +49,7 @@ namespace LudoConsole.UI.Controls
             Console.ReadKey();
         }
 
-        private IEnumerable<ISquareDrawable> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
+        private IEnumerable<SquareDrawableBase> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
         {
             var squareDraws = squares.Where(x => !x.IsBase).Select(x => new SquareDrawable(x));
             
@@ -61,9 +61,9 @@ namespace LudoConsole.UI.Controls
             var baseDraws = squares
                 .Where(x => x.IsBase)
                 .Select(square => new BaseDrawable(square, (x, y)))
-                .Select(x => (ISquareDrawable)x);
+                .Select(x => (SquareDrawableBase)x);
 
-            return squareDrawables.Select(x => (ISquareDrawable)x).Concat(baseDraws).ToList();
+            return squareDrawables.Select(x => (SquareDrawableBase)x).Concat(baseDraws).ToList();
         }
     }
 }

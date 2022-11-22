@@ -25,7 +25,7 @@ namespace LudoConsole.Main
                     case MainMenuOptions.TestRender:
                     {
                         Console.Clear();
-                        var facadeSquares = LudoEngineFacade.GetBoardSquares();
+                        var facadeSquares = LudoEngineFacade.GetNewGameBoardSquares();
                         var squares = ConsoleDtoMapping.Map(facadeSquares);
                         BoardRenderer.StartRender(squares);
 

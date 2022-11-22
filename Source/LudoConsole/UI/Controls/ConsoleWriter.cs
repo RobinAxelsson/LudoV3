@@ -8,7 +8,7 @@ namespace LudoConsole.UI.Controls
     public class ConsoleWriter
     {
         private static List<IDrawable> ScreenMemory = new List<IDrawable>();
-        public static void TryAppend(List<ISquareDrawable> squares)
+        public static void TryAppend(List<SquareDrawableBase> squares)
         {
             var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
             TryAppend(drawables.ToList());
@@ -29,7 +29,7 @@ namespace LudoConsole.UI.Controls
         {
             drawables.ForEach(x => TryAppend(x));
         }
-        public static void UpdateBoard(List<ISquareDrawable> squareDrawables)
+        public static void UpdateBoard(List<SquareDrawableBase> squareDrawables)
         {
             TryAppend(squareDrawables);
             Update();
