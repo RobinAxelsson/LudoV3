@@ -9,7 +9,7 @@ using LudoConsole.Main;
 namespace LudoConsole.UI.Models
 {
 
-    public class BaseDrawable : SquareDrawableBase
+    public class DrawableTeamBase : DrawableSquareBase
     {
         private const string _filepath = @"UI/Map/base.txt";
         private ConsoleColor ThisBackgroundColor() => UiColor.TranslateColor(Square.Color);
@@ -19,7 +19,7 @@ namespace LudoConsole.UI.Models
 
         public override (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
 
-        public BaseDrawable(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath)
+        public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath)
         {
             Square = square;
             CharCoords = ReadCharCoords(frameSize, filePath);
@@ -74,15 +74,10 @@ namespace LudoConsole.UI.Models
         {
             
             var charCoords = new List<(char chr, (int X, int Y) coords)>();
+           
             string[] lines = File.ReadAllLines(filePath);
 
-            int xMax = lines.ToList().Select(x => x.Length).Max();
-            int yMax = lines.Length;
-
-            (int X, int Y) trueUpLeft = Square.Color == ConsoleTeamColor.Red ? (frameSize.X - xMax + 1, 0) :
-            Square.Color == ConsoleTeamColor.Blue ? (0, 0) :
-            Square.Color == ConsoleTeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
-            Square.Color == ConsoleTeamColor.Yellow ? (0, frameSize.Y - yMax + 1) : throw new Exception("Base must have a team color.");
+            var trueUpLeft = GetBaseUpLeftPoint(frameSize, lines);
 
             int x = 0;
             int y = 0;
@@ -112,5 +107,17 @@ namespace LudoConsole.UI.Models
             return charCoords;
         }
 
+        private (int X, int Y) GetBaseUpLeftPoint((int X, int Y) frameSize, string[] lines)
+        {
+            int xMax = lines.ToList().Select(x => x.Length).Max();
+            int yMax = lines.Length;
+
+            (int X, int Y) trueUpLeft = Square.Color == ConsoleTeamColor.Red ? (frameSize.X - xMax + 1, 0) :
+                Square.Color == ConsoleTeamColor.Blue ? (0, 0) :
+                Square.Color == ConsoleTeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
+                Square.Color == ConsoleTeamColor.Yellow ? (0, frameSize.Y - yMax + 1) :
+                throw new Exception("Base must have a team color.");
+            return trueUpLeft;
+        }
     }
 }

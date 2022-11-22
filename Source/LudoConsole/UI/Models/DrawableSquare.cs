@@ -1,14 +1,14 @@
-﻿using LudoConsole.UI.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LudoConsole.Main;
+using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
 {
-    public class SquareDrawable : SquareDrawableBase
+    public class DrawableSquare : DrawableSquareBase
     {
         private const string _filepath = @"UI/Map/square.txt";
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
@@ -20,7 +20,7 @@ namespace LudoConsole.UI.Models
             return (x, y);
         }
 
-        public SquareDrawable(ConsoleGameSquare square, string filePath = _filepath)
+        public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath)
         {
             Square = square;
             CharCoords = ReadCharCoords(filePath);
@@ -112,4 +112,3 @@ namespace LudoConsole.UI.Models
        
     }
 }
-

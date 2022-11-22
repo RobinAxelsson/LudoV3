@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace LudoConsole.UI.Controls
 {
-    public class ConsoleWriter
+    public static class ConsoleWriter
     {
-        private static List<IDrawable> ScreenMemory = new List<IDrawable>();
-        public static void TryAppend(List<SquareDrawableBase> squares)
+        private static List<IDrawable> ScreenMemory = new();
+        public static void TryAppend(List<DrawableSquareBase> squares)
         {
             var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
             TryAppend(drawables.ToList());
@@ -29,7 +29,7 @@ namespace LudoConsole.UI.Controls
         {
             drawables.ForEach(x => TryAppend(x));
         }
-        public static void UpdateBoard(List<SquareDrawableBase> squareDrawables)
+        public static void UpdateBoard(List<DrawableSquareBase> squareDrawables)
         {
             TryAppend(squareDrawables);
             Update();
@@ -55,11 +55,13 @@ namespace LudoConsole.UI.Controls
             }
             toRemove.ForEach(x => ScreenMemory.Remove(x));
         }
+
         public static void ClearScreen()
         {
             ScreenMemory.Clear();
             Console.Clear();
         }
+
         public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.Erase = true);
         private static bool IsInScreenMemory(IDrawable drawable)
         {
@@ -74,6 +76,7 @@ namespace LudoConsole.UI.Controls
             }
             return false;
         }
+
         private static void Write(IDrawable drawable)
         {
             Console.ForegroundColor = drawable.ForegroundColor;
@@ -84,6 +87,7 @@ namespace LudoConsole.UI.Controls
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;
         }
+
         private static void Erase(IDrawable drawable)
         {
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;

@@ -10,7 +10,7 @@ namespace LudoConsole.UI.Controls
 {
     public class BoardRenderer
     {
-        private readonly IEnumerable<SquareDrawableBase> _squareDrawables;
+        private readonly IEnumerable<DrawableSquareBase> _squareDrawables;
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
         public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
@@ -49,21 +49,27 @@ namespace LudoConsole.UI.Controls
             Console.ReadKey();
         }
 
-        private IEnumerable<SquareDrawableBase> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
+        private IEnumerable<DrawableSquareBase> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
         {
-            var squareDraws = squares.Where(x => !x.IsBase).Select(x => new SquareDrawable(x));
+            var squareDraws = squares.Where(x => !x.IsBase)
+                .Select(x => new DrawableSquare(x))
+                .OfType<DrawableSquareBase>().ToArray();
             
-            var squareDrawables = squareDraws.ToArray();
 
-            var x = squareDrawables.Select(x => x.MaxCoord()).Max(x => x.X);
-            var y = squareDrawables.Select(x => x.MaxCoord()).Max(x => x.Y);
+            var (x, y) = GetBoardMaxPoint(squareDraws);
 
             var baseDraws = squares
                 .Where(x => x.IsBase)
-                .Select(square => new BaseDrawable(square, (x, y)))
-                .Select(x => (SquareDrawableBase)x);
+                .Select(square => new DrawableTeamBase(square, (x, y)));
 
-            return squareDrawables.Select(x => (SquareDrawableBase)x).Concat(baseDraws).ToList();
+            return squareDraws.Concat(baseDraws).ToList();
+        }
+
+        private static (int x, int y) GetBoardMaxPoint(DrawableSquareBase[] drawableSquares)
+        {
+            var x = drawableSquares.Select(x => x.MaxCoord()).Max(x => x.X);
+            var y = drawableSquares.Select(x => x.MaxCoord()).Max(x => x.Y);
+            return (x,y);
         }
     }
 }
