@@ -15,8 +15,8 @@ namespace LudoConsole.UI
         public int CoordinateX { get; set; }
         public int CoordinateY { get; set; }
         public string Chars { get; set; }
-        public ConsoleColor BackgroundColor { get; set; } = UiColorConfiguration.DefaultBackgroundColor;
-        public ConsoleColor ForegroundColor { get; set; } = UiColorConfiguration.DefaultForegroundColor;
+        public ConsoleColor BackgroundColor { get; set; } = UiColor.DefaultBackgroundColor;
+        public ConsoleColor ForegroundColor { get; set; } = UiColor.DefaultForegroundColor;
         public bool IsDrawn { get; set; }
         public bool Erase { get; set; }
 

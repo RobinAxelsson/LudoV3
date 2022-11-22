@@ -36,7 +36,7 @@ namespace LudoConsole.UI.Controls
 
         public void Start()
         {
-            UiColorConfiguration.SetDefault();
+            UiColor.SetDefault();
             IsRunning = true;
             _thread.Start();
             InfoDisplay.Init();

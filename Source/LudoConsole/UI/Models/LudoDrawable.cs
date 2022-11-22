@@ -6,7 +6,7 @@ namespace LudoConsole.UI.Models
 {
     public class LudoDrawable : IDrawable
     {
-        public LudoDrawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor, ConsoleColor foreGroundColor = UiColorConfiguration.DefaultBoardChars)
+        public LudoDrawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor, ConsoleColor foreGroundColor = UiColor.DefaultBoardChars)
         {
             CoordinateX = coord.X;
             CoordinateY = coord.Y;

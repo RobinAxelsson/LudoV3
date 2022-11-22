@@ -81,15 +81,15 @@ namespace LudoConsole.UI.Controls
             Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
             Console.Write(drawable.Chars);
             drawable.IsDrawn = true;
-            Console.ForegroundColor = UiColorConfiguration.DefaultForegroundColor;
-            Console.BackgroundColor = UiColorConfiguration.DefaultBackgroundColor;
+            Console.ForegroundColor = UiColor.DefaultForegroundColor;
+            Console.BackgroundColor = UiColor.DefaultBackgroundColor;
         }
         private static void Erase(IDrawable drawable)
         {
-            Console.BackgroundColor = UiColorConfiguration.DefaultBackgroundColor;
+            Console.BackgroundColor = UiColor.DefaultBackgroundColor;
             Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
             Console.Write(" ");
-            Console.ForegroundColor = UiColorConfiguration.DefaultForegroundColor;
+            Console.ForegroundColor = UiColor.DefaultForegroundColor;
             drawable.IsDrawn = false;
             drawable.Erase = false;
         }

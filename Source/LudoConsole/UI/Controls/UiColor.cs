@@ -1,10 +1,9 @@
-﻿using LudoEngine.Enum;
-using System;
+﻿using System;
 using LudoConsole.UI.Models;
 
 namespace LudoConsole.UI.Controls
 {
-    public static class UiColorConfiguration
+    public static class UiColor
     {
         internal const ConsoleColor LightAccent = ConsoleColor.Gray;
         internal const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
@@ -14,8 +13,8 @@ namespace LudoConsole.UI.Controls
         internal const ConsoleColor PawnInverseColor = ConsoleColor.White;
         internal const ConsoleColor DarkAccent = ConsoleColor.Black;
 
-        public static Random random = new Random();
-        public static ConsoleColor RandomColor() => (ConsoleColor)random.Next(0, 15);
+        private static Random _random = new ();
+        public static ConsoleColor RandomColor() => (ConsoleColor)_random.Next(0, 15);
         public static void SetDefault()
         {
             Console.ForegroundColor = DefaultForegroundColor;
@@ -37,12 +36,5 @@ namespace LudoConsole.UI.Controls
                 _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
             };
         }
-
-        //public static ConsoleColor TranslateColor(TeamColor color) =>
-        //   color == TeamColor.Blue ? ConsoleColor.DarkBlue :
-        //   color == TeamColor.Green ? ConsoleColor.Green :
-        //   color == TeamColor.Red ? ConsoleColor.Red :
-        //   color == TeamColor.Yellow ? ConsoleColor.Yellow : LightAccent;
-
     }
 }
