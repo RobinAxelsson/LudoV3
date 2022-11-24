@@ -6,6 +6,7 @@ namespace LudoConsole.UI.Models
 {
     internal static class CharPointReader
     {
+
         public static IEnumerable<CharPoint> GetCharPoints(string[] lines, (int X, int Y) trueUpLeft)
         {
             var charPoints = new List<CharPoint>();
@@ -51,6 +52,15 @@ namespace LudoConsole.UI.Models
             }
 
             return charPoints;
+        }
+
+        public static (int X, int Y) CalculateSquareTrueUpLeft((int x, int y) squarePoint, string[] lines)
+        {
+            var xMax = lines.ToList().Select(x => x.Length).Max();
+            var yMax = lines.Length;
+
+            (int X, int Y) trueUpLeft = (xMax * squarePoint.x, yMax * squarePoint.y);
+            return trueUpLeft;
         }
 
         public static IEnumerable<CharPoint> TransformCharPoints(IEnumerable<CharPoint> toTranslate, (int x, int y) point)
