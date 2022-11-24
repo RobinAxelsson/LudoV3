@@ -28,11 +28,11 @@ namespace LudoConsole.UI.Models
                     x++;
                     if (chr == 'X')
                     {
-                        pawnCoords.Add(new CharPoint(translateUpLeft.X + x, translateUpLeft.Y + y, ' '));
+                        pawnCoords.Add(new CharPoint(' ', translateUpLeft.X + x, translateUpLeft.Y + y));
                         continue;
                     }
    
-                    drawCoords.Add(new CharPoint(translateUpLeft.X + x, translateUpLeft.Y + y, chr));
+                    drawCoords.Add(new CharPoint(chr, translateUpLeft.X + x, translateUpLeft.Y + y));
                 }
                 x = -1;
             }

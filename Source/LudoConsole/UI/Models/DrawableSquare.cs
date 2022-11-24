@@ -23,7 +23,8 @@ namespace LudoConsole.UI.Models
         public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath) : base(square)
         {
            var (charCoords, pawnCoords) = CreateCharCoords(filePath, (square.BoardX, square.BoardY));
-           
+
+
            CharCoords = charCoords;
            PawnCoords = pawnCoords;
         }
@@ -85,41 +86,37 @@ namespace LudoConsole.UI.Models
 
         private static (List<(char chr, (int X, int Y) coords)> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords(string filePath, (int x, int y) squarePoint)
         {
-            var charCoords = new List<(char chr, (int X, int Y) coords)>();
-            var pawnCoords = new List<(int X, int Y)>();
 
             var lines = File.ReadAllLines(filePath);
+            
+            var truePoint = CalculateSquareTrueUpLeft(squarePoint, lines);
 
-            var trueUpLeft = CalculateSquareTrueUpLeft(squarePoint, lines);
+            var charPoints = CharPointReader.GetCharPoints(filePath, truePoint);
+            
+            var charPoints2 = CharPointReader.GetCharPoints(filePath);
 
-            var x = 0;
-            var y = 0;
-            foreach (var line in lines)
-            {
-                foreach (var chr in line)
-                {
-                    char newChar;
-                    if(chr == 'X')
-                    {
-                        var resultX = trueUpLeft.X + x;
-                        var resultY = trueUpLeft.Y + y;
-                        if (resultX < 0) throw new Exception("X have to be greater then 0.");
-                        if (resultY < 0) throw new Exception("Y have to be greater then 0.");
-                        pawnCoords.Add((trueUpLeft.X + x, trueUpLeft.Y + y));
-                        newChar = ' ';
-                    }
-                    else
-                    {
-                        newChar = chr;
-                    }
-                    charCoords.Add((newChar, (trueUpLeft.X + x, trueUpLeft.Y + y)));
-                    x++;
-                }
-                y++;
-                x = 0;
-            }
+            var (height, width) = CharPointReader.GetCharPointHeightWidth(charPoints);
+            var (height2, width2) = CharPointReader.GetCharPointHeightWidth(charPoints2);
 
-            return (charCoords, pawnCoords);
+            var truePoint2 = CalculateSquareTrueUpLeft(squarePoint, (height2, width2));
+            //charPoints = CharPointReader.TransformCharPoints(charPoints, truePoint);
+
+            var pawnCoords = CharPointReader.FindCharXY(charPoints, 'X');
+
+            charPoints = CharPointReader.ReplaceCharPoints(charPoints, 'X', ' ');
+
+            var charCoords = CharPointReader.MapToValueTuples(charPoints);
+
+            return (charCoords, pawnCoords.ToList());
+        }
+
+        private static (int X, int Y) CalculateSquareTrueUpLeft((int x, int y) squarePoint, (int height, int width) measure)
+        {
+            var xMax = measure.width;
+            var yMax = measure.height;
+
+            (int X, int Y) trueUpLeft = (xMax * (squarePoint.x), yMax * squarePoint.y);
+            return trueUpLeft;
         }
 
         private static (int X, int Y) CalculateSquareTrueUpLeft((int x, int y) squarePoint, string[] lines)
