@@ -91,14 +91,14 @@ namespace LudoConsole.UI.Models
             
             var truePoint = CalculateSquareTrueUpLeft(squarePoint, lines);
 
-            var charPoints = CharPointReader.GetCharPoints(filePath, truePoint);
+            var charPoints = CharPointReader.GetCharPoints(lines, truePoint);
             
-            var charPoints2 = CharPointReader.GetCharPoints(filePath);
+            //var charPoints2 = CharPointReader.GetCharPoints(filePath);
 
-            var (height, width) = CharPointReader.GetCharPointHeightWidth(charPoints);
-            var (height2, width2) = CharPointReader.GetCharPointHeightWidth(charPoints2);
+            //var (height, width) = CharPointReader.GetCharPointHeightWidth(charPoints);
+            //var (height2, width2) = CharPointReader.GetCharPointHeightWidth(charPoints2);
 
-            var truePoint2 = CalculateSquareTrueUpLeft(squarePoint, (height2, width2));
+            //var truePoint2 = CalculateSquareTrueUpLeft(squarePoint, (height2, width2));
             //charPoints = CharPointReader.TransformCharPoints(charPoints, truePoint);
 
             var pawnCoords = CharPointReader.FindCharXY(charPoints, 'X');

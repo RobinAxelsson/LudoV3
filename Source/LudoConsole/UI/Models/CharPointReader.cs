@@ -6,10 +6,9 @@ namespace LudoConsole.UI.Models
 {
     internal static class CharPointReader
     {
-        public static IEnumerable<CharPoint> GetCharPoints(string filePath, (int X, int Y) trueUpLeft)
+        public static IEnumerable<CharPoint> GetCharPoints(string[] lines, (int X, int Y) trueUpLeft)
         {
             var charPoints = new List<CharPoint>();
-            var lines = File.ReadAllLines(filePath);
 
             var x = 0;
             var y = 0;
