@@ -1,22 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using LudoConsole.Exceptions;
+using System.Linq;
 
 namespace LudoConsole.UI.Models
 {
     internal static class CharPointReader
     {
-        public static (IEnumerable<(char chr, (int X, int Y) coords)> defaultCharPoints, IEnumerable<(int X, int Y)> pawnCharPoint) 
-            GetCharPoints(string filePath, (int X, int Y) translateUpLeft)
+        public static IEnumerable<CharPoint> GetCharPoints(string filePath)
         {
-            if (translateUpLeft.X < 0 || translateUpLeft.Y < 0)
-                throw new LudoConsoleWindowOutOfRangeException("Only positive coordinates allowed");
-
-            var drawCoords = new List<(char chr, (int X, int Y) coords)>();
-            var pawnCoords = new List<(int X, int Y)>();
-
+            var charPoints = new List<CharPoint>();
             var lines = File.ReadAllLines(filePath);
-        
+
             var x = -1;
             var y = -1;
 
@@ -26,17 +20,30 @@ namespace LudoConsole.UI.Models
                 foreach (char chr in line)
                 {
                     x++;
-                    if (chr == 'X')
-                    {
-                        pawnCoords.Add((translateUpLeft.X + x, translateUpLeft.Y + y));
-                        continue;
-                    }
-   
-                    drawCoords.Add((chr, (translateUpLeft.X + x, translateUpLeft.Y + y)));
+                    charPoints.Add(new CharPoint(chr, x, y));
                 }
+
                 x = -1;
             }
-            return (drawCoords, pawnCoords);
+
+            return charPoints;
+        }
+
+        public static IEnumerable<CharPoint> TransformCharPoints(IEnumerable<CharPoint> toTranslate, int x, int y)
+        {
+            return toTranslate.Select(old => new CharPoint(old.Char, old.X + x, old.Y + y));
+        }
+
+        public static IEnumerable<(int X, int Y)> FindCharCoords(IEnumerable<CharPoint> charPoints, char targetChar)
+        {
+            return charPoints.Where(x => x.Char == targetChar).Select(charPoint => (charPoint.X, charPoint.Y));
+        }
+
+        public static IEnumerable<CharPoint> ReplaceCharPoints(IList<CharPoint> toTranslate, char targetChar, char replace)
+        {
+            var toReplace = toTranslate.Where(x => x.Char == targetChar);
+            var newCharPoints = toReplace.Select(old => old with {Char = replace});
+            return toTranslate.Except(toReplace).Concat(newCharPoints);
         }
     }
 }

@@ -1,4 +1,4 @@
 ﻿namespace LudoConsole.UI.Models
 {
-    internal record CharPoint(int X, int Y, char Char);
+    internal record CharPoint(char Char, int X, int Y);
 }
