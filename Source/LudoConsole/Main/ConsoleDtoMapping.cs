@@ -23,7 +23,7 @@ namespace LudoConsole.Main
                 BoardX = square.BoardX,
                 BoardY = square.BoardY,
                 Color = MapColor(square.Color),
-                Pawns = square.Pawns.Select(x => MapPawn(x)).ToList(),
+                Pawns = square.Pawns.Select(MapPawn).ToList(),
             };
         }
 
@@ -32,7 +32,7 @@ namespace LudoConsole.Main
             return new ConsolePawnDto()
             {
                 Id = pawn.Id,
-                IsSelected = pawn.IsSelected,
+                IsSelected = true,
                 Color = MapColor(pawn.Color),
             };
         }

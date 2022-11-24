@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LudoConsole.Main;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
 
@@ -11,80 +10,93 @@ namespace LudoConsole.UI.Models
     public class DrawableSquare : DrawableSquareBase
     {
         private const string _filepath = @"UI/Map/square.txt";
-        private List<(char chr, (int X, int Y) coords)> CharCoords { get; set; }
-        public ConsoleGameSquare Square { get; set; }
-        public override (int X, int Y) MaxCoord() 
+
+        private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
+        private List<(int X, int Y)> PawnCoords { get; } = new();
+        public override (int X, int Y) MaxCoord()
         {
             var x = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.X);
             var y = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.Y);
             return (x, y);
         }
 
-        public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath)
+        public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath) : base(square)
         {
-            Square = square;
-            CharCoords = ReadCharCoords(filePath);
+           var (charCoords, pawnCoords) = CreateCharCoords(filePath, (square.BoardX, square.BoardY));
+           
+           CharCoords = charCoords;
+           PawnCoords = pawnCoords;
         }
-        private (int X, int Y) TrueUpLeft { get; set; }
-        private List<(int X, int Y)> PawnCoords { get; set; } = new ();
-        public object UiControls { get; private set; }
-
+        
         public override List<IDrawable> Refresh()
         {
-            var toRefresh = new List<IDrawable>();
-            for (int i = 0; i < CharCoords.Count; i++)
-            {
-                var charCoord = CharCoords[i];
-                var color = ThisBackgroundColor();
-                toRefresh.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
-            }
-            int pawnCount = Square.Pawns.Count;
-            if(pawnCount > 0)
-            {
-                var pawnDraws = DrawPawns(Square.Pawns);
-                var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
-                int count = toRefresh.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
-                if (count != Square.Pawns.Count*2) throw new Exception($"Removed {count} when pawns count: {pawnCount}");
-                toRefresh.AddRange(pawnDraws);
-            }
-            return toRefresh;
+            if (!Square.Pawns.Any()) return CreateSquareDrawablesWithoutPawns();
+
+            var squareDrawables = CreateSquareDrawablesWithoutPawns();
+            var pawnDrawables = CreatePawnDrawablesWithDropShadow();
+            AddPawnDrawablesToSquareDrawables(squareDrawables, pawnDrawables);
+
+            return squareDrawables;
         }
-        private List<IDrawable> DrawPawns(List<ConsolePawnDto> pawns)
+
+
+        private List<IDrawable> CreateSquareDrawablesWithoutPawns()
         {
-            if (pawns.Count < 0 || pawns.Count > 4) throw new Exception("Pawns can only be 0-4");
+            var drawables = new List<IDrawable>();
 
-            var drawPawns = new List<IDrawable>();
-            var pawnColor = UiColor.TranslateColor(Square.Pawns[0].Color);
-            for (int i = 0; i < pawns.Count; i++)
-            { 
-                PawnDrawable newPawn = null;
-                if (pawns[i].IsSelected == true)
-                    newPawn = new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), ThisBackgroundColor());
-                else
-                    newPawn = new PawnDrawable(PawnCoords[i], pawnColor, ThisBackgroundColor());
-                var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), ThisBackgroundColor());
-                drawPawns.Add(newPawn);
-                drawPawns.Add(dropShadow);
+            foreach (var charCoord in CharCoords)
+            {
+                var color = ThisBackgroundColor();
+                drawables.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
             }
-            return drawPawns;
+
+            return drawables;
         }
 
-        private List<(char chr, (int X, int Y) coords)> ReadCharCoords(string filePath)
+        private List<IDrawable> CreatePawnDrawablesWithDropShadow()
+        {
+            var pawns = Square.Pawns;
+            var drawables = new List<IDrawable>();
+            var pawnColor = UiColor.TranslateColor(Square.Pawns[0].Color);
+
+            for (var i = 0; i < pawns.Count; i++)
+            {
+                PawnDrawable newPawn;
+
+                newPawn = pawns[i].IsSelected 
+                    ? new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), ThisBackgroundColor()) 
+                    : new PawnDrawable(PawnCoords[i], pawnColor, ThisBackgroundColor());
+
+                var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), ThisBackgroundColor());
+
+                drawables.Add(newPawn);
+                drawables.Add(dropShadow);
+            }
+
+            return drawables;
+        }
+
+        private static void AddPawnDrawablesToSquareDrawables(List<IDrawable> drawablesWithOutPawns, IEnumerable<IDrawable> pawnDrawables)
+        {
+            var pawnXYs = pawnDrawables.Select(x => (x.CoordinateX, x.CoordinateY));
+            drawablesWithOutPawns.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
+            drawablesWithOutPawns.AddRange(pawnDrawables);
+        }
+
+        private static (List<(char chr, (int X, int Y) coords)> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords(string filePath, (int x, int y) squarePoint)
         {
             var charCoords = new List<(char chr, (int X, int Y) coords)>();
-            string[] lines = File.ReadAllLines(filePath);
+            var pawnCoords = new List<(int X, int Y)>();
 
-            int xMax = lines.ToList().Select(x => x.Length).Max();
-            int yMax = lines.Length;
+            var lines = File.ReadAllLines(filePath);
 
-            (int X, int Y) trueUpLeft = (xMax * Square.BoardX, yMax * Square.BoardY);
-            TrueUpLeft = trueUpLeft;
+            var trueUpLeft = CalculateSquareTrueUpLeft(squarePoint, lines);
 
-            int x = 0;
-            int y = 0;
+            var x = 0;
+            var y = 0;
             foreach (var line in lines)
             {
-                foreach (char chr in line)
+                foreach (var chr in line)
                 {
                     char newChar;
                     if(chr == 'X')
@@ -93,7 +105,7 @@ namespace LudoConsole.UI.Models
                         var resultY = trueUpLeft.Y + y;
                         if (resultX < 0) throw new Exception("X have to be greater then 0.");
                         if (resultY < 0) throw new Exception("Y have to be greater then 0.");
-                        PawnCoords.Add((trueUpLeft.X + x, trueUpLeft.Y + y));
+                        pawnCoords.Add((trueUpLeft.X + x, trueUpLeft.Y + y));
                         newChar = ' ';
                     }
                     else
@@ -106,9 +118,17 @@ namespace LudoConsole.UI.Models
                 y++;
                 x = 0;
             }
-            return charCoords;
+
+            return (charCoords, pawnCoords);
         }
-        private ConsoleColor ThisBackgroundColor() => UiColor.TranslateColor(Square.Color);
-       
+
+        private static (int X, int Y) CalculateSquareTrueUpLeft((int x, int y) squarePoint, string[] lines)
+        {
+            var xMax = lines.ToList().Select(x => x.Length).Max();
+            var yMax = lines.Length;
+
+            (int X, int Y) trueUpLeft = (xMax * squarePoint.x, yMax * squarePoint.y);
+            return trueUpLeft;
+        }
     }
 }

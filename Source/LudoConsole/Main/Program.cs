@@ -101,7 +101,7 @@ namespace LudoConsole.Main
                         break;
 
                     default:
-                        throw new Exceptions.LudoConsoleException("Options out of range.");
+                        throw new Exceptions.LudoConsoleConfigurationException("Options out of range.");
                 }
             }
         }

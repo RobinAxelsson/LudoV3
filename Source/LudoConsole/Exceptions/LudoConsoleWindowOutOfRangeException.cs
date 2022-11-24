@@ -5,7 +5,7 @@ namespace LudoConsole.Exceptions
 {
     [Serializable]
     [ExcludeFromCodeCoverage]
-    internal class LudoConsoleWindowOutOfRangeException : Exception
+    internal class LudoConsoleWindowOutOfRangeException : LudoConsoleBaseException
     {
         public LudoConsoleWindowOutOfRangeException() { }
         public LudoConsoleWindowOutOfRangeException(string message) : base(message) { }
