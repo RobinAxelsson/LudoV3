@@ -18,6 +18,18 @@ namespace LudoConsole.UI.Models
             return (charPoints.ToList(), pawnCoords.ToList());
         }
 
+
+        public static (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords((int X, int Y) frameSize, string filePath, ConsoleTeamColor teamColor)
+        {
+
+            var lines = File.ReadAllLines(filePath);
+            var trueUpLeft = LudoSquareFactory.CalculateTeamBaseUpLeftPoint(frameSize, lines, teamColor);
+            var charPoints = LudoSquareFactory.GetCharPoints(lines, trueUpLeft);
+            var pawnCoords = LudoSquareFactory.FindCharXY(charPoints, 'X');
+            charPoints = LudoSquareFactory.ReplaceCharPoints(charPoints, 'X', ' ');
+            return (charPoints.ToList(), pawnCoords.ToList());
+        }
+
         public static IEnumerable<CharPoint> GetCharPoints(string[] lines, (int X, int Y) trueUpLeft)
         {
             var charPoints = new List<CharPoint>();
@@ -130,6 +142,5 @@ namespace LudoConsole.UI.Models
                 throw new Exception("Base must have a team color.");
             return trueUpLeft;
         }
-
     }
 }

@@ -19,7 +19,7 @@ namespace LudoConsole.UI.Models
 
         public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath) : base(square)
         {
-            var (charPoints, pawnCoords) = CreateCharCoords(frameSize, filePath, square.Color);
+            var (charPoints, pawnCoords) = LudoSquareFactory.CreateCharCoords(frameSize, filePath, square.Color);
             CharCoords = LudoSquareFactory.MapToValueTuples(charPoints);
             PawnCoords = pawnCoords;
         }
@@ -77,17 +77,6 @@ namespace LudoConsole.UI.Models
             var count = squareDrawables.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
             if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count}");
             squareDrawables.AddRange(pawnDraws);
-        }
-
-        private (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords((int X, int Y) frameSize, string filePath, ConsoleTeamColor teamColor)
-        {
-            
-            var lines = File.ReadAllLines(filePath);
-            var trueUpLeft = LudoSquareFactory.CalculateTeamBaseUpLeftPoint(frameSize, lines, teamColor);
-            var charPoints = LudoSquareFactory.GetCharPoints(lines, trueUpLeft);
-            var pawnCoords = LudoSquareFactory.FindCharXY(charPoints, 'X');
-            charPoints = LudoSquareFactory.ReplaceCharPoints(charPoints, 'X', ' ');
-            return (charPoints.ToList(), pawnCoords.ToList());
         }
     }
 }
