@@ -5,30 +5,26 @@ using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
 {
-    public class DrawableSquare : DrawableSquareBase
+    internal class DrawableSquare : DrawableSquareBase
     {
-        private List<CharPoint> CharCoords { get; }
-        private List<(int X, int Y)> PawnCoords { get; } = new();
+        //private List<CharPoint> CharCoords { get; }
+        //private List<(int X, int Y)> PawnCoords { get; } = new();
+
+        public DrawableSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, ConsoleGameSquare square) : base(charPoints, pawnCoords, square)
+        {
+        }
+
         public override (int X, int Y) MaxCoord()
         {
-            var x = CharCoords.Select(x => (x.X, x.Y)).Max(x => x.X);
-            var y = CharCoords.Select(x => (x.X, x.Y)).Max(x => x.Y);
+            var x = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.X);
+            var y = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.Y);
             return (x, y);
         }
 
-        public DrawableSquare(ConsoleGameSquare square) : base(square)
-        {
-           var (charCoords, pawnCoords) = 
-               LudoSquareFactory.CreateSquareCharPoints((square.BoardX, square.BoardY));
-           CharCoords = charCoords;
-           //CharCoords = LudoSquareFactory.MapToValueTuples(charCoords);
-           PawnCoords = pawnCoords;
-        }
         
         public override List<IDrawable> Refresh()
         {
             if (!Square.Pawns.Any()) return CreateSquareDrawablesWithoutPawns();
-
             var squareDrawables = CreateSquareDrawablesWithoutPawns();
             var pawnDrawables = CreatePawnDrawablesWithDropShadow();
             AddPawnDrawablesToSquareDrawables(squareDrawables, pawnDrawables);
@@ -41,7 +37,7 @@ namespace LudoConsole.UI.Models
         {
             var drawables = new List<IDrawable>();
 
-            foreach (var charCoord in CharCoords)
+            foreach (var charCoord in CharPoints)
             {
                 var color = ThisBackgroundColor();
                 drawables.Add(new LudoDrawable(charCoord.Char, (charCoord.X, charCoord.Y), color));

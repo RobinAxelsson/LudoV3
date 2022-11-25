@@ -8,18 +8,15 @@ using System.Linq;
 namespace LudoConsole.UI.Models
 {
 
-    public class DrawableTeamBase : DrawableSquareBase
+    internal class DrawableTeamBase : DrawableSquareBase
     {
-        private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
-        private List<(int X, int Y)> PawnCoords { get; } = new();
+        //private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
+        //private List<(int X, int Y)> PawnCoords { get; } = new();
 
-        public override (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
+        public override (int X, int Y) MaxCoord() => CharPoints.Select(x => (x.X, x.Y)).Max(x => (x.X, x.Y));
 
-        public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize) : base(square)
+        public DrawableTeamBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, ConsoleGameSquare square) : base(charPoints, pawnCoords, square)
         {
-            var (charPoints, pawnCoords) = LudoSquareFactory.CreateTeamBaseCharPoints(frameSize, square.Color);
-            CharCoords = LudoSquareFactory.MapToValueTuples(charPoints);
-            PawnCoords = pawnCoords;
         }
 
 
@@ -39,10 +36,10 @@ namespace LudoConsole.UI.Models
         {
             var drawables = new List<IDrawable>();
 
-            foreach (var charCoord in CharCoords)
+            foreach (var charCoord in CharPoints)
             {
-                var color = charCoord.chr != ' ' ? ThisBackgroundColor() : UiColor.LightAccent;
-                drawables.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
+                var color = charCoord.Char != ' ' ? ThisBackgroundColor() : UiColor.LightAccent;
+                drawables.Add(new LudoDrawable(charCoord.Char, (charCoord.X, charCoord.Y), color));
             }
 
             return drawables;
