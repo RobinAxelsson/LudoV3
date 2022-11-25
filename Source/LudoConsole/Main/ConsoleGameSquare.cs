@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using LudoConsole.Main;
 
-namespace LudoConsole.UI.Models
+namespace LudoConsole.Main
 {
     public sealed class ConsoleGameSquare
     {

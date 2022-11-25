@@ -1,12 +1,11 @@
-﻿using LudoConsole.UI.Controls;
-using LudoConsole.UI.Interfaces;
+﻿using LudoConsole.UI.Interfaces;
 using System;
 
 namespace LudoConsole.UI.Models
 {
-    public class LudoDrawable : IDrawable
+    public class Drawable : IDrawable
     {
-        public LudoDrawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor, ConsoleColor foreGroundColor = UiColor.DefaultBoardChars)
+        public Drawable(char chr, (int X, int Y) coord, ConsoleColor backgroundColor, ConsoleColor foreGroundColor = UiColor.DefaultBoardChars)
         {
             CoordinateX = coord.X;
             CoordinateY = coord.Y;

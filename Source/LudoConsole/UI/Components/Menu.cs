@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.Main;
-using LudoEngine.DbModel;
 
-namespace LudoEngine.GameLogic
+namespace LudoConsole.UI.Components
 {
     public static class Menu
     {
@@ -15,7 +14,7 @@ namespace LudoEngine.GameLogic
         public static int DisplayMainMenuGetSelection()
         {
             return ShowMenu("Welcome to this awesome Ludo game! \n",
-                System.Enum.GetNames(typeof(MainMenuOptions)));
+                Enum.GetNames(typeof(MainMenuOptions)));
         }
 
         public static int ShowMenu(string info, IReadOnlyList<string> options)
@@ -54,7 +53,7 @@ namespace LudoEngine.GameLogic
         //    {
         //        var players = AskForNumberOfHumanPlayers();
         //        var availableColors = SetColorSelection(players);
-                
+
         //        var numberOfAis = players - 4;
         //        if (numberOfAis != 0)
         //            AddRemainingColorsAsAi(numberOfAis, availableColors);
@@ -81,7 +80,7 @@ namespace LudoEngine.GameLogic
         //        {
         //            savedGames.Add("You have no saved games.");
         //        }
-                
+
         //        int selectedGame = ShowMenu("Select save: \n", savedGames.ToArray());
         //        Console.Clear();
         //        //Sets the stageSaving class so we can access the game later
@@ -105,19 +104,19 @@ namespace LudoEngine.GameLogic
 
         public static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
         {
-                foreach (var item in availableColors)
-                {
-                    var colorAdd = item == "blue" ? TeamColor.Blue :
-                        item == "Red" ? TeamColor.Red :
-                        item == "Green" ? TeamColor.Green :
-                        TeamColor.Yellow;
-                    AiColor.Add(colorAdd);
-                }
+            foreach (var item in availableColors)
+            {
+                var colorAdd = item == "blue" ? TeamColor.Blue :
+                    item == "Red" ? TeamColor.Red :
+                    item == "Green" ? TeamColor.Green :
+                    TeamColor.Yellow;
+                AiColor.Add(colorAdd);
+            }
         }
 
         public static (IEnumerable<TeamColor> human, IEnumerable<TeamColor> ai) SetColorSelection(int playerCount)
         {
-            var selectableColors = System.Enum.GetValues<TeamColor>().ToList();
+            var selectableColors = Enum.GetValues<TeamColor>().ToList();
 
             for (var i = 0; i < playerCount; i++)
             {
@@ -135,7 +134,7 @@ namespace LudoEngine.GameLogic
         public static int AskForNumberOfHumanPlayers()
         {
             Console.Clear();
-            var playerCount = ShowMenu("How many players are you: ", new[] {"1", "2", "3", "4"}) + 1;
+            var playerCount = ShowMenu("How many players are you: ", new[] { "1", "2", "3", "4" }) + 1;
             return playerCount;
         }
 

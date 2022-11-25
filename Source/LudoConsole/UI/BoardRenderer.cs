@@ -1,12 +1,12 @@
-﻿using LudoConsole.UI.Interfaces;
-using LudoEngine.Models;
+﻿using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using LudoConsole.UI.Models;
+using LudoConsole.UI.Components;
+using LudoConsole.Main;
 
-namespace LudoConsole.UI.Controls
+namespace LudoConsole.UI
 {
     public class BoardRenderer
     {
@@ -17,14 +17,14 @@ namespace LudoConsole.UI.Controls
         {
             _squareDrawables = LudoSquareFactory.CreateBoardSquares(gameSquares);
             Pawn.GameOverEvent += OnGameOver;
-            _thread = new Thread((() =>
+            _thread = new Thread(() =>
             {
                 while (IsRunning)
                 {
                     ConsoleWriter.UpdateBoard(_squareDrawables.ToList());
                     Thread.Sleep(200);
                 }
-            }));
+            });
         }
 
         public static BoardRenderer StartRender(IEnumerable<ConsoleGameSquare> gameSquares)

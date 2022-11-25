@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.Main;
-using LudoConsole.UI.Controls;
+using LudoConsole.UI.Interfaces;
 using LudoConsole.UI.Models;
 
-namespace LudoConsole.UI.Interfaces
+namespace LudoConsole.UI.Components
 {
     internal abstract class DrawableSquareBase
     {
@@ -46,7 +46,7 @@ namespace LudoConsole.UI.Interfaces
                     ? new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), Color)
                     : new PawnDrawable(PawnCoords[i], pawnColor, null);
 
-                var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent);
+                var dropShadow = new Drawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent);
 
                 drawables.Add(newPawn);
                 drawables.Add(dropShadow);

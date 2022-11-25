@@ -8,15 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="UI\Map\Base.txt" />
-      <None Remove="UI\Map\square.txt" />
+      <None Remove="UI\Components\Map\Base.txt" />
+      <None Remove="UI\Components\Map\square.txt" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="UI\Map\base.txt">
+      <Content Include="UI\Components\Map\base.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="UI\Map\square.txt">
+      <Content Include="UI\Components\Map\square.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

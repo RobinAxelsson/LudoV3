@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LudoConsole.UI.Controls;
-using LudoConsole.UI.Interfaces;
+using LudoConsole.Main;
+using LudoConsole.UI.Components;
+using LudoConsole.UI.Models;
 
-namespace LudoConsole.UI.Models
+namespace LudoConsole.UI
 {
     internal static class LudoSquareFactory
     {
-        private const string BaseAsciiArt = @"UI/Map/base.txt";
-        private const string SquareAsciiArt = @"UI/Map/square.txt";
+        private const string MapDirectory = @"UI/Components/Map/";
+        private const string BaseAsciiArt = MapDirectory + "base.txt";
+        private const string SquareAsciiArt = MapDirectory + "square.txt";
 
         public static IEnumerable<DrawableSquareBase> CreateBoardSquares(IEnumerable<ConsoleGameSquare> squares)
         {
@@ -54,7 +56,7 @@ namespace LudoConsole.UI.Models
             var charPoints = GetCharPoints(lines, trueUpLeft);
             var pawnCoords = FindCharXY(charPoints, 'X');
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
-            return new DrawableTeamBase(charPoints.ToList(), pawnCoords.ToList(), square.Pawns, UiColor.TranslateColor(square.Color));
+            return new DrawableSquareTeam(charPoints.ToList(), pawnCoords.ToList(), square.Pawns, UiColor.TranslateColor(square.Color));
         }
 
         private static (int x, int y) GetBoardMaxPoint(IEnumerable<DrawableSquareBase> drawableSquares)
@@ -115,7 +117,7 @@ namespace LudoConsole.UI.Models
         private static IEnumerable<CharPoint> ReplaceCharPoints(IEnumerable<CharPoint> toTranslate, char targetChar, char replace)
         {
             var toReplace = toTranslate.Where(x => x.Char == targetChar);
-            var newCharPoints = toReplace.Select(old => old with {Char = replace});
+            var newCharPoints = toReplace.Select(old => old with { Char = replace });
             return toTranslate.Except(toReplace).Concat(newCharPoints);
         }
     }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using LudoEngine.GameLogic;
-using LudoConsole.UI.Controls;
 using LudoEngine;
+using LudoConsole.UI;
+using LudoConsole.UI.Components;
+using LudoConsole.Main;
 
-namespace LudoConsole.Main
+namespace LudoConsole
 {
     internal static class Program
     {
@@ -15,55 +16,55 @@ namespace LudoConsole.Main
 
         private static void Main(string[] args)
         {
-            
-            while(true)
+
+            while (true)
             {
                 var selectedOption = (MainMenuOptions)Menu.DisplayMainMenuGetSelection();
 
                 switch (selectedOption)
                 {
                     case MainMenuOptions.TestRender:
-                    {
-                        Console.Clear();
-                        var facadeSquares = LudoEngineFacade.GetNewGameBoardSquares();
-                        var squares = ConsoleDtoMapping.Map(facadeSquares);
-                        BoardRenderer.StartRender(squares);
+                        {
+                            Console.Clear();
+                            var facadeSquares = LudoEngineFacade.GetNewGameBoardSquares();
+                            var squares = ConsoleDtoMapping.Map(facadeSquares);
+                            BoardRenderer.StartRender(squares);
 
-                        Console.ReadKey();
-                        break;
-                    }
+                            Console.ReadKey();
+                            break;
+                        }
 
                     case MainMenuOptions.NewGame:
-                    {
-                        //var playerCount = Menu.AskForNumberOfHumanPlayers();
-                        //var teamColors = Menu.SetColorSelection(playerCount);
+                        {
+                            //var playerCount = Menu.AskForNumberOfHumanPlayers();
+                            //var teamColors = Menu.SetColorSelection(playerCount);
 
-                        //Console.Clear();
-                        
-                        //var builder = GameBuilder.StartBuild();
-                        
-                        //LudoEngineFacade.SetBoard();
-                        
-                        //builder.AddDice(new Dice(1, 6));
-                        
-                        //builder.NewGame();
+                            //Console.Clear();
 
-                        //teamColors.human.ToList().ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
-                        //teamColors.ai.ToList().ForEach(x => builder.AddAIPlayer(x, true));
+                            //var builder = GameBuilder.StartBuild();
 
-                        //builder.SetUpPawns();
-                        //builder.StartingColor(TeamColor.Blue);
-                        //builder.DisableSaving();
+                            //LudoEngineFacade.SetBoard();
 
-                        //var game = builder.ToGamePlay();
+                            //builder.AddDice(new Dice(1, 6));
 
-                        //BoardRenderer.StartRender(StaticBoard.BoardSquares);
-                        //game.Start();
+                            //builder.NewGame();
 
-                        break;
-                    }
+                            //teamColors.human.ToList().ForEach(x => builder.AddHumanPlayer(x, ConsoleDefaults.KeyboardControl));
+                            //teamColors.ai.ToList().ForEach(x => builder.AddAIPlayer(x, true));
+
+                            //builder.SetUpPawns();
+                            //builder.StartingColor(TeamColor.Blue);
+                            //builder.DisableSaving();
+
+                            //var game = builder.ToGamePlay();
+
+                            //BoardRenderer.StartRender(StaticBoard.BoardSquares);
+                            //game.Start();
+
+                            break;
+                        }
                     case MainMenuOptions.LoadGame:
-                    {
+                        {
                             //var savedGames = LudoEngineFacade.GetSavedGames();
 
                             //var timeSaved = savedGames.Select(x => x.LastSaved.ToString("yyy/MM/dd HH:mm")).ToArray();
@@ -90,7 +91,7 @@ namespace LudoConsole.Main
 
                             //loadGame.Start();
                             break;
-                    }
+                        }
 
                     case MainMenuOptions.Controls:
                         ConsoleInfo.DisplayControlInfo();
@@ -111,7 +112,7 @@ namespace LudoConsole.Main
         //    var loadGame = GameBuilder.StartBuild()
         //        .MapBoard(@"LudoORM/Map/BoardMap.txt")
         //        .AddDice(new Dice(1, 6))
-                
+
         //        .LoadGame()
         //        .LoadPawns(StageSaving.TeamPosition)
         //        .LoadPlayers(ConsoleDefaults.KeyboardControl)

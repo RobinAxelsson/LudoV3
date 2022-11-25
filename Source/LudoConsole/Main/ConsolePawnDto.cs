@@ -1,6 +1,4 @@
-﻿using LudoConsole.UI.Models;
-
-namespace LudoConsole.Main
+﻿namespace LudoConsole.Main
 {
     public class ConsolePawnDto
     {

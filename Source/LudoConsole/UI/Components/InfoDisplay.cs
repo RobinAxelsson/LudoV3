@@ -1,14 +1,14 @@
-﻿using LudoConsole.UI.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using LudoConsole.UI.Interfaces;
+using LudoConsole.UI.Models;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic.GamePlayers;
 using LudoEngine.GameLogic.Interfaces;
 using LudoEngine.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using LudoConsole.UI.Models;
 
-namespace LudoConsole.UI.Controls
+namespace LudoConsole.UI.Components
 {
     public class InfoDisplay
     {

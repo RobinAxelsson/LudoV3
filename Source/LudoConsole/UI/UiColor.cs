@@ -1,9 +1,9 @@
 ﻿using System;
-using LudoConsole.UI.Models;
+using LudoConsole.Main;
 
-namespace LudoConsole.UI.Controls
+namespace LudoConsole.UI
 {
-    public static class UiColor
+    internal static class UiColor
     {
         internal const ConsoleColor LightAccent = ConsoleColor.Gray;
         internal const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
@@ -13,7 +13,7 @@ namespace LudoConsole.UI.Controls
         internal const ConsoleColor PawnInverseColor = ConsoleColor.White;
         internal const ConsoleColor DarkAccent = ConsoleColor.Black;
 
-        private static Random _random = new ();
+        private static Random _random = new();
         public static ConsoleColor RandomColor() => (ConsoleColor)_random.Next(0, 15);
         public static void SetDefault()
         {

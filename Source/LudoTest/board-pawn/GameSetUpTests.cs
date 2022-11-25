@@ -6,9 +6,9 @@ using Xunit;
 using LudoEngine.GameLogic.Dice;
 using LudoEngine.Creation;
 using System.Collections.Generic;
-using LudoConsole.UI.Controls;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Linq;
+using LudoConsole.Main;
 
 namespace LudoTest.board_pawn
 {
@@ -25,11 +25,6 @@ namespace LudoTest.board_pawn
                  return list;
              });
             var ones = diceRolls.Where(x => x == 1).ToList();
-            var twos = diceRolls.Where(x => x == 2).ToList();
-            var threes = diceRolls.Where(x => x == 3).ToList();
-            var fours = diceRolls.Where(x => x == 4).ToList();
-            var fifths = diceRolls.Where(x => x == 5).ToList();
-            var sixths = diceRolls.Where(x => x == 6).ToList();
             var other = diceRolls.Where(x => x > 6 || x < 1).ToList();
 
             Assert.Empty(other);
@@ -96,7 +91,7 @@ namespace LudoTest.board_pawn
             
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint })
-            .LoadPlayers(ConsoleDefaults.KeyboardControl)
+            .LoadPlayers(new KeyboardController())
             .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
@@ -138,7 +133,7 @@ namespace LudoTest.board_pawn
             
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
-            .LoadPlayers(ConsoleDefaults.KeyboardControl)
+            .LoadPlayers(new KeyboardController())
             .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
@@ -173,12 +168,11 @@ namespace LudoTest.board_pawn
             
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
-            .LoadPlayers(ConsoleDefaults.KeyboardControl)
+            .LoadPlayers(new KeyboardController())
             .StartingColor(TeamColor.Blue)
             .EnableSavingToDb()
             .ToGamePlay();
 
-            var gamePlayers = game.Players;
             var aiExists = game.Players.Exists(x => x is Stephan);
 
             Assert.True(aiExists == true);

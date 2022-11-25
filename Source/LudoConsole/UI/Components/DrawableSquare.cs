@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.Main;
 using LudoConsole.UI.Interfaces;
+using LudoConsole.UI.Models;
 
-namespace LudoConsole.UI.Models
+namespace LudoConsole.UI.Components
 {
     internal class DrawableSquare : DrawableSquareBase
     {
@@ -15,7 +16,7 @@ namespace LudoConsole.UI.Models
         public override List<IDrawable> Refresh()
         {
             if (!Pawns.Any()) return CreateSquareDrawablesWithoutPawns();
-            
+
             var squareDrawables = CreateSquareDrawablesWithoutPawns();
             var pawnDrawables = CreatePawnDrawablesWithDropShadow();
             AddPawnDrawablesToSquareDrawables(squareDrawables, pawnDrawables);
@@ -29,7 +30,7 @@ namespace LudoConsole.UI.Models
 
             foreach (var charCoord in CharPoints)
             {
-                drawables.Add(new LudoDrawable(charCoord.Char, (charCoord.X, charCoord.Y), Color));
+                drawables.Add(new Drawable(charCoord.Char, (charCoord.X, charCoord.Y), Color));
             }
 
             return drawables;

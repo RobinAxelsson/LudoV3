@@ -1,16 +1,17 @@
-﻿using LudoConsole.UI.Interfaces;
+﻿using LudoConsole.UI.Components;
+using LudoConsole.UI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LudoConsole.UI.Controls
+namespace LudoConsole.UI
 {
     internal static class ConsoleWriter
     {
         private static readonly List<IDrawable> ScreenMemory = new();
         public static void TryAppend(List<DrawableSquareBase> squares)
         {
-            var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
+            var drawables = squares.Select(x => x.Refresh()).SelectMany(x => x);
             TryAppend(drawables.ToList());
         }
         public static void TryAppend(IDrawable tryUnit)
