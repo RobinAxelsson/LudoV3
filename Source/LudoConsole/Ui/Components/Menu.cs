@@ -8,8 +8,8 @@ namespace LudoConsole.Ui.Components
 {
     public static class Menu
     {
-        private static List<TeamColor> HumanColor { get; } = new();
-        private static List<TeamColor> AiColor { get; } = new();
+        private static List<TeamColorCore> HumanColor { get; } = new();
+        private static List<TeamColorCore> AiColor { get; } = new();
 
         public static int DisplayMainMenuGetSelection()
         {
@@ -105,17 +105,17 @@ namespace LudoConsole.Ui.Components
         {
             foreach (var item in availableColors)
             {
-                var colorAdd = item == "blue" ? TeamColor.Blue :
-                    item == "Red" ? TeamColor.Red :
-                    item == "Green" ? TeamColor.Green :
-                    TeamColor.Yellow;
+                var colorAdd = item == "blue" ? TeamColorCore.Blue :
+                    item == "Red" ? TeamColorCore.Red :
+                    item == "Green" ? TeamColorCore.Green :
+                    TeamColorCore.Yellow;
                 AiColor.Add(colorAdd);
             }
         }
 
-        public static (IEnumerable<TeamColor> human, IEnumerable<TeamColor> ai) SetColorSelection(int playerCount)
+        public static (IEnumerable<TeamColorCore> human, IEnumerable<TeamColorCore> ai) SetColorSelection(int playerCount)
         {
-            var selectableColors = Enum.GetValues<TeamColor>().ToList();
+            var selectableColors = Enum.GetValues<TeamColorCore>().ToList();
 
             for (var i = 0; i < playerCount; i++)
             {

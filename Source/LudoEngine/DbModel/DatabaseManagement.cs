@@ -53,7 +53,7 @@ namespace LudoEngine.DbModel
             db.SaveChanges();
         }
 
-        public static void SaveAndGetGame(TeamColor currentTurn)
+        public static void SaveAndGetGame(TeamColorCore currentTurn)
         {
             using var db = new LudoContext();
 

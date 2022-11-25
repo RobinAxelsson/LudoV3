@@ -7,7 +7,7 @@ namespace LudoEngine.BoardUnits.Main
 {
     public class SquareSafeZone : IGameSquare
     {
-        public SquareSafeZone(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public SquareSafeZone(int boardX, int boardY, TeamColorCore color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
@@ -16,9 +16,9 @@ namespace LudoEngine.BoardUnits.Main
         }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
-        public TeamColor? Color { get; set; }
+        public TeamColorCore? Color { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
+        public BoardDirection DirectionNext(TeamColorCore Color) => DefaultDirection;
     }
 }

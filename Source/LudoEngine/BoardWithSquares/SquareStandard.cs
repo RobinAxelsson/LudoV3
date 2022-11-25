@@ -14,11 +14,11 @@ namespace LudoEngine.BoardUnits.Main
             DefaultDirection = direction;
         }
 
-        public TeamColor? Color { get; set; } = null;
+        public TeamColorCore? Color { get; set; } = null;
         public int BoardX { get; set; }
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
+        public BoardDirection DirectionNext(TeamColorCore Color) => DefaultDirection;
     }
 }

@@ -10,11 +10,11 @@ namespace LudoEngine.GameLogic.GamePlayers
 {
     public class Stephan : IGamePlayer
     {
-        public TeamColor Color { get; set; }
+        public TeamColorCore Color { get; set; }
         public static event Action<Stephan, int> StephanThrowEvent;
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColor color, ILog log = null)
+        public Stephan(TeamColorCore color, ILog log = null)
         {
             Color = color;
 
@@ -197,7 +197,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                     //squarePosition = BoardNavigation.GetNext(Board.BoardSquares, squarePosition, Color);
                     squarePosition = BoardNavigation.GetNext(StaticBoard.BoardSquares, squarePosition, Color);
                 }
-                if (squarePosition is SquareStatic && squarePosition.Color != Color)
+                if (squarePosition is SquareStart && squarePosition.Color != Color)
                 {
                     Result = true;
                     PawnsNotToMove.Add(pawn);

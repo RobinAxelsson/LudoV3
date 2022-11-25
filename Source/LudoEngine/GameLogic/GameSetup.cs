@@ -23,16 +23,16 @@ namespace LudoEngine.GameLogic
                 squareToPut.Pawns.Add(new Pawn(sp.Color));
             }
         }
-        public static List<TeamColor> Load(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
+        public static List<TeamColorCore> Load(List<IGameSquare> gameSquares, List<(TeamColorCore color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
                 gameSquares.Find(x => x.BoardX == teamCoord.position.X && x.BoardY == teamCoord.position.Y).Pawns.Add(new Pawn(teamCoord.color));
 
             return teamCoords.Select(x => x.color).Distinct().ToList();;
         }
-        public static void SetUpPawnsNewGame(List<IGameSquare> gameSquares, TeamColor[] colors = null)
+        public static void SetUpPawnsNewGame(List<IGameSquare> gameSquares, TeamColorCore[] colors = null)
         {
-            colors ??= new [] { TeamColor.Blue, TeamColor.Red, TeamColor.Green, TeamColor.Yellow };
+            colors ??= new [] { TeamColorCore.Blue, TeamColorCore.Red, TeamColorCore.Green, TeamColorCore.Yellow };
 
             //var teamCoords = new List<(TeamColor color, (int X, int Y) position)>();
             int pawnsCount = colors == null ? 16 : 4 * colors.Count();

@@ -5,20 +5,20 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class SquareStatic : IGameSquare
+    public class SquareStart : IGameSquare
     {
-        public SquareStatic(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public SquareStart(int boardX, int boardY, TeamColorCore color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
             BoardY = boardY;
             DefaultDirection = direction;
         }
-        public TeamColor? Color { get; set; }
+        public TeamColorCore? Color { get; set; }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
-        public List<Pawn> Pawns { get; set; } = new List<Pawn>();
+        public List<Pawn> Pawns { get; set; } = new();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
+        public BoardDirection DirectionNext(TeamColorCore Color) => DefaultDirection;
     }
 }
