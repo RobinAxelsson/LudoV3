@@ -7,7 +7,7 @@ namespace LudoConsole.UI.Controls
 {
     internal static class ConsoleWriter
     {
-        private static List<IDrawable> ScreenMemory = new();
+        private static readonly List<IDrawable> ScreenMemory = new();
         public static void TryAppend(List<DrawableSquareBase> squares)
         {
             var drawables = (squares.Select(x => x.Refresh()).SelectMany(x => x));
@@ -37,17 +37,17 @@ namespace LudoConsole.UI.Controls
         public static void Update()
         {
             var toRemove = new List<IDrawable>();
-            int countedMemory = ScreenMemory.Count;
+            var countedMemory = ScreenMemory.Count;
 
-            for (int i = 0; i < countedMemory; i++)
+            for (var i = 0; i < countedMemory; i++)
             {
                 var drawable = ScreenMemory[i];
 
-                if (drawable.Erase == false && drawable.IsDrawn == false)
+                if (drawable.DoErase == false && drawable.IsDrawn == false)
                 {
                     Write(drawable);
                 }
-                else if (drawable.Erase == true)
+                else if (drawable.DoErase)
                 {
                     Erase(drawable);
                     toRemove.Add(drawable);
@@ -62,7 +62,7 @@ namespace LudoConsole.UI.Controls
             Console.Clear();
         }
 
-        public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.Erase = true);
+        public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.DoErase = true);
         private static bool IsInScreenMemory(IDrawable drawable)
         {
             int countedMemory = ScreenMemory.Count;
@@ -95,7 +95,7 @@ namespace LudoConsole.UI.Controls
             Console.Write(" ");
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
             drawable.IsDrawn = false;
-            drawable.Erase = false;
+            drawable.DoErase = false;
         }
     }
 }

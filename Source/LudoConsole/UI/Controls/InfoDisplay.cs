@@ -6,6 +6,7 @@ using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using LudoConsole.UI.Models;
 
 namespace LudoConsole.UI.Controls
 {
@@ -102,7 +103,7 @@ namespace LudoConsole.UI.Controls
                 var end = drawables.Count;
                 for (int i = iStart; i < end; i++)
                 {
-                    drawables[i].Erase = true;
+                    drawables[i].DoErase = true;
                 }
             }
             drawables.Clear();

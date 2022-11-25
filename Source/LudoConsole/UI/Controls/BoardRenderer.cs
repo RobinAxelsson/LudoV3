@@ -48,6 +48,5 @@ namespace LudoConsole.UI.Controls
             _thread.Join();
             Console.ReadKey();
         }
-
     }
 }

@@ -10,7 +10,7 @@ namespace LudoConsole.UI.Interfaces
         public ConsoleColor BackgroundColor { get; set; }
         public ConsoleColor ForegroundColor { get; set; }
         public bool IsDrawn { get; set; }
-        public bool Erase { get; set; }
+        public bool DoErase { get; set; }
         public bool IsSame(IDrawable drawable);
     }
 }

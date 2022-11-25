@@ -1,10 +1,10 @@
-﻿using LudoConsole.UI.Controls;
+﻿using System;
+using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
-using System;
 
-namespace LudoConsole.UI
+namespace LudoConsole.UI.Models
 {
-    public class TextDrawable : IDrawable
+    public record TextDrawable : IDrawable
     {
         public TextDrawable(int coordX, int coordY, char chr)
         {
@@ -18,7 +18,7 @@ namespace LudoConsole.UI
         public ConsoleColor BackgroundColor { get; set; } = UiColor.DefaultBackgroundColor;
         public ConsoleColor ForegroundColor { get; set; } = UiColor.DefaultForegroundColor;
         public bool IsDrawn { get; set; }
-        public bool Erase { get; set; }
+        public bool DoErase { get; set; }
 
         public bool IsSame(IDrawable drawable)
         {

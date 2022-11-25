@@ -4,7 +4,7 @@ using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
 {
-    public class PawnDrawable : IDrawable
+    public record PawnDrawable : IDrawable
     {
         public PawnDrawable((int x, int y) coords, ConsoleColor pawnColor, ConsoleColor? squareColor, char chr = ' ')
         {
@@ -20,7 +20,7 @@ namespace LudoConsole.UI.Models
         public ConsoleColor BackgroundColor { get; set; }
         public ConsoleColor ForegroundColor { get; set; }
         public bool IsDrawn { get; set; }
-        public bool Erase { get; set; }
+        public bool DoErase { get; set; }
 
         public bool IsSame(IDrawable drawable)
         {
