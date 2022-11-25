@@ -1,5 +1,4 @@
-﻿using LudoConsole.UI.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.Main;
@@ -8,13 +7,13 @@ using LudoConsole.UI.Models;
 namespace LudoConsole.UI.Components
 {
 
-    internal class DrawableSquareTeam : DrawableSquareBase
+    internal class BoardSquareTeam : BoardSquareBase
     {
-        public DrawableSquareTeam(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns, ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
+        public BoardSquareTeam(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns, ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
         {
         }
 
-        public override List<IDrawable> Refresh()
+        public override List<DrawableBase> Refresh()
         {
             if (!Pawns.Any()) return CreateTeamBaseAndFrameDrawablesWithoutPawns();
 
@@ -25,14 +24,14 @@ namespace LudoConsole.UI.Components
             return squareDrawables;
         }
 
-        private List<IDrawable> CreateTeamBaseAndFrameDrawablesWithoutPawns()
+        private List<DrawableBase> CreateTeamBaseAndFrameDrawablesWithoutPawns()
         {
-            var drawables = new List<IDrawable>();
+            var drawables = new List<DrawableBase>();
 
             foreach (var charCoord in CharPoints)
             {
                 var color = charCoord.Char != ' ' ? Color : UiColor.LightAccent;
-                drawables.Add(new Drawable(charCoord.Char, (charCoord.X, charCoord.Y), color));
+                drawables.Add(new DrawableSquare(charCoord.Char, (charCoord.X, charCoord.Y), color));
             }
 
             return drawables;

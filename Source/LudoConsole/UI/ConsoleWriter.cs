@@ -1,5 +1,5 @@
 ﻿using LudoConsole.UI.Components;
-using LudoConsole.UI.Interfaces;
+using LudoConsole.UI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +8,13 @@ namespace LudoConsole.UI
 {
     internal static class ConsoleWriter
     {
-        private static readonly List<IDrawable> ScreenMemory = new();
-        public static void TryAppend(List<DrawableSquareBase> squares)
+        private static readonly List<DrawableBase> ScreenMemory = new();
+        public static void TryAppend(List<BoardSquareBase> squares)
         {
             var drawables = squares.Select(x => x.Refresh()).SelectMany(x => x);
             TryAppend(drawables.ToList());
         }
-        public static void TryAppend(IDrawable tryUnit)
+        public static void TryAppend(DrawableBase tryUnit)
         {
             if (IsInScreenMemory(tryUnit)) return;
 
@@ -26,18 +26,18 @@ namespace LudoConsole.UI
 
             ScreenMemory.Add(tryUnit);
         }
-        public static void TryAppend(List<IDrawable> drawables)
+        public static void TryAppend(List<DrawableBase> drawables)
         {
             drawables.ForEach(x => TryAppend(x));
         }
-        public static void UpdateBoard(List<DrawableSquareBase> squareDrawables)
+        public static void UpdateBoard(List<BoardSquareBase> squareDrawables)
         {
             TryAppend(squareDrawables);
             Update();
         }
         public static void Update()
         {
-            var toRemove = new List<IDrawable>();
+            var toRemove = new List<DrawableBase>();
             var countedMemory = ScreenMemory.Count;
 
             for (var i = 0; i < countedMemory; i++)
@@ -64,7 +64,7 @@ namespace LudoConsole.UI
         }
 
         public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.DoErase = true);
-        private static bool IsInScreenMemory(IDrawable drawable)
+        private static bool IsInScreenMemory(DrawableBase drawableBase)
         {
             int countedMemory = ScreenMemory.Count;
 
@@ -72,31 +72,31 @@ namespace LudoConsole.UI
             {
                 if (countedMemory < ScreenMemory.Count) countedMemory = ScreenMemory.Count;
                 var drawableCompare = ScreenMemory[i];
-                if (drawable.IsSame(drawableCompare))
+                if (drawableBase.IsSame(drawableCompare))
                     return true;
             }
             return false;
         }
 
-        private static void Write(IDrawable drawable)
+        private static void Write(DrawableBase drawableBase)
         {
-            Console.ForegroundColor = drawable.ForegroundColor;
-            Console.BackgroundColor = drawable.BackgroundColor;
-            Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
-            Console.Write(drawable.Chars);
-            drawable.IsDrawn = true;
+            Console.ForegroundColor = drawableBase.ForegroundColor;
+            Console.BackgroundColor = drawableBase.BackgroundColor;
+            Console.SetCursorPosition(drawableBase.CoordinateX, drawableBase.CoordinateY);
+            Console.Write(drawableBase.Chars);
+            drawableBase.IsDrawn = true;
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;
         }
 
-        private static void Erase(IDrawable drawable)
+        private static void Erase(DrawableBase drawableBase)
         {
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;
-            Console.SetCursorPosition(drawable.CoordinateX, drawable.CoordinateY);
+            Console.SetCursorPosition(drawableBase.CoordinateX, drawableBase.CoordinateY);
             Console.Write(" ");
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
-            drawable.IsDrawn = false;
-            drawable.DoErase = false;
+            drawableBase.IsDrawn = false;
+            drawableBase.DoErase = false;
         }
     }
 }

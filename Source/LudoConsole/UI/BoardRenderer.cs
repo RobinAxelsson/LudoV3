@@ -10,7 +10,7 @@ namespace LudoConsole.UI
 {
     public class BoardRenderer
     {
-        private readonly IEnumerable<DrawableSquareBase> _squareDrawables;
+        private readonly IEnumerable<BoardSquareBase> _squareDrawables;
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
         public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)

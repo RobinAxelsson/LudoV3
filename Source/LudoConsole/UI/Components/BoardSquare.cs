@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.Main;
-using LudoConsole.UI.Interfaces;
 using LudoConsole.UI.Models;
 
 namespace LudoConsole.UI.Components
 {
-    internal class DrawableSquare : DrawableSquareBase
+    internal class BoardSquare : BoardSquareBase
     {
-        public DrawableSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns, ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
+        public BoardSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns, ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
         {
         }
 
-        public override List<IDrawable> Refresh()
+        public override List<DrawableBase> Refresh()
         {
             if (!Pawns.Any()) return CreateSquareDrawablesWithoutPawns();
 
@@ -24,13 +23,13 @@ namespace LudoConsole.UI.Components
             return squareDrawables;
         }
 
-        private List<IDrawable> CreateSquareDrawablesWithoutPawns()
+        private List<DrawableBase> CreateSquareDrawablesWithoutPawns()
         {
-            var drawables = new List<IDrawable>();
+            var drawables = new List<DrawableBase>();
 
             foreach (var charCoord in CharPoints)
             {
-                drawables.Add(new Drawable(charCoord.Char, (charCoord.X, charCoord.Y), Color));
+                drawables.Add(new DrawableSquare(charCoord.Char, (charCoord.X, charCoord.Y), Color));
             }
 
             return drawables;
