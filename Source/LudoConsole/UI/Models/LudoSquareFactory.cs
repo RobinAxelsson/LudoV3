@@ -14,16 +14,39 @@ namespace LudoConsole.UI.Models
 
         public static IEnumerable<DrawableSquareBase> CreateBoardSquares(IEnumerable<ConsoleGameSquare> squares)
         {
-            var squareDraws = squares.Where(x => !x.IsBase)
+            var squareDrawables = squares.Where(x => !x.IsBase)
                 .Select(CreateSquare).ToArray();
 
-            var (boardWidth, boardHeight) = GetBoardMaxPoint(squareDraws);
+            var (boardWidth, boardHeight) = GetBoardMaxPoint(squareDrawables);
 
             var baseDraws = squares
                 .Where(x => x.IsBase)
                 .Select(square => CreateTeamBase(boardWidth, boardHeight, square));
 
-            return squareDraws.Concat(baseDraws).ToList();
+            return squareDrawables.Concat(baseDraws).ToList();
+        }
+
+        private static DrawableSquareBase CreateSquare(ConsoleGameSquare square)
+        {
+            (int x, int y) squarePoint = (square.BoardX, square.BoardY);
+            var lines = File.ReadAllLines(SquareAsciiArt);
+            var truePoint = CalculateSquareTrueUpLeft(squarePoint, lines);
+
+            var charPoints = GetCharPoints(lines, truePoint);
+            var pawnCoords = FindCharXY(charPoints, 'X');
+            charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
+            return new DrawableSquare(charPoints.ToList(), pawnCoords.ToList(), square.Pawns, UiColor.TranslateColor(square.Color));
+        }
+
+        private static DrawableSquareBase CreateTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
+        {
+            var lines = File.ReadAllLines(BaseAsciiArt);
+            var trueUpLeft = CalculateTeamBaseUpLeftPoint(boardWidth, boardHeight, lines, square.Color);
+
+            var charPoints = GetCharPoints(lines, trueUpLeft);
+            var pawnCoords = FindCharXY(charPoints, 'X');
+            charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
+            return new DrawableTeamBase(charPoints.ToList(), pawnCoords.ToList(), square.Pawns, UiColor.TranslateColor(square.Color));
         }
 
         private static (int x, int y) GetBoardMaxPoint(DrawableSquareBase[] drawableSquares)
@@ -33,42 +56,20 @@ namespace LudoConsole.UI.Models
             return (x, y);
         }
 
-        private static DrawableSquareBase CreateTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
+        private static (int X, int Y) CalculateTeamBaseUpLeftPoint(int boardWidth, int boardHeight, IReadOnlyCollection<string> lines, ConsoleTeamColor teamColor)
         {
-            var (charPoints, drawPoints) = CreateTeamBaseCharPoints(boardWidth, boardHeight, square.Color);
-            return new DrawableTeamBase(charPoints, drawPoints, square.Pawns, UiColor.TranslateColor(square.Color));
+            var xMax = lines.ToList().Select(x => x.Length).Max();
+            var yMax = lines.Count;
+
+            (int X, int Y) trueUpLeft = teamColor == ConsoleTeamColor.Red ? (boardWidth - xMax + 1, 0) :
+                teamColor == ConsoleTeamColor.Blue ? (0, 0) :
+                teamColor == ConsoleTeamColor.Green ? (boardWidth - xMax + 1, boardHeight - yMax + 1) :
+                teamColor == ConsoleTeamColor.Yellow ? (0, boardHeight - yMax + 1) :
+                throw new Exception("Base must have a team color.");
+            return trueUpLeft;
         }
 
-        private static DrawableSquareBase CreateSquare(ConsoleGameSquare square)
-        {
-            var (charPoints, drawPoints) = CreateSquareCharPoints((square.BoardX, square.BoardY));
-            return new DrawableSquare(charPoints, drawPoints, square.Pawns, UiColor.TranslateColor(square.Color));
-        }
-
-        private static (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateSquareCharPoints((int x, int y) squarePoint)
-        {
-
-            var lines = File.ReadAllLines(SquareAsciiArt);
-            var truePoint = CalculateSquareTrueUpLeft(squarePoint, lines);
-            var charPoints = GetCharPoints(lines, truePoint);
-            var pawnCoords = FindCharXY(charPoints, 'X');
-            charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
-            return (charPoints.ToList(), pawnCoords.ToList());
-        }
-
-
-        private static (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateTeamBaseCharPoints(int boardWidth, int boardHeight, ConsoleTeamColor teamColor)
-        {
-
-            var lines = File.ReadAllLines(BaseAsciiArt);
-            var trueUpLeft = CalculateTeamBaseUpLeftPoint(boardWidth, boardHeight, lines, teamColor);
-            var charPoints = GetCharPoints(lines, trueUpLeft);
-            var pawnCoords = FindCharXY(charPoints, 'X');
-            charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
-            return (charPoints.ToList(), pawnCoords.ToList());
-        }
-
-        private static IEnumerable<CharPoint> GetCharPoints(string[] lines, (int X, int Y) trueUpLeft)
+        private static IEnumerable<CharPoint> GetCharPoints(IEnumerable<string> lines, (int X, int Y) trueUpLeft)
         {
             var charPoints = new List<CharPoint>();
 
@@ -108,19 +109,6 @@ namespace LudoConsole.UI.Models
             var toReplace = toTranslate.Where(x => x.Char == targetChar);
             var newCharPoints = toReplace.Select(old => old with {Char = replace});
             return toTranslate.Except(toReplace).Concat(newCharPoints);
-        }
-
-        private static (int X, int Y) CalculateTeamBaseUpLeftPoint(int boardWidth, int boardHeight, IReadOnlyCollection<string> lines, ConsoleTeamColor teamColor)
-        {
-            var xMax = lines.ToList().Select(x => x.Length).Max();
-            var yMax = lines.Count;
-
-            (int X, int Y) trueUpLeft = teamColor == ConsoleTeamColor.Red ? (boardWidth - xMax + 1, 0) :
-                teamColor == ConsoleTeamColor.Blue ? (0, 0) :
-                teamColor == ConsoleTeamColor.Green ? (boardWidth - xMax + 1, boardHeight- yMax + 1) :
-                teamColor == ConsoleTeamColor.Yellow ? (0, boardHeight - yMax + 1) :
-                throw new Exception("Base must have a team color.");
-            return trueUpLeft;
         }
     }
 }
