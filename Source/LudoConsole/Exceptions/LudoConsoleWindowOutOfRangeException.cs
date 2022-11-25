@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace LudoConsole.Exceptions
 {
@@ -7,11 +8,22 @@ namespace LudoConsole.Exceptions
     [ExcludeFromCodeCoverage]
     internal class LudoConsoleWindowOutOfRangeException : LudoConsoleBaseException
     {
-        public LudoConsoleWindowOutOfRangeException() { }
-        public LudoConsoleWindowOutOfRangeException(string message) : base(message) { }
-        public LudoConsoleWindowOutOfRangeException(string message, Exception inner) : base(message, inner) { }
+        public LudoConsoleWindowOutOfRangeException()
+        {
+        }
+
+        public LudoConsoleWindowOutOfRangeException(string message) : base(message)
+        {
+        }
+
+        public LudoConsoleWindowOutOfRangeException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
         public LudoConsoleWindowOutOfRangeException(
-            System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+            SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

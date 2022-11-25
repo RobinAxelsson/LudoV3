@@ -5,7 +5,7 @@ using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 
-namespace LudoConsole.Main
+namespace LudoConsole.Controller
 {
     internal static class ConsoleDtoMapping
     {
@@ -16,23 +16,23 @@ namespace LudoConsole.Main
 
         private static ConsoleGameSquare MapSingle(IGameSquare square)
         {
-            return new ConsoleGameSquare()
+            return new ConsoleGameSquare
             {
                 IsBase = square.GetType().Name == "BaseSquare",
                 BoardX = square.BoardX,
                 BoardY = square.BoardY,
                 Color = MapColor(square.Color),
-                Pawns = square.Pawns.Select(MapPawn).ToList(),
+                Pawns = square.Pawns.Select(MapPawn).ToList()
             };
         }
 
         private static ConsolePawnDto MapPawn(Pawn pawn)
         {
-            return new ConsolePawnDto()
+            return new ConsolePawnDto
             {
                 Id = pawn.Id,
                 IsSelected = true,
-                Color = MapColor(pawn.Color),
+                Color = MapColor(pawn.Color)
             };
         }
 

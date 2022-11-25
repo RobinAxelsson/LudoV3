@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LudoConsole.Main
+namespace LudoConsole.Controller
 {
     public sealed class ConsoleGameSquare
     {

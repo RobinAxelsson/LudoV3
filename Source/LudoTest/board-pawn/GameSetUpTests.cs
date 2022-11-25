@@ -8,7 +8,7 @@ using LudoEngine.Creation;
 using System.Collections.Generic;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Linq;
-using LudoConsole.Main;
+using LudoConsole.Controller;
 
 namespace LudoTest.board_pawn
 {

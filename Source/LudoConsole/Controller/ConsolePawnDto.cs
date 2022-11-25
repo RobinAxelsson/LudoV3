@@ -1,4 +1,4 @@
-﻿namespace LudoConsole.Main
+﻿namespace LudoConsole.Controller
 {
     public class ConsolePawnDto
     {

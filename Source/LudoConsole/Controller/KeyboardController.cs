@@ -1,7 +1,7 @@
-﻿using LudoEngine.Interfaces;
-using System;
+﻿using System;
+using LudoEngine.Interfaces;
 
-namespace LudoConsole.Main
+namespace LudoConsole.Controller
 {
     public class KeyboardController : IController
     {

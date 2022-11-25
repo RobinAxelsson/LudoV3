@@ -1,4 +1,4 @@
-﻿namespace LudoConsole.Main
+﻿namespace LudoConsole.Controller
 {
     public enum MainMenuOptions
     {
@@ -6,7 +6,6 @@
         NewGame = 1,
         LoadGame = 2,
         Controls = 3,
-        Exit = 4,
-
+        Exit = 4
     }
 }
