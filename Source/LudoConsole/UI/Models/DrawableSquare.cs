@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
@@ -22,10 +20,9 @@ namespace LudoConsole.UI.Models
 
         public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath) : base(square)
         {
-           var (charCoords, pawnCoords) = CreateCharCoords(filePath, (square.BoardX, square.BoardY));
-
-
-           CharCoords = charCoords;
+           var (charCoords, pawnCoords) = 
+               LudoSquareFactory.CreateCharCoords(filePath, (square.BoardX, square.BoardY));
+           CharCoords = LudoSquareFactory.MapToValueTuples(charCoords);
            PawnCoords = pawnCoords;
         }
         
@@ -82,24 +79,6 @@ namespace LudoConsole.UI.Models
             var pawnXYs = pawnDrawables.Select(x => (x.CoordinateX, x.CoordinateY));
             drawablesWithOutPawns.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
             drawablesWithOutPawns.AddRange(pawnDrawables);
-        }
-
-        private static (List<(char chr, (int X, int Y) coords)> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords(string filePath, (int x, int y) squarePoint)
-        {
-
-            var lines = File.ReadAllLines(filePath);
-            
-            var truePoint = CharPointReader.CalculateSquareTrueUpLeft(squarePoint, lines);
-
-            var charPoints = CharPointReader.GetCharPoints(lines, truePoint);
-
-            var pawnCoords = CharPointReader.FindCharXY(charPoints, 'X');
-
-            charPoints = CharPointReader.ReplaceCharPoints(charPoints, 'X', ' ');
-
-            var charCoords = CharPointReader.MapToValueTuples(charPoints);
-
-            return (charCoords, pawnCoords.ToList());
         }
     }
 }

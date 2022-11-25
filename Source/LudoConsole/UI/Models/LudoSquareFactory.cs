@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace LudoConsole.UI.Models
 {
-    internal static class CharPointReader
+    internal static class LudoSquareFactory
     {
+        public static (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords(string filePath, (int x, int y) squarePoint)
+        {
+
+            var lines = File.ReadAllLines(filePath);
+            var truePoint = CalculateSquareTrueUpLeft(squarePoint, lines);
+            var charPoints = GetCharPoints(lines, truePoint);
+            var pawnCoords = FindCharXY(charPoints, 'X');
+            charPoints = ReplaceCharPoints(charPoints, 'X', ' ');
+            return (charPoints.ToList(), pawnCoords.ToList());
+        }
 
         public static IEnumerable<CharPoint> GetCharPoints(string[] lines, (int X, int Y) trueUpLeft)
         {
@@ -106,5 +117,19 @@ namespace LudoConsole.UI.Models
         {
             return charPoints.Select(charPoint => (charPoint.Char, (charPoint.X, charPoint.Y))).ToList();
         }
+
+        public static (int X, int Y) CalculateTeamBaseUpLeftPoint((int X, int Y) frameSize, string[] lines, ConsoleTeamColor teamColor)
+        {
+            var xMax = lines.ToList().Select(x => x.Length).Max();
+            var yMax = lines.Length;
+
+            (int X, int Y) trueUpLeft = teamColor == ConsoleTeamColor.Red ? (frameSize.X - xMax + 1, 0) :
+                teamColor == ConsoleTeamColor.Blue ? (0, 0) :
+                teamColor == ConsoleTeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
+                teamColor == ConsoleTeamColor.Yellow ? (0, frameSize.Y - yMax + 1) :
+                throw new Exception("Base must have a team color.");
+            return trueUpLeft;
+        }
+
     }
 }

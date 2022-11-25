@@ -19,8 +19,8 @@ namespace LudoConsole.UI.Models
 
         public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath) : base(square)
         {
-            var (charCoords, pawnCoords) = CreateCharCoords(frameSize, filePath);
-            CharCoords = charCoords;
+            var (charPoints, pawnCoords) = CreateCharCoords(frameSize, filePath, square.Color);
+            CharCoords = LudoSquareFactory.MapToValueTuples(charPoints);
             PawnCoords = pawnCoords;
         }
 
@@ -79,55 +79,15 @@ namespace LudoConsole.UI.Models
             squareDrawables.AddRange(pawnDraws);
         }
 
-        private (List<(char chr, (int X, int Y) coords)>charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords((int X, int Y) frameSize, string filePath)
+        private (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateCharCoords((int X, int Y) frameSize, string filePath, ConsoleTeamColor teamColor)
         {
             
-            var charCoords = new List<(char chr, (int X, int Y) coords)>();
-            var pawnCoords = new List<(int X, int Y)>();
-           
             var lines = File.ReadAllLines(filePath);
-
-            var trueUpLeft = CalculateTeamBaseUpLeftPoint(frameSize, lines);
-
-            var x = 0;
-            var y = 0;
-            foreach (var line in lines)
-            {
-                foreach (char chr in line)
-                {
-                    char newChar;
-                    if (chr == 'X')
-                    {
-                        var resultX = trueUpLeft.X + x;
-                        var resultY = trueUpLeft.Y + y;
-                        if (resultX < 0) throw new Exception("X have to be greater then 0.");
-                        if (resultY < 0) throw new Exception("Y have to be greater then 0.");
-                        pawnCoords.Add((resultX, resultY));
-                        newChar = ' ';
-                    }
-                    else
-                        newChar = chr;
-
-                    charCoords.Add((newChar, (trueUpLeft.X + x, trueUpLeft.Y + y)));
-                    x++;
-                }
-                y++;
-                x = 0;
-            }
-            return (charCoords, pawnCoords);
-        }
-
-        private (int X, int Y) CalculateTeamBaseUpLeftPoint((int X, int Y) frameSize, string[] lines)
-        {
-            int xMax = lines.ToList().Select(x => x.Length).Max();
-            int yMax = lines.Length;
-
-            (int X, int Y) trueUpLeft = Square.Color == ConsoleTeamColor.Red ? (frameSize.X - xMax + 1, 0) :
-                Square.Color == ConsoleTeamColor.Blue ? (0, 0) :
-                Square.Color == ConsoleTeamColor.Green ? (frameSize.X - xMax + 1, frameSize.Y - yMax + 1) :
-                Square.Color == ConsoleTeamColor.Yellow ? (0, frameSize.Y - yMax + 1) :
-                throw new Exception("Base must have a team color.");
-            return trueUpLeft;
+            var trueUpLeft = LudoSquareFactory.CalculateTeamBaseUpLeftPoint(frameSize, lines, teamColor);
+            var charPoints = LudoSquareFactory.GetCharPoints(lines, trueUpLeft);
+            var pawnCoords = LudoSquareFactory.FindCharXY(charPoints, 'X');
+            charPoints = LudoSquareFactory.ReplaceCharPoints(charPoints, 'X', ' ');
+            return (charPoints.ToList(), pawnCoords.ToList());
         }
     }
 }
