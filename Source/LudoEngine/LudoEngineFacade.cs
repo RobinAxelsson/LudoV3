@@ -17,6 +17,13 @@ namespace LudoEngine
             return games.Select(x => new GameDto(x.Id, x.LastSaved)).ToArray();
         }
 
+        //public static StartLocalGameSession(ILudoClient client)
+        //{
+            //client.OnNewGame(gameDto);
+            //adding client to game loop
+            //
+        //}
+
         public static StageSavingDto GetStageSavingDto(int id)
         {
             var game = DatabaseManagement.GetGames().Single(x =>x.Id == id);
