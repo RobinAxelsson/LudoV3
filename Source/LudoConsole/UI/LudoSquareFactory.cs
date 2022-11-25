@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LudoConsole.Controller;
+using LudoConsole.Mapping;
 using LudoConsole.Ui.Components;
 using LudoConsole.Ui.Models;
 

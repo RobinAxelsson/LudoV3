@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class GoalSquare : IGameSquare
+    public class SquareGoal : IGameSquare
     {
-        public GoalSquare(int boardX, int boardY)
+        public SquareGoal(int boardX, int boardY)
         {
             BoardX = boardX;
             BoardY = boardY;

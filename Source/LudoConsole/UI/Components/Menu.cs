@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.Controller;
+using LudoConsole.Mapping;
 using LudoEngine.Enum;
 
 namespace LudoConsole.Ui.Components

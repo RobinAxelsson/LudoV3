@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class ExitSquare : IGameSquare
+    public class SquareExit : IGameSquare
     {
-        public ExitSquare(int boardX, int boardY, TeamColor color, BoardDirection defaultDirection)
+        public SquareExit(int boardX, int boardY, TeamColor color, BoardDirection defaultDirection)
         {
             BoardX = boardX;
             BoardY = boardY;

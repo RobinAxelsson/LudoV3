@@ -5,7 +5,7 @@ using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.Enum;
 using LudoEngine.Models;
 
-namespace LudoConsole.Controller
+namespace LudoConsole.Mapping
 {
     internal static class ConsoleDtoMapping
     {
@@ -18,7 +18,7 @@ namespace LudoConsole.Controller
         {
             return new ConsoleGameSquare
             {
-                IsBase = square.GetType().Name == "BaseSquare",
+                IsBase = square.GetType().Name == "SquareTeamBase",
                 BoardX = square.BoardX,
                 BoardY = square.BoardY,
                 Color = MapColor(square.Color),

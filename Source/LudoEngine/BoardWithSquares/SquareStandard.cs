@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class SafezoneSquare : IGameSquare
+    public class SquareStandard : IGameSquare
     {
-        public SafezoneSquare(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public SquareStandard(int boardX, int boardY, BoardDirection direction)
         {
-            Color = color;
             BoardX = boardX;
             BoardY = boardY;
             DefaultDirection = direction;
         }
+
+        public TeamColor? Color { get; set; } = null;
         public int BoardX { get; set; }
         public int BoardY { get; set; }
-        public TeamColor? Color { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
         public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;

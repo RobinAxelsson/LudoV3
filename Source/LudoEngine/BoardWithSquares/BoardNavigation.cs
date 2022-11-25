@@ -13,7 +13,7 @@ namespace LudoEngine.BoardUnits.Main
             var baseSquare = BaseSquare(teamSquares, color);
             teamSquares.Add(baseSquare);
             IGameSquare temp = baseSquare;
-            while (temp.GetType() != typeof(GoalSquare))
+            while (temp.GetType() != typeof(SquareGoal))
             {
                 temp = GetNext(boardSquares, temp, color);
                 teamSquares.Add(temp);
@@ -24,12 +24,12 @@ namespace LudoEngine.BoardUnits.Main
         private static List<IGameSquare> GetTeamSquares(List<IGameSquare> boardSquares, TeamColor color) =>
             boardSquares.FindAll(x => x.Pawns.Count > 0).FindAll(x => x.Pawns[0].Color == color);
 
-        public static List<IGameSquare> PawnBoardSquares(List<IGameSquare> boardSquares, TeamColor color) => GetTeamSquares(boardSquares, color).FindAll(x => x.GetType() != typeof(BaseSquare) && x.GetType() != typeof(GoalSquare));
+        public static List<IGameSquare> PawnBoardSquares(List<IGameSquare> boardSquares, TeamColor color) => GetTeamSquares(boardSquares, color).FindAll(x => x.GetType() != typeof(SquareTeamBase) && x.GetType() != typeof(SquareGoal));
 
         public static IGameSquare StartSquare(List<IGameSquare> boardSquares, TeamColor color)
-            => boardSquares.Find(x => x.GetType() == typeof(StartSquare) && x.Color == color);
+            => boardSquares.Find(x => x.GetType() == typeof(SquareStatic) && x.Color == color);
 
-        public static IGameSquare BaseSquare(List<IGameSquare> boardSquares, TeamColor color) => boardSquares.Find(x => x.GetType() == typeof(BaseSquare) && x.Color == color);
+        public static IGameSquare BaseSquare(List<IGameSquare> boardSquares, TeamColor color) => boardSquares.Find(x => x.GetType() == typeof(SquareTeamBase) && x.Color == color);
 
         public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
         {

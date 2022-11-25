@@ -37,7 +37,7 @@ namespace LudoEngine.GameLogic
             //var teamCoords = new List<(TeamColor color, (int X, int Y) position)>();
             int pawnsCount = colors == null ? 16 : 4 * colors.Count();
             
-            List<BaseSquare> bases = gameSquares.FindAll(x => x.GetType() == typeof(BaseSquare)).Select(x => (BaseSquare)x).ToList();
+            List<SquareTeamBase> bases = gameSquares.FindAll(x => x.GetType() == typeof(SquareTeamBase)).Select(x => (SquareTeamBase)x).ToList();
 
             int iTeam = 0;
             for (int i = 1; i <= pawnsCount; i++)

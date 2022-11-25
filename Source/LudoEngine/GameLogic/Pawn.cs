@@ -33,7 +33,7 @@ namespace LudoEngine.Models
         public void Move(int dice)
         {
             var tempSquare = CurrentSquare();
-            bool startingSquareIsSafeZoneSquare = tempSquare is SafezoneSquare;
+            bool startingSquareIsSafeZoneSquare = tempSquare is SquareSafeZone;
             tempSquare.Pawns.Remove(this);
 
             bool lastIteration;
@@ -43,7 +43,7 @@ namespace LudoEngine.Models
             {
                 lastIteration = i == dice - 1;
 
-                if (tempSquare is GoalSquare || bounced == true)
+                if (tempSquare is SquareGoal || bounced == true)
                 {
                     tempSquare = BoardNavigation.GetBack(StaticBoard.BoardSquares, tempSquare, Color);
                     bounced = true;
@@ -52,7 +52,7 @@ namespace LudoEngine.Models
                 {
                     tempSquare = BoardNavigation.GetNext(StaticBoard.BoardSquares, tempSquare, Color);
                 }
-                if (lastIteration == true && tempSquare is GoalSquare)
+                if (lastIteration == true && tempSquare is SquareGoal)
                 {
                     this.IsSelected = false;
 
@@ -85,7 +85,7 @@ namespace LudoEngine.Models
             if(pawnsToEradicate != 0) OnEradicationEvent?.Invoke(this, (TeamColor)enemyColor, pawnsToEradicate);
             tempSquare.Pawns.Add(this);
             if (bounced == true) OnBounceEvent?.Invoke(this);
-            if (tempSquare is SafezoneSquare && startingSquareIsSafeZoneSquare == false) OnSafeZoneEvent?.Invoke(this);
+            if (tempSquare is SquareSafeZone && startingSquareIsSafeZoneSquare == false) OnSafeZoneEvent?.Invoke(this);
 
             this.IsSelected = false;
         }

@@ -29,32 +29,32 @@ namespace LudoEngine.BoardUnits.Main
         {
             return chr switch
             {
-                '0' => new StandardSquare(x, y, BoardDirection.Up),
-                '1' => new StandardSquare(x, y, BoardDirection.Right),
-                '2' => new StandardSquare(x, y, BoardDirection.Down),
-                '3' => new StandardSquare(x, y, BoardDirection.Left),
+                '0' => new SquareStandard(x, y, BoardDirection.Up),
+                '1' => new SquareStandard(x, y, BoardDirection.Right),
+                '2' => new SquareStandard(x, y, BoardDirection.Down),
+                '3' => new SquareStandard(x, y, BoardDirection.Left),
 
-                'a' => new SafezoneSquare(x, y, TeamColor.Red, BoardDirection.Down),
-                'b' => new SafezoneSquare(x, y, TeamColor.Blue, BoardDirection.Right),
-                'c' => new SafezoneSquare(x, y, TeamColor.Yellow, BoardDirection.Up),
-                'd' => new SafezoneSquare(x, y, TeamColor.Green, BoardDirection.Left),
+                'a' => new SquareSafeZone(x, y, TeamColor.Red, BoardDirection.Down),
+                'b' => new SquareSafeZone(x, y, TeamColor.Blue, BoardDirection.Right),
+                'c' => new SquareSafeZone(x, y, TeamColor.Yellow, BoardDirection.Up),
+                'd' => new SquareSafeZone(x, y, TeamColor.Green, BoardDirection.Left),
 
-                'e' => new ExitSquare(x, y, TeamColor.Red, BoardDirection.Right),
-                'f' => new ExitSquare(x, y, TeamColor.Blue, BoardDirection.Up),
-                'g' => new ExitSquare(x, y, TeamColor.Yellow, BoardDirection.Left),
-                'h' => new ExitSquare(x, y, TeamColor.Green, BoardDirection.Down),
+                'e' => new SquareExit(x, y, TeamColor.Red, BoardDirection.Right),
+                'f' => new SquareExit(x, y, TeamColor.Blue, BoardDirection.Up),
+                'g' => new SquareExit(x, y, TeamColor.Yellow, BoardDirection.Left),
+                'h' => new SquareExit(x, y, TeamColor.Green, BoardDirection.Down),
 
-                'r' => new StartSquare(x, y, TeamColor.Red, BoardDirection.Down),
-                'l' => new StartSquare(x, y, TeamColor.Blue, BoardDirection.Right),
-                'y' => new StartSquare(x, y, TeamColor.Yellow, BoardDirection.Up),
-                'n' => new StartSquare(x, y, TeamColor.Green, BoardDirection.Left),
+                'r' => new SquareStatic(x, y, TeamColor.Red, BoardDirection.Down),
+                'l' => new SquareStatic(x, y, TeamColor.Blue, BoardDirection.Right),
+                'y' => new SquareStatic(x, y, TeamColor.Yellow, BoardDirection.Up),
+                'n' => new SquareStatic(x, y, TeamColor.Green, BoardDirection.Left),
 
-                '4' => new BaseSquare(x, y, TeamColor.Red, BoardDirection.Left),
-                '5' => new BaseSquare(x, y, TeamColor.Blue, BoardDirection.Down),
-                '6' => new BaseSquare(x, y, TeamColor.Yellow, BoardDirection.Right),
-                '7' => new BaseSquare(x, y, TeamColor.Green, BoardDirection.Up),
+                '4' => new SquareTeamBase(x, y, TeamColor.Red, BoardDirection.Left),
+                '5' => new SquareTeamBase(x, y, TeamColor.Blue, BoardDirection.Down),
+                '6' => new SquareTeamBase(x, y, TeamColor.Yellow, BoardDirection.Right),
+                '7' => new SquareTeamBase(x, y, TeamColor.Green, BoardDirection.Up),
 
-                's' => new GoalSquare(x, y),
+                's' => new SquareGoal(x, y),
 
                 _ => throw new NullReferenceException()
             };

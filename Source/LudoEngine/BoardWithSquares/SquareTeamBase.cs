@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class StandardSquare : IGameSquare
+    public class SquareTeamBase : IGameSquare
     {
-        public StandardSquare(int boardX, int boardY, BoardDirection direction)
+        public SquareTeamBase(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
+            Color = color;
             BoardX = boardX;
             BoardY = boardY;
             DefaultDirection = direction;
         }
-
-        public TeamColor? Color { get; set; } = null;
+        public TeamColor? Color { get; set; }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();

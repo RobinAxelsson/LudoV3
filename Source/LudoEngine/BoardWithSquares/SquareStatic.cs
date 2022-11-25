@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace LudoEngine.BoardUnits.Main
 {
-    public class BaseSquare : IGameSquare
+    public class SquareStatic : IGameSquare
     {
-        public BaseSquare(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public SquareStatic(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
