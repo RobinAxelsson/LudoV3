@@ -14,12 +14,12 @@ namespace LudoConsole.UI.Models
         {
         }
 
-        public override (int X, int Y) MaxCoord()
-        {
-            var x = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.X);
-            var y = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.Y);
-            return (x, y);
-        }
+        //public override (int X, int Y) MaxCoord()
+        //{
+        //    var x = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.X);
+        //    var y = CharPoints.Select(x => (x.X, x.Y)).Max(x => x.Y);
+        //    return (x, y);
+        //}
 
         
         public override List<IDrawable> Refresh()

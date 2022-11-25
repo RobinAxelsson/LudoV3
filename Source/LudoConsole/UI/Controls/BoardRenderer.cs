@@ -15,7 +15,6 @@ namespace LudoConsole.UI.Controls
         private bool IsRunning { get; set; }
         public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
         {
-            //_squareDrawables = DrawBoardConvert(gameSquares);
             _squareDrawables = LudoSquareFactory.CreateBoardSquares(gameSquares);
             Pawn.GameOverEvent += OnGameOver;
             _thread = new Thread((() =>
@@ -50,27 +49,5 @@ namespace LudoConsole.UI.Controls
             Console.ReadKey();
         }
 
-        //private IEnumerable<DrawableSquareBase> DrawBoardConvert(IEnumerable<ConsoleGameSquare> squares)
-        //{
-        //    var squareDraws = squares.Where(x => !x.IsBase)
-        //        .Select(x => new DrawableSquare(x))
-        //        .OfType<DrawableSquareBase>().ToArray();
-            
-
-        //    var (x, y) = GetBoardMaxPoint(squareDraws);
-
-        //    var baseDraws = squares
-        //        .Where(x => x.IsBase)
-        //        .Select(square => new DrawableTeamBase(square, (x, y)));
-
-        //    return squareDraws.Concat(baseDraws).ToList();
-        //}
-
-        //private static (int x, int y) GetBoardMaxPoint(DrawableSquareBase[] drawableSquares)
-        //{
-        //    var x = drawableSquares.Select(x => x.MaxCoord()).Max(x => x.X);
-        //    var y = drawableSquares.Select(x => x.MaxCoord()).Max(x => x.Y);
-        //    return (x,y);
-        //}
     }
 }

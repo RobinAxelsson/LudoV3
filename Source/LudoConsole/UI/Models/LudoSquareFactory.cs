@@ -35,7 +35,7 @@ namespace LudoConsole.UI.Models
         private static DrawableSquareBase CreateTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
         {
             var (charPoints, drawPoints) = CreateTeamBaseCharPoints(boardWidth, boardHeight, square.Color);
-            return new DrawableSquare(charPoints, drawPoints, square);
+            return new DrawableTeamBase(charPoints, drawPoints, square);
         }
 
         private static DrawableSquareBase CreateSquare(ConsoleGameSquare square)
@@ -76,7 +76,6 @@ namespace LudoConsole.UI.Models
 
             foreach (var line in lines)
             {
-               
                 foreach (char chr in line)
                 {
                     charPoints.Add(new CharPoint(chr, trueUpLeft.X + x, trueUpLeft.Y + y));
@@ -96,11 +95,6 @@ namespace LudoConsole.UI.Models
 
             (int X, int Y) trueUpLeft = (xMax * squarePoint.x, yMax * squarePoint.y);
             return trueUpLeft;
-        }
-
-        public static IEnumerable<CharPoint> TransformCharPoints(IEnumerable<CharPoint> toTranslate, (int x, int y) point)
-        {
-            return toTranslate.Select(old => new CharPoint(old.Char, old.X + point.x, old.Y + point.y));
         }
 
         private static IEnumerable<(int X, int Y)> FindCharXY(IEnumerable<CharPoint> charPoints, char targetChar)

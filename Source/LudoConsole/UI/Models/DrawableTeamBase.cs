@@ -2,7 +2,6 @@
 using LudoConsole.UI.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace LudoConsole.UI.Models
@@ -10,10 +9,7 @@ namespace LudoConsole.UI.Models
 
     internal class DrawableTeamBase : DrawableSquareBase
     {
-        //private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
-        //private List<(int X, int Y)> PawnCoords { get; } = new();
-
-        public override (int X, int Y) MaxCoord() => CharPoints.Select(x => (x.X, x.Y)).Max(x => (x.X, x.Y));
+        //public override (int X, int Y) MaxCoord() => CharPoints.Select(x => (x.X, x.Y)).Max(x => (x.X, x.Y));
 
         public DrawableTeamBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, ConsoleGameSquare square) : base(charPoints, pawnCoords, square)
         {
@@ -22,7 +18,6 @@ namespace LudoConsole.UI.Models
 
         public override List<IDrawable> Refresh()
         {
-
             if (!Square.Pawns.Any()) return CreateTeamBaseAndFrameDrawablesWithoutPawns();
 
             var squareDrawables = CreateTeamBaseAndFrameDrawablesWithoutPawns();
