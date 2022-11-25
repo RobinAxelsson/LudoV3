@@ -11,7 +11,7 @@ namespace LudoEngine.BoardUnits.Main
         private const string _filePath = @"LudoORM/Map/BoardMap.txt";
         public static void Init(string filePath = _filePath)
         {
-            BoardSquares = BoardOrm.Map(filePath);
+            BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
         }
     }
 
@@ -23,7 +23,7 @@ namespace LudoEngine.BoardUnits.Main
 
         public Board(string filePath = _filePath)
         {
-            BoardSquares = BoardOrm.Map(filePath);
+            BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
         }
     }
 }

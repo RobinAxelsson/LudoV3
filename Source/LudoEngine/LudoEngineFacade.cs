@@ -33,13 +33,13 @@ namespace LudoEngine
 
         public static void SetBoard()
         {
-            StaticBoard.BoardSquares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
+            StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(@"LudoORM/Map/BoardMap.txt");
             GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
         public static List<IGameSquare> GetNewGameBoardSquares()
         {
-            var squares = BoardOrm.Map(@"LudoORM/Map/BoardMap.txt");
+            var squares = GameSquareFactory.CreateGameSquares(@"LudoORM/Map/BoardMap.txt");
             GameSetup.SetUpPawnsNewGame(squares);
             return squares;
         }
