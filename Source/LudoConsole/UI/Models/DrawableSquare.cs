@@ -7,8 +7,6 @@ namespace LudoConsole.UI.Models
 {
     public class DrawableSquare : DrawableSquareBase
     {
-        private const string _filepath = @"UI/Map/square.txt";
-
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
         private List<(int X, int Y)> PawnCoords { get; } = new();
         public override (int X, int Y) MaxCoord()
@@ -18,10 +16,10 @@ namespace LudoConsole.UI.Models
             return (x, y);
         }
 
-        public DrawableSquare(ConsoleGameSquare square, string filePath = _filepath) : base(square)
+        public DrawableSquare(ConsoleGameSquare square) : base(square)
         {
            var (charCoords, pawnCoords) = 
-               LudoSquareFactory.CreateCharCoords(filePath, (square.BoardX, square.BoardY));
+               LudoSquareFactory.CreateSquareCharPoints((square.BoardX, square.BoardY));
            CharCoords = LudoSquareFactory.MapToValueTuples(charCoords);
            PawnCoords = pawnCoords;
         }

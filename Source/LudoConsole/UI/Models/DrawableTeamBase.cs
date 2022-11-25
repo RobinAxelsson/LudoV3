@@ -10,16 +10,14 @@ namespace LudoConsole.UI.Models
 
     public class DrawableTeamBase : DrawableSquareBase
     {
-        private const string _filepath = @"UI/Map/base.txt";
-
         private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
         private List<(int X, int Y)> PawnCoords { get; } = new();
 
         public override (int X, int Y) MaxCoord() => CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => (x.X, x.Y));
 
-        public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize, string filePath = _filepath) : base(square)
+        public DrawableTeamBase(ConsoleGameSquare square, (int X, int Y) frameSize) : base(square)
         {
-            var (charPoints, pawnCoords) = LudoSquareFactory.CreateCharCoords(frameSize, filePath, square.Color);
+            var (charPoints, pawnCoords) = LudoSquareFactory.CreateTeamBaseCharPoints(frameSize, square.Color);
             CharCoords = LudoSquareFactory.MapToValueTuples(charPoints);
             PawnCoords = pawnCoords;
         }
