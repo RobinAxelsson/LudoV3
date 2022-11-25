@@ -9,7 +9,7 @@ namespace LudoEngine.Models
     public class Pawn
     {
         private static int highestId { get; set; }
-        public Pawn(TeamColorCore color)
+        public Pawn(TeamColor color)
         {
             Color = color;
             Id = highestId;
@@ -18,13 +18,13 @@ namespace LudoEngine.Models
         static Pawn() => highestId = 0;
         public int Id { get; } //Game Id not SQL
         public bool IsSelected { get; set; }
-        public TeamColorCore Color { get; set; }
+        public TeamColor Color { get; set; }
 
         public static event Action<Pawn> OnBounceEvent;
         public static event Action<Pawn, int> OnGoalEvent;
         public static event Action<Pawn> OnAllTeamPawnsOutEvent;
-        public static event Action<Pawn, TeamColorCore, int> OnEradicationEvent;
-        public static event Action<TeamColorCore> GameLoserEvent;
+        public static event Action<Pawn, TeamColor, int> OnEradicationEvent;
+        public static event Action<TeamColor> GameLoserEvent;
         public static event Action GameOverEvent;
         public static event Action<Pawn> OnSafeZoneEvent;
 
@@ -71,18 +71,18 @@ namespace LudoEngine.Models
                 }
             }
 
-            TeamColorCore? enemyColor = null;
+            TeamColor? enemyColor = null;
             int pawnsToEradicate = 0;
             if (tempSquare.Pawns.Count != 0 && tempSquare.Pawns[0].Color != Color)
             {
                 enemyColor = tempSquare.Pawns[0].Color;
                 pawnsToEradicate = tempSquare.Pawns.Count;
-                var eradicateBase = BoardNavigation.BaseSquare(StaticBoard.BoardSquares, (TeamColorCore)enemyColor);
+                var eradicateBase = BoardNavigation.BaseSquare(StaticBoard.BoardSquares, (TeamColor)enemyColor);
                 eradicateBase.Pawns.AddRange(tempSquare.Pawns);
                 tempSquare.Pawns.Clear();
             }
 
-            if(pawnsToEradicate != 0) OnEradicationEvent?.Invoke(this, (TeamColorCore)enemyColor, pawnsToEradicate);
+            if(pawnsToEradicate != 0) OnEradicationEvent?.Invoke(this, (TeamColor)enemyColor, pawnsToEradicate);
             tempSquare.Pawns.Add(this);
             if (bounced == true) OnBounceEvent?.Invoke(this);
             if (tempSquare is SquareSafeZone && startingSquareIsSafeZoneSquare == false) OnSafeZoneEvent?.Invoke(this);

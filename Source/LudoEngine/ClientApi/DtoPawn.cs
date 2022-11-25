@@ -2,5 +2,5 @@
 
 namespace LudoEngine.ClientApi
 {
-    public record DtoPawn(int Id, int X, int Y, TeamColorCore ColorCore);
+    public record DtoPawn(int Id, int X, int Y, TeamColor Color);
 }

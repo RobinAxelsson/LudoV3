@@ -10,11 +10,11 @@ namespace LudoEngine.GameLogic.GamePlayers
 {
     public class Stephan : IGamePlayer
     {
-        public TeamColorCore Color { get; set; }
+        public TeamColor Color { get; set; }
         public static event Action<Stephan, int> StephanThrowEvent;
         private Action<string> WriteLogging { get; set; }
         private string LoggerMessage { get; set; } = "";
-        public Stephan(TeamColorCore color, ILog log = null)
+        public Stephan(TeamColor color, ILog log = null)
         {
             Color = color;
 

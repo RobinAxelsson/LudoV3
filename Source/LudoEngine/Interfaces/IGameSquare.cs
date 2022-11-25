@@ -10,7 +10,7 @@ namespace LudoEngine.BoardUnits.Interfaces
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; }
         public BoardDirection DefaultDirection { get; set; }
-        public TeamColorCore? Color { get; set; }
-        public BoardDirection DirectionNext(TeamColorCore Color);
+        public TeamColor? Color { get; set; }
+        public BoardDirection DirectionNext(TeamColor Color);
     }
 }

@@ -33,23 +33,23 @@ namespace LudoConsole.Main
             }
         }
 
-        private List<TeamColorCore> OrderOfTeams = new List<TeamColorCore>
+        private List<TeamColor> OrderOfTeams = new List<TeamColor>
         {
-            TeamColorCore.Blue,
-            TeamColorCore.Red,
-            TeamColorCore.Green,
-            TeamColorCore.Yellow
+            TeamColor.Blue,
+            TeamColor.Red,
+            TeamColor.Green,
+            TeamColor.Yellow
         };
         public List<IGamePlayer> Players { get; set; }
         private int iCurrentTeam { get; set; }
-        public void SetFirstTeam(TeamColorCore color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
+        public void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
         public void NextPlayer()
         {
             StageSaving.CurrentTeam = iCurrentTeam;
             iCurrentTeam++;
             iCurrentTeam = iCurrentTeam >= Players.Count ? 0 : iCurrentTeam;
         }
-        public TeamColorCore NextPlayerForSave()
+        public TeamColor NextPlayerForSave()
         {
             int i = iCurrentTeam + 1;
             i = i >= Players.Count ? 0 : i;

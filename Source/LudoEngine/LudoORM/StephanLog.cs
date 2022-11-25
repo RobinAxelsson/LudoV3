@@ -11,7 +11,7 @@ namespace LudoEngine.GameLogic
     public class StephanLog : ILog
     {
         private StreamWriter Logger;
-        public StephanLog(TeamColorCore color)
+        public StephanLog(TeamColor color)
         {
             int number = 0;
             if (!Directory.Exists(Environment.CurrentDirectory + @"\StephanLogs")) Directory.CreateDirectory(Environment.CurrentDirectory + @"\StephanLogs");

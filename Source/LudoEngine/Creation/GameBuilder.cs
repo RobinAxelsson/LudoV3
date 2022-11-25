@@ -16,12 +16,12 @@ namespace LudoEngine.Creation
     public class GameBuilder
     {
         private IDice _dice { get; set; }
-        private List<TeamColorCore> _teamColors { get; set; } = new();
+        private List<TeamColor> _teamColors { get; set; } = new();
         private List<PawnSavePoint> _pawnSavePoints { get; set; } = new();
-        private TeamColorCore _first { get; set; }
+        private TeamColor _first { get; set; }
         private List<IGamePlayer> _gamePlayers { get; set; } = new();
         private bool _enableSaving { get; set; }
-        private void AddColor(TeamColorCore color)
+        private void AddColor(TeamColor color)
         {
             if (_teamColors.Contains(color)) throw new Exception("There can only be one player per color");
             _teamColors.Add(color);
@@ -71,21 +71,21 @@ namespace LudoEngine.Creation
         {
             return this;
         }
-        public GameBuilder StartingColor(TeamColorCore? color)
+        public GameBuilder StartingColor(TeamColor? color)
         {
-            if (color != null && _teamColors.Contains((TeamColorCore)color)) _first = (TeamColorCore)color;
+            if (color != null && _teamColors.Contains((TeamColor)color)) _first = (TeamColor)color;
             else _first = _teamColors[0];
-            if (!_teamColors.Contains((TeamColorCore)color)) throw new Exception("Teamcolor for first player is not present in the game");
+            if (!_teamColors.Contains((TeamColor)color)) throw new Exception("Teamcolor for first player is not present in the game");
 
             return this;
         }
-        public GameBuilder AddHumanPlayer(TeamColorCore color, IController control)
+        public GameBuilder AddHumanPlayer(TeamColor color, IController control)
         {
             AddColor(color);
             _gamePlayers.Add(new HumanPlayer(color,  control));
             return this;
         }
-        public GameBuilder AddAIPlayer(TeamColorCore color, bool log = false)
+        public GameBuilder AddAIPlayer(TeamColor color, bool log = false)
         {
             AddColor(color);
 

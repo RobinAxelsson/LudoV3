@@ -13,13 +13,13 @@ namespace LudoEngine.GameLogic.GamePlayers
         private IController Controller { get; set; }
         public static event Action<IGamePlayer, int> HumanThrowEvent;
         public static event Action<IGamePlayer> OnTakeOutTwoPossibleEvent;
-        public TeamColorCore Color { get; set; }
+        public TeamColor Color { get; set; }
         private int _result { get; set; }
         private List<Pawn> _pawnsToMove { get; set; } = new();
         private int _pawnIndex { get; set; }
         private IDice _dice { get; set; }
         private bool _tookOutTwo { get; set; }
-        public HumanPlayer(TeamColorCore color, IController eventController)
+        public HumanPlayer(TeamColor color, IController eventController)
         {
             Controller = eventController;
             Color = color;

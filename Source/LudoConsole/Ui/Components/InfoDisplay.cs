@@ -32,7 +32,7 @@ namespace LudoConsole.Ui.Components
         private int X { get; }
         private int Y { get; }
 
-        public void LoserMessage(TeamColorCore loser)
+        public void LoserMessage(TeamColor loser)
         {
             Update($"{loser} lost it all!");
             Thread.Sleep(1000);
@@ -59,7 +59,7 @@ namespace LudoConsole.Ui.Components
             Thread.Sleep(1000);
         }
 
-        public void MessageOnEradication(Pawn pawn, TeamColorCore enemyColor, int eradicatedEnemies)
+        public void MessageOnEradication(Pawn pawn, TeamColor enemyColor, int eradicatedEnemies)
         {
             Update($"{pawn.Color} kills...");
             Thread.Sleep(1000);

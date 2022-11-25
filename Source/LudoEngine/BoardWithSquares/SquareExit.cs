@@ -7,7 +7,7 @@ namespace LudoEngine.BoardUnits.Main
 {
     public class SquareExit : IGameSquare
     {
-        public SquareExit(int boardX, int boardY, TeamColorCore color, BoardDirection defaultDirection)
+        public SquareExit(int boardX, int boardY, TeamColor color, BoardDirection defaultDirection)
         {
             BoardX = boardX;
             BoardY = boardY;
@@ -17,16 +17,16 @@ namespace LudoEngine.BoardUnits.Main
         public int BoardX { get; set; }
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
-        public TeamColorCore? Color { get; set; }
+        public TeamColor? Color { get; set; }
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColorCore Color)
+        public BoardDirection DirectionNext(TeamColor Color)
         {
             if (this.Color == Color)
             {
                 return
-                    Color == TeamColorCore.Yellow ? BoardDirection.Up :
-                    Color == TeamColorCore.Blue ? BoardDirection.Right :
-                    Color == TeamColorCore.Red ? BoardDirection.Down : BoardDirection.Left;
+                    Color == TeamColor.Yellow ? BoardDirection.Up :
+                    Color == TeamColor.Blue ? BoardDirection.Right :
+                    Color == TeamColor.Red ? BoardDirection.Down : BoardDirection.Left;
             }
             else
                 return DefaultDirection;

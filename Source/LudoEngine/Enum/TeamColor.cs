@@ -1,6 +1,6 @@
 ﻿namespace LudoEngine.Enum
 {
-    public enum TeamColorCore
+    public enum TeamColor
     {
         Blue,
         Red,

@@ -36,15 +36,15 @@ namespace LudoConsole.Mapping
             };
         }
 
-        private static ConsoleTeamColor MapColor(TeamColorCore? color)
+        private static ConsoleTeamColor MapColor(TeamColor? color)
         {
             return color switch
             {
                 null => ConsoleTeamColor.Default,
-                TeamColorCore.Blue => ConsoleTeamColor.Blue,
-                TeamColorCore.Red => ConsoleTeamColor.Red,
-                TeamColorCore.Yellow => ConsoleTeamColor.Yellow,
-                TeamColorCore.Green => ConsoleTeamColor.Green,
+                TeamColor.Blue => ConsoleTeamColor.Blue,
+                TeamColor.Red => ConsoleTeamColor.Red,
+                TeamColor.Yellow => ConsoleTeamColor.Yellow,
+                TeamColor.Green => ConsoleTeamColor.Green,
                 _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
             };
         }

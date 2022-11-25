@@ -7,18 +7,18 @@ namespace LudoEngine.BoardUnits.Main
 {
     public class SquareTeamBase : IGameSquare
     {
-        public SquareTeamBase(int boardX, int boardY, TeamColorCore color, BoardDirection direction)
+        public SquareTeamBase(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
             BoardY = boardY;
             DefaultDirection = direction;
         }
-        public TeamColorCore? Color { get; set; }
+        public TeamColor? Color { get; set; }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
         public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColorCore Color) => DefaultDirection;
+        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
     }
 }

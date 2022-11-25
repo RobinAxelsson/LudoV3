@@ -34,7 +34,7 @@ namespace LudoEngine
         public static void SetBoard()
         {
             StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(@"LudoORM/Map/BoardMap.txt");
-            GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColorCore>());
+            GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
         public static List<IGameSquare> GetNewGameBoardSquares()

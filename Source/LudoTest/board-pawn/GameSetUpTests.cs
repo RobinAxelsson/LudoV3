@@ -38,7 +38,7 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue
+                Color = TeamColor.Blue
             };
             GameBuilder.StartBuild()
                 .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
@@ -47,7 +47,7 @@ namespace LudoTest.board_pawn
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint });
 
-            var pawns = BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, TeamColorCore.Blue);
+            var pawns = BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, TeamColor.Blue);
             Assert.True(pawns.Count == 1);
         }
         [Fact]
@@ -57,13 +57,13 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue
+                Color = TeamColor.Blue
             };
             var savePoint2 = new PawnSavePoint()
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue
+                Color = TeamColor.Blue
             };
             var loaded = GameBuilder.StartBuild()
                 .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
@@ -83,7 +83,7 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue,
+                Color = TeamColor.Blue,
             };
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
@@ -92,7 +92,7 @@ namespace LudoTest.board_pawn
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint })
             .LoadPlayers(new KeyboardController())
-            .StartingColor(TeamColorCore.Blue)
+            .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
 
@@ -107,25 +107,25 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue
+                Color = TeamColor.Blue
             };
             var savePoint2 = new PawnSavePoint()
             {
                 XPosition = 4,
                 YPosition = 3,
-                Color = TeamColorCore.Red
+                Color = TeamColor.Red
             };
             var savePoint3 = new PawnSavePoint()
             {
                 XPosition = 4,
                 YPosition = 2,
-                Color = TeamColorCore.Yellow
+                Color = TeamColor.Yellow
             };
             var savePoint4 = new PawnSavePoint()
             {
                 XPosition = 4,
                 YPosition = 1,
-                Color = TeamColorCore.Yellow
+                Color = TeamColor.Yellow
             };
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
@@ -134,7 +134,7 @@ namespace LudoTest.board_pawn
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
             .LoadPlayers(new KeyboardController())
-            .StartingColor(TeamColorCore.Blue)
+            .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
 
@@ -149,7 +149,7 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 4,
-                Color = TeamColorCore.Blue,
+                Color = TeamColor.Blue,
                 PlayerType = 0
                 
             };
@@ -157,7 +157,7 @@ namespace LudoTest.board_pawn
             {
                 XPosition = 4,
                 YPosition = 3,
-                Color = TeamColorCore.Red,
+                Color = TeamColor.Red,
                 PlayerType = 1
 
             };
@@ -169,7 +169,7 @@ namespace LudoTest.board_pawn
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
             .LoadPlayers(new KeyboardController())
-            .StartingColor(TeamColorCore.Blue)
+            .StartingColor(TeamColor.Blue)
             .EnableSavingToDb()
             .ToGamePlay();
 
