@@ -3,22 +3,20 @@ using LudoConsole.UI.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoConsole.Main;
 
 namespace LudoConsole.UI.Models
 {
 
     internal class DrawableTeamBase : DrawableSquareBase
     {
-        //public override (int X, int Y) MaxCoord() => CharPoints.Select(x => (x.X, x.Y)).Max(x => (x.X, x.Y));
-
-        public DrawableTeamBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, ConsoleGameSquare square) : base(charPoints, pawnCoords, square)
+        public DrawableTeamBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns, ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
         {
         }
 
-
         public override List<IDrawable> Refresh()
         {
-            if (!Square.Pawns.Any()) return CreateTeamBaseAndFrameDrawablesWithoutPawns();
+            if (!Pawns.Any()) return CreateTeamBaseAndFrameDrawablesWithoutPawns();
 
             var squareDrawables = CreateTeamBaseAndFrameDrawablesWithoutPawns();
             var pawnDraws = CreatePawnDrawablesWithDropShadow();
@@ -33,7 +31,7 @@ namespace LudoConsole.UI.Models
 
             foreach (var charCoord in CharPoints)
             {
-                var color = charCoord.Char != ' ' ? ThisBackgroundColor() : UiColor.LightAccent;
+                var color = charCoord.Char != ' ' ? Color : UiColor.LightAccent;
                 drawables.Add(new LudoDrawable(charCoord.Char, (charCoord.X, charCoord.Y), color));
             }
 
@@ -42,14 +40,14 @@ namespace LudoConsole.UI.Models
 
         private List<IDrawable> CreatePawnDrawablesWithDropShadow()
         {
-            var pawns = Square.Pawns;
+            var pawns = Pawns;
             var drawables = new List<IDrawable>();
-            var pawnColor = UiColor.TranslateColor(Square.Pawns[0].Color);
+            var pawnColor = UiColor.TranslateColor(Pawns[0].Color);
 
             for (var i = 0; i < pawns.Count; i++)
             {
                 var newPawn = pawns[i].IsSelected
-                    ? new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), ThisBackgroundColor())
+                    ? new PawnDrawable(PawnCoords[i], UiColor.RandomColor(), Color)
                     : new PawnDrawable(PawnCoords[i], pawnColor, null);
 
                 var dropShadow = new LudoDrawable('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent);
@@ -65,7 +63,7 @@ namespace LudoConsole.UI.Models
         {
             var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
             var count = squareDrawables.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
-            if (count != Square.Pawns.Count * 2) throw new Exception($"Removed {count}");
+            if (count != Pawns.Count * 2) throw new Exception($"Removed {count}");
             squareDrawables.AddRange(pawnDraws);
         }
     }

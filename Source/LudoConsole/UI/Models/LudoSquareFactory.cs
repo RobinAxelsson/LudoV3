@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LudoConsole.UI.Controls;
 using LudoConsole.UI.Interfaces;
 
 namespace LudoConsole.UI.Models
@@ -35,13 +36,13 @@ namespace LudoConsole.UI.Models
         private static DrawableSquareBase CreateTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
         {
             var (charPoints, drawPoints) = CreateTeamBaseCharPoints(boardWidth, boardHeight, square.Color);
-            return new DrawableTeamBase(charPoints, drawPoints, square);
+            return new DrawableTeamBase(charPoints, drawPoints, square.Pawns, UiColor.TranslateColor(square.Color));
         }
 
         private static DrawableSquareBase CreateSquare(ConsoleGameSquare square)
         {
             var (charPoints, drawPoints) = CreateSquareCharPoints((square.BoardX, square.BoardY));
-            return new DrawableSquare(charPoints, drawPoints, square);
+            return new DrawableSquare(charPoints, drawPoints, square.Pawns, UiColor.TranslateColor(square.Color));
         }
 
         private static (List<CharPoint> charCoords, List<(int X, int Y)> pawnCoords) CreateSquareCharPoints((int x, int y) squarePoint)
