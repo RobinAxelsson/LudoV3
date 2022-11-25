@@ -12,7 +12,7 @@ namespace LudoConsole.UI.Components
         {
         }
 
-        public override List<DrawableBase> Refresh()
+        public override List<DrawableCharPoint> Refresh()
         {
             if (!Pawns.Any()) return CreateSquareDrawablesWithoutPawns();
 
@@ -23,13 +23,13 @@ namespace LudoConsole.UI.Components
             return squareDrawables;
         }
 
-        private List<DrawableBase> CreateSquareDrawablesWithoutPawns()
+        private List<DrawableCharPoint> CreateSquareDrawablesWithoutPawns()
         {
-            var drawables = new List<DrawableBase>();
+            var drawables = new List<DrawableCharPoint>();
 
             foreach (var charCoord in CharPoints)
             {
-                drawables.Add(new DrawableSquare(charCoord.Char, (charCoord.X, charCoord.Y), Color));
+                drawables.Add(DrawableCharPoint.Square(charCoord.Char, (charCoord.X, charCoord.Y), Color));
             }
 
             return drawables;

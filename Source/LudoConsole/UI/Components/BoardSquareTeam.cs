@@ -13,7 +13,7 @@ namespace LudoConsole.UI.Components
         {
         }
 
-        public override List<DrawableBase> Refresh()
+        public override List<DrawableCharPoint> Refresh()
         {
             if (!Pawns.Any()) return CreateTeamBaseAndFrameDrawablesWithoutPawns();
 
@@ -24,14 +24,14 @@ namespace LudoConsole.UI.Components
             return squareDrawables;
         }
 
-        private List<DrawableBase> CreateTeamBaseAndFrameDrawablesWithoutPawns()
+        private List<DrawableCharPoint> CreateTeamBaseAndFrameDrawablesWithoutPawns()
         {
-            var drawables = new List<DrawableBase>();
+            var drawables = new List<DrawableCharPoint>();
 
             foreach (var charCoord in CharPoints)
             {
                 var color = charCoord.Char != ' ' ? Color : UiColor.LightAccent;
-                drawables.Add(new DrawableSquare(charCoord.Char, (charCoord.X, charCoord.Y), color));
+                drawables.Add(DrawableCharPoint.Square(charCoord.Char, (charCoord.X, charCoord.Y), color));
             }
 
             return drawables;

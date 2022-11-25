@@ -27,7 +27,7 @@ namespace LudoConsole.UI.Components
             Pawn.GameLoserEvent += LoserMessage;
             Pawn.GameOverEvent += MessageGameOver;
         }
-        private List<DrawableBase> drawables { get; set; } = new List<DrawableBase>();
+        private List<DrawableCharPoint> drawables { get; set; } = new List<DrawableCharPoint>();
         private int X { get; set; }
         private int Y { get; set; }
         public void LoserMessage(TeamColor loser)
@@ -109,7 +109,7 @@ namespace LudoConsole.UI.Components
             int x = 0;
             foreach (char chr in newString)
             {
-                drawables.Add(new DrawableText(this.X + x, this.Y, chr));
+                drawables.Add(DrawableCharPoint.Text(this.X + x, this.Y, chr));
                 x++;
             }
             ConsoleWriter.TryAppend(drawables);

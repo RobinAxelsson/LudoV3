@@ -22,9 +22,9 @@ namespace LudoConsole.UI.Components
             Color = color;
         }
 
-        public abstract List<DrawableBase> Refresh();
+        public abstract List<DrawableCharPoint> Refresh();
 
-        protected void AddPawnDrawablesToSquareDrawables(List<DrawableBase> pawnDraws, List<DrawableBase> squareDrawables)
+        protected void AddPawnDrawablesToSquareDrawables(List<DrawableCharPoint> pawnDraws, List<DrawableCharPoint> squareDrawables)
         {
             var pawnXYs = pawnDraws.Select(x => (x.CoordinateX, x.CoordinateY));
             var count = squareDrawables.RemoveAll(x => pawnXYs.Contains((x.CoordinateX, x.CoordinateY)));
@@ -32,19 +32,19 @@ namespace LudoConsole.UI.Components
             squareDrawables.AddRange(pawnDraws);
         }
 
-        protected List<DrawableBase> CreatePawnDrawablesWithDropShadow()
+        protected List<DrawableCharPoint> CreatePawnDrawablesWithDropShadow()
         {
             var pawns = Pawns;
-            var drawables = new List<DrawableBase>();
+            var drawables = new List<DrawableCharPoint>();
             var pawnColor = UiColor.TranslateColor(Pawns[0].Color);
 
             for (var i = 0; i < pawns.Count; i++)
             {
                 var newPawn = pawns[i].IsSelected
-                    ? new DrawablePawn(PawnCoords[i], UiColor.RandomColor(), Color)
-                    : new DrawablePawn(PawnCoords[i], pawnColor, null);
+                    ? DrawableCharPoint.Pawn(PawnCoords[i], UiColor.RandomColor(), Color)
+                    : DrawableCharPoint.Pawn(PawnCoords[i], pawnColor, null);
 
-                var dropShadow = new DrawableSquare('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent);
+                var dropShadow = DrawableCharPoint.Square('_', (PawnCoords[i].X + 1, PawnCoords[i].Y), UiColor.LightAccent);
 
                 drawables.Add(newPawn);
                 drawables.Add(dropShadow);

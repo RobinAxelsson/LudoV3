@@ -8,13 +8,13 @@ namespace LudoConsole.UI
 {
     internal static class ConsoleWriter
     {
-        private static readonly List<DrawableBase> ScreenMemory = new();
+        private static readonly List<DrawableCharPoint> ScreenMemory = new();
         public static void TryAppend(List<BoardSquareBase> squares)
         {
             var drawables = squares.Select(x => x.Refresh()).SelectMany(x => x);
             TryAppend(drawables.ToList());
         }
-        public static void TryAppend(DrawableBase tryUnit)
+        public static void TryAppend(DrawableCharPoint tryUnit)
         {
             if (IsInScreenMemory(tryUnit)) return;
 
@@ -26,7 +26,7 @@ namespace LudoConsole.UI
 
             ScreenMemory.Add(tryUnit);
         }
-        public static void TryAppend(List<DrawableBase> drawables)
+        public static void TryAppend(List<DrawableCharPoint> drawables)
         {
             drawables.ForEach(x => TryAppend(x));
         }
@@ -37,7 +37,7 @@ namespace LudoConsole.UI
         }
         public static void Update()
         {
-            var toRemove = new List<DrawableBase>();
+            var toRemove = new List<DrawableCharPoint>();
             var countedMemory = ScreenMemory.Count;
 
             for (var i = 0; i < countedMemory; i++)
@@ -64,7 +64,7 @@ namespace LudoConsole.UI
         }
 
         public static void EraseRows(int first, int last) => ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.DoErase = true);
-        private static bool IsInScreenMemory(DrawableBase drawableBase)
+        private static bool IsInScreenMemory(DrawableCharPoint drawableCharPoint)
         {
             int countedMemory = ScreenMemory.Count;
 
@@ -72,31 +72,31 @@ namespace LudoConsole.UI
             {
                 if (countedMemory < ScreenMemory.Count) countedMemory = ScreenMemory.Count;
                 var drawableCompare = ScreenMemory[i];
-                if (drawableBase.IsSame(drawableCompare))
+                if (drawableCharPoint.Equals(drawableCompare))
                     return true;
             }
             return false;
         }
 
-        private static void Write(DrawableBase drawableBase)
+        private static void Write(DrawableCharPoint drawableCharPoint)
         {
-            Console.ForegroundColor = drawableBase.ForegroundColor;
-            Console.BackgroundColor = drawableBase.BackgroundColor;
-            Console.SetCursorPosition(drawableBase.CoordinateX, drawableBase.CoordinateY);
-            Console.Write(drawableBase.Chars);
-            drawableBase.IsDrawn = true;
+            Console.ForegroundColor = drawableCharPoint.ForegroundColor;
+            Console.BackgroundColor = drawableCharPoint.BackgroundColor;
+            Console.SetCursorPosition(drawableCharPoint.CoordinateX, drawableCharPoint.CoordinateY);
+            Console.Write(drawableCharPoint.Chars);
+            drawableCharPoint.IsDrawn = true;
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;
         }
 
-        private static void Erase(DrawableBase drawableBase)
+        private static void Erase(DrawableCharPoint drawableCharPoint)
         {
             Console.BackgroundColor = UiColor.DefaultBackgroundColor;
-            Console.SetCursorPosition(drawableBase.CoordinateX, drawableBase.CoordinateY);
+            Console.SetCursorPosition(drawableCharPoint.CoordinateX, drawableCharPoint.CoordinateY);
             Console.Write(" ");
             Console.ForegroundColor = UiColor.DefaultForegroundColor;
-            drawableBase.IsDrawn = false;
-            drawableBase.DoErase = false;
+            drawableCharPoint.IsDrawn = false;
+            drawableCharPoint.DoErase = false;
         }
     }
 }
