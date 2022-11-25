@@ -7,12 +7,12 @@ namespace LudoConsole.UI.Models
 {
     public class DrawableSquare : DrawableSquareBase
     {
-        private List<(char chr, (int X, int Y) coords)> CharCoords { get; }
+        private List<CharPoint> CharCoords { get; }
         private List<(int X, int Y)> PawnCoords { get; } = new();
         public override (int X, int Y) MaxCoord()
         {
-            var x = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.X);
-            var y = CharCoords.Select(x => (x.coords.X, x.coords.Y)).Max(x => x.Y);
+            var x = CharCoords.Select(x => (x.X, x.Y)).Max(x => x.X);
+            var y = CharCoords.Select(x => (x.X, x.Y)).Max(x => x.Y);
             return (x, y);
         }
 
@@ -20,7 +20,8 @@ namespace LudoConsole.UI.Models
         {
            var (charCoords, pawnCoords) = 
                LudoSquareFactory.CreateSquareCharPoints((square.BoardX, square.BoardY));
-           CharCoords = LudoSquareFactory.MapToValueTuples(charCoords);
+           CharCoords = charCoords;
+           //CharCoords = LudoSquareFactory.MapToValueTuples(charCoords);
            PawnCoords = pawnCoords;
         }
         
@@ -43,7 +44,7 @@ namespace LudoConsole.UI.Models
             foreach (var charCoord in CharCoords)
             {
                 var color = ThisBackgroundColor();
-                drawables.Add(new LudoDrawable(charCoord.chr, charCoord.coords, color));
+                drawables.Add(new LudoDrawable(charCoord.Char, (charCoord.X, charCoord.Y), color));
             }
 
             return drawables;
