@@ -4,6 +4,7 @@ using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
+using LudoEngine.Exceptions;
 using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
@@ -54,9 +55,16 @@ namespace LudoEngine.GameLogic
         {
             var pawns = BoardPawnFinder.AllBaseAndPlayingPawns(GameBoard.BoardSquares)
                 .Where(x => x.Color == OrderOfTeams[iCurrentTeam]).ToList();
+
             if (!pawns.Any())
             {
-                throw new Exception("Won");
+                var player = CurrentPlayer();
+                _winners.Add(player);
+                Players.Remove(player);
+                OrderOfTeams.RemoveAt(iCurrentTeam);
+
+                if (!Players.Any())
+                    throw new NoPlayersException("All players has scored all pawns.");
             }
         }
 
