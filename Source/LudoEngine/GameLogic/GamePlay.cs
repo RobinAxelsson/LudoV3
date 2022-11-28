@@ -11,16 +11,30 @@ namespace LudoEngine.GameLogic
     public class GamePlay
     {
         private IDice dice { get; set; }
-        public GamePlay(List<IGamePlayer> players, IDice dice, IGamePlayer first = null)
+        private int iCurrentTeam { get; set; }
+
+        private List<TeamColor> OrderOfTeams = new()
+        {
+            TeamColor.Blue,
+            TeamColor.Red,
+            TeamColor.Green,
+            TeamColor.Yellow
+        };
+
+        public static event Action<GamePlay> GameStartEvent;
+        public static event Action<GamePlay> OnPlayerEndsRoundEvent;
+        public List<IGamePlayer> Players { get; set; }
+        private readonly List<IGamePlayer> _winners = new();
+
+        public GamePlay(IEnumerable<IGamePlayer> players, IDice dice, IGamePlayer first = null)
         {
             this.dice = dice;
-            Players = players;
-            OrderOfTeams = OrderOfTeams.Intersect(players.Select(x => x.Color)).ToList();
+            Players = players.ToList();
+            OrderOfTeams = OrderOfTeams.Intersect(Players.Select(x => x.Color)).ToList();
             if (first != null) SetFirstTeam(first.Color);
         }
 
-        public static event Action<GamePlay> GameStartEvent;
-        public static event Action <GamePlay>OnPlayerEndsRoundEvent;
+
         public void Start()
         {
             GameStartEvent?.Invoke(this);
@@ -29,20 +43,23 @@ namespace LudoEngine.GameLogic
                 CurrentPlayer().Play(dice);
                 BoardPawnFinder.AllPlayingPawns(GameBoard.BoardSquares).ForEach(x => x.IsSelected = false);
                 OnPlayerEndsRoundEvent?.Invoke(this);
+                CheckForWinner();
                 NextPlayer();
             }
         }
 
-        private List<TeamColor> OrderOfTeams = new List<TeamColor>
-        {
-            TeamColor.Blue,
-            TeamColor.Red,
-            TeamColor.Green,
-            TeamColor.Yellow
-        };
-        public List<IGamePlayer> Players { get; set; }
-        private int iCurrentTeam { get; set; }
         public void SetFirstTeam(TeamColor color) => iCurrentTeam = OrderOfTeams.FindIndex(x => x == color);
+
+        private void CheckForWinner()
+        {
+            var pawns = BoardPawnFinder.AllBaseAndPlayingPawns(GameBoard.BoardSquares)
+                .Where(x => x.Color == OrderOfTeams[iCurrentTeam]).ToList();
+            if (!pawns.Any())
+            {
+                throw new Exception("Won");
+            }
+        }
+
         public void NextPlayer()
         {
             StageSaving.CurrentTeam = iCurrentTeam;
@@ -55,7 +72,12 @@ namespace LudoEngine.GameLogic
             i = i >= Players.Count ? 0 : i;
             return OrderOfTeams[i];
         }
-        public IGamePlayer CurrentPlayer() => Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
+
+        public IGamePlayer CurrentPlayer()
+        {
+            return Players.Find(x => x.Color == OrderOfTeams[iCurrentTeam]);
+        }
+
         public IGamePlayer CurrentPlayer(bool stageSaving) => Players.Find(x => x.Color == OrderOfTeams[StageSaving.CurrentTeam]);
 
 

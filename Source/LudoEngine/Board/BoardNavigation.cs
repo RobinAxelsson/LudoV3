@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LudoEngine.Board.Square;
 using LudoEngine.Enum;
 using LudoEngine.Interfaces;
@@ -11,7 +12,7 @@ namespace LudoEngine.Board
         public static List<IGameSquare> TeamPath(List<IGameSquare> boardSquares, TeamColor color)
         {
             var teamSquares = new List<IGameSquare>();
-            var baseSquare = BaseSquare(teamSquares, color);
+            var baseSquare = BaseSquare(boardSquares, color);
             teamSquares.Add(baseSquare);
             IGameSquare temp = baseSquare;
             while (temp.GetType() != typeof(SquareGoal))
@@ -30,7 +31,10 @@ namespace LudoEngine.Board
         public static IGameSquare StartSquare(List<IGameSquare> boardSquares, TeamColor color)
             => boardSquares.Find(x => x.GetType() == typeof(SquareStart) && x.Color == color);
 
-        public static IGameSquare BaseSquare(List<IGameSquare> boardSquares, TeamColor color) => boardSquares.Find(x => x.GetType() == typeof(SquareTeamBase) && x.Color == color);
+        public static IGameSquare BaseSquare(List<IGameSquare> boardSquares, TeamColor color)
+        {
+            return boardSquares.Single(x => x.GetType() == typeof(SquareTeamBase) && x.Color == color);
+        }
 
         public static IGameSquare GetNext(List<IGameSquare> squares, IGameSquare square, TeamColor color)
         {

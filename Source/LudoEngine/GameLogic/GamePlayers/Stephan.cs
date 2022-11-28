@@ -36,9 +36,9 @@ namespace LudoEngine.GameLogic.GamePlayers
             
             StephanThrowEvent?.Invoke(this, diceRoll);
             var result = CalculatePlay(diceRoll);
-            if (result.takeout)
+            if (result.takeout && BoardPawnFinder.PawnsInBase(GameBoard.BoardSquares, Color).Count > 0)
             {
-                if (result.takeoutCount == 2)
+                if (result.takeoutCount == 2 && BoardPawnFinder.PawnsInBase(GameBoard.BoardSquares, Color).Count > 1)
                 {
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: Play] Calculations finished. Committing move";
                     WriteLogging(LoggerMessage);
@@ -173,6 +173,7 @@ namespace LudoEngine.GameLogic.GamePlayers
         {
             LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: ReturnFarthestPawn] Calculating farthest pawn";
             Pawn pawn = null;
+
             foreach (var square in BoardNavigation.TeamPath(GameBoard.BoardSquares,Color)
                          .Where(square => square.Pawns.Count > 0 &&
                         square.Pawns[0].Color == Color &&

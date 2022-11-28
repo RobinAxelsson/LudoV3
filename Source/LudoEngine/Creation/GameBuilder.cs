@@ -28,7 +28,8 @@ namespace LudoEngine.Creation
         public static GameBuilder StartBuild() => new();
         public GameBuilder MapBoard(string filePath)
         {
-            GameBoard.BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
+            GameBoard.Init(filePath);
+            //GameBoard.BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
             return this;
         }
         public GameBuilder AddDice(IDice dice)
