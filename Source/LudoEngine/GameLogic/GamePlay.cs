@@ -27,7 +27,7 @@ namespace LudoEngine.GameLogic
             while (true)
             {
                 CurrentPlayer().Play(dice);
-                BoardPawnFinder.AllPlayingPawns(StaticBoard.BoardSquares).ForEach(x => x.IsSelected = false);
+                BoardPawnFinder.AllPlayingPawns(GameBoard.BoardSquares).ForEach(x => x.IsSelected = false);
                 OnPlayerEndsRoundEvent?.Invoke(this);
                 NextPlayer();
             }

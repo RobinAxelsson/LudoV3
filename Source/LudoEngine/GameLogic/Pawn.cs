@@ -29,8 +29,8 @@ namespace LudoEngine.GameLogic
         public static event Action GameOverEvent;
         public static event Action<Pawn> OnSafeZoneEvent;
 
-        public IGameSquare CurrentSquare() => StaticBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
-        public bool Based() => BoardPawnFinder.PawnsInBase(StaticBoard.BoardSquares, Color).Contains(this);
+        public IGameSquare CurrentSquare() => GameBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
+        public bool Based() => BoardPawnFinder.PawnsInBase(GameBoard.BoardSquares, Color).Contains(this);
         public void Move(int dice)
         {
             var tempSquare = CurrentSquare();
@@ -46,26 +46,26 @@ namespace LudoEngine.GameLogic
 
                 if (tempSquare is SquareGoal || bounced == true)
                 {
-                    tempSquare = BoardNavigation.GetBack(StaticBoard.BoardSquares, tempSquare, Color);
+                    tempSquare = BoardNavigation.GetBack(GameBoard.BoardSquares, tempSquare, Color);
                     bounced = true;
                 }
                 else
                 {
-                    tempSquare = BoardNavigation.GetNext(StaticBoard.BoardSquares, tempSquare, Color);
+                    tempSquare = BoardNavigation.GetNext(GameBoard.BoardSquares, tempSquare, Color);
                 }
                 if (lastIteration == true && tempSquare is SquareGoal)
                 {
                     this.IsSelected = false;
 
-                    if (BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, Color).Count == 0)
+                    if (BoardPawnFinder.GetTeamPawns(GameBoard.BoardSquares, Color).Count == 0)
                         OnAllTeamPawnsOutEvent?.Invoke(this);
                     else
-                        OnGoalEvent?.Invoke(this, BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, Color).Count);
+                        OnGoalEvent?.Invoke(this, BoardPawnFinder.GetTeamPawns(GameBoard.BoardSquares, Color).Count);
 
-                    bool onlyOneTeamLeft = BoardPawnFinder.AllPlayingPawns(StaticBoard.BoardSquares).Select(x => x.Color).ToList().Count == 1;
+                    bool onlyOneTeamLeft = BoardPawnFinder.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList().Count == 1;
                     if (onlyOneTeamLeft)
                     {
-                        GameLoserEvent?.Invoke(BoardPawnFinder.AllPlayingPawns(StaticBoard.BoardSquares).Select(x => x.Color).ToList()[0]);
+                        GameLoserEvent?.Invoke(BoardPawnFinder.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList()[0]);
                         GameOverEvent?.Invoke();
                     }
                     return;
@@ -78,7 +78,7 @@ namespace LudoEngine.GameLogic
             {
                 enemyColor = tempSquare.Pawns[0].Color;
                 pawnsToEradicate = tempSquare.Pawns.Count;
-                var eradicateBase = BoardNavigation.BaseSquare(StaticBoard.BoardSquares, (TeamColor)enemyColor);
+                var eradicateBase = BoardNavigation.BaseSquare(GameBoard.BoardSquares, (TeamColor)enemyColor);
                 eradicateBase.Pawns.AddRange(tempSquare.Pawns);
                 tempSquare.Pawns.Clear();
             }

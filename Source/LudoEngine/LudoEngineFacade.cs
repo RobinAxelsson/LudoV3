@@ -3,7 +3,6 @@ using LudoEngine.DbModel;
 using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
-using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
 
@@ -36,12 +35,6 @@ namespace LudoEngine
                 Players = StageSaving.Players,
                 TeamPosition = DatabaseManagement.GetPawnPositionsInGame(game)
             };
-        }
-
-        public static void SetBoard()
-        {
-            StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
-            GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
         public static List<IGameSquare> GetNewGameBoardSquares()

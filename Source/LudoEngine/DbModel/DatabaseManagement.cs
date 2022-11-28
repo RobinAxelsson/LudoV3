@@ -154,7 +154,7 @@ namespace LudoEngine.DbModel
         private static void save(GamePlay gamePlay)
         {
             var currentTeam = _gamePlay.CurrentPlayer().Color;
-            StageSaving.Pawns = BoardPawnFinder.GetTeamPawns(StaticBoard.BoardSquares, currentTeam);
+            StageSaving.Pawns = BoardPawnFinder.GetTeamPawns(GameBoard.BoardSquares, currentTeam);
 
             var pawns = StageSaving.Pawns;
             Game game = new();

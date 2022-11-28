@@ -25,10 +25,10 @@ namespace LudoEngine.Creation
             if (_teamColors.Contains(color)) throw new Exception("There can only be one player per color");
             _teamColors.Add(color);
         }
-        public static GameBuilder StartBuild() => new GameBuilder();
+        public static GameBuilder StartBuild() => new();
         public GameBuilder MapBoard(string filePath)
         {
-            StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
+            GameBoard.BoardSquares = GameSquareFactory.CreateGameSquares(filePath);
             return this;
         }
         public GameBuilder AddDice(IDice dice)

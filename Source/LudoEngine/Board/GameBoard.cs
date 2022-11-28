@@ -3,7 +3,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board
 {
-    public static class StaticBoard
+    public static class GameBoard
     {
         public static List<IGameSquare> BoardSquares { get; set; }
 

@@ -12,12 +12,12 @@ namespace LudoTest.AI
     [Collection(nameof(LudoXUnitCollection))]
     public class AiTests
     {
-        private List<IGameSquare> BoardSquares => StaticBoard.BoardSquares;
+        private List<IGameSquare> BoardSquares => GameBoard.BoardSquares;
 
         [Fact]
         public void Stephan_Choices_AssertErradicate()
         {
-            StaticBoard.Init(@"AI/ai-test-map1.txt");
+            GameBoard.Init(@"AI/ai-test-map1.txt");
 
             var stephan = new Stephan(TeamColor.Blue, null);
             var dice = new DiceRigged(new[] { 2 });
@@ -42,7 +42,7 @@ namespace LudoTest.AI
         [Fact]
         public void StephanRollSix_AssertTakeOutTwo()
         {
-            StaticBoard.Init(@"AI/ai-test-map1.txt");
+            GameBoard.Init(@"AI/ai-test-map1.txt");
             var squares = BoardSquares;
             GameSetup.SetUpPawnsNewGame(squares, new [] { TeamColor.Blue });
             var dice = new DiceRigged(new[] { 6, 1});
