@@ -1,4 +1,4 @@
-﻿namespace LudoEngine.ClientApi
+﻿namespace LudoEngine.ClientApi.Dto
 {
     public enum LudoColor
     {

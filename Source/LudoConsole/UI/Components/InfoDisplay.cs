@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using LudoConsole.Ui.Models;
 using LudoEngine.Enum;
+using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
-using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 
 namespace LudoConsole.Ui.Components

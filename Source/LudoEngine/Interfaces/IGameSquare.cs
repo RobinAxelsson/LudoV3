@@ -1,8 +1,8 @@
-﻿using LudoEngine.Enum;
-using LudoEngine.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using LudoEngine.Enum;
+using LudoEngine.GameLogic;
 
-namespace LudoEngine.BoardUnits.Interfaces
+namespace LudoEngine.Interfaces
 {
     public interface IGameSquare
     {

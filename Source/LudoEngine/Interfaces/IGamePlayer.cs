@@ -1,6 +1,6 @@
 ﻿using LudoEngine.Enum;
 
-namespace LudoEngine.GameLogic.Interfaces
+namespace LudoEngine.Interfaces
 { 
     public interface IGamePlayer
     {

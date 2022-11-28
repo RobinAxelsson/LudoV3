@@ -1,10 +1,11 @@
-﻿using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.BoardUnits.Main;
-using LudoEngine.Enum;
-using System;
+﻿using System;
 using System.Linq;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
+using LudoEngine.Enum;
+using LudoEngine.Interfaces;
 
-namespace LudoEngine.Models
+namespace LudoEngine.GameLogic
 {
     public class Pawn
     {

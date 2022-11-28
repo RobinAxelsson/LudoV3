@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoEngine.BoardUnits.Main;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 
 namespace LudoEngine.GameLogic.GamePlayers

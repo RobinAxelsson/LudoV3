@@ -1,5 +1,6 @@
 ﻿using LudoEngine.Models;
 using System.Collections.Generic;
+using LudoEngine.GameLogic;
 
 namespace LudoEngine.DbModel
 {

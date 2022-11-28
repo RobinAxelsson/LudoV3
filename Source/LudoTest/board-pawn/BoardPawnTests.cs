@@ -1,5 +1,5 @@
-
-using LudoEngine.BoardUnits.Main;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
 using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;

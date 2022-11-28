@@ -1,7 +1,10 @@
 using System;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.BoardUnits.Main;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
+using LudoEngine.ClientApi.Dto;
 using LudoEngine.Enum;
+using LudoEngine.GameLogic;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 
 namespace LudoEngine.ClientApi

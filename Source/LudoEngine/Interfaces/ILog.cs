@@ -1,4 +1,4 @@
-﻿namespace LudoEngine.GameLogic.Interfaces
+﻿namespace LudoEngine.Interfaces
 {
     public interface ILog
     {

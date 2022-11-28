@@ -1,5 +1,3 @@
-
-using LudoEngine.BoardUnits.Main;
 using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
@@ -9,6 +7,7 @@ using System.Collections.Generic;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Linq;
 using LudoConsole.Controller;
+using LudoEngine.Board;
 
 namespace LudoTest.board_pawn
 {

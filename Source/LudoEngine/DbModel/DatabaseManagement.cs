@@ -5,9 +5,9 @@ using LudoEngine.Enum;
 using System.Linq;
 using System;
 using System.Collections.Generic;
-using LudoEngine.BoardUnits.Main;
 using System.Threading;
-using LudoConsole.Main;
+using LudoEngine.Board;
+using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine.DbModel

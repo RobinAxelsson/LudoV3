@@ -1,17 +1,12 @@
-﻿using LudoEngine.GameLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LudoEngine.Interfaces;
 
-namespace LudoEngine.GameLogic.Dice
+namespace LudoTest
 {
-    public class RiggedDice : IDice
+    public class DiceRigged : IDice
     {
-        private int[] ResultSeries { get; set; }
+        private int[] ResultSeries { get; }
         private int Index { get; set; }
-        public RiggedDice(int[] resultSeries)
+        public DiceRigged(int[] resultSeries)
         {
             ResultSeries = resultSeries;
             Index = 0;

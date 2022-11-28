@@ -2,10 +2,11 @@
 using LudoEngine.DbModel;
 using System.Collections.Generic;
 using System.Linq;
-using LudoEngine.BoardUnits.Main;
+using LudoEngine.Board;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
-using LudoEngine.BoardUnits.Interfaces;
+using LudoEngine.Interfaces;
+using LudoEngine.LudoORM;
 
 namespace LudoEngine
 {
@@ -40,13 +41,13 @@ namespace LudoEngine
 
         public static void SetBoard()
         {
-            StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(@"LudoORM/Map/BoardMap.txt");
+            StaticBoard.BoardSquares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
             GameSetup.SetUpPawnsNewGame(StaticBoard.BoardSquares, System.Enum.GetValues<TeamColor>());
         }
 
         public static List<IGameSquare> GetNewGameBoardSquares()
         {
-            var squares = GameSquareFactory.CreateGameSquares(@"LudoORM/Map/BoardMap.txt");
+            var squares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
             GameSetup.SetUpPawnsNewGame(squares);
             return squares;
         }

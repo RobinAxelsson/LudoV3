@@ -1,13 +1,13 @@
-﻿using LudoEngine.BoardUnits.Interfaces;
+﻿using System.Collections.Generic;
 using LudoEngine.Enum;
-using LudoEngine.Models;
-using System.Collections.Generic;
+using LudoEngine.GameLogic;
+using LudoEngine.Interfaces;
 
-namespace LudoEngine.BoardUnits.Main
+namespace LudoEngine.Board.Square
 {
-    public class SquareStart : IGameSquare
+    public class SquareTeamBase : IGameSquare
     {
-        public SquareStart(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public SquareTeamBase(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
@@ -17,7 +17,7 @@ namespace LudoEngine.BoardUnits.Main
         public TeamColor? Color { get; set; }
         public int BoardX { get; set; }
         public int BoardY { get; set; }
-        public List<Pawn> Pawns { get; set; } = new();
+        public List<Pawn> Pawns { get; set; } = new List<Pawn>();
         public BoardDirection DefaultDirection { get; set; }
         public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
     }

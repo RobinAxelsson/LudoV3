@@ -1,14 +1,13 @@
-﻿using LudoConsole.Main;
-using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.BoardUnits.Main;
-using LudoEngine.Enum;
-using LudoEngine.GameLogic.Interfaces;
+﻿using LudoEngine.Enum;
 using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
+using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {

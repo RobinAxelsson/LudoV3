@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using LudoEngine.BoardUnits.Interfaces;
+using LudoEngine.Board.Square;
 using LudoEngine.Enum;
+using LudoEngine.Interfaces;
 
-namespace LudoEngine.BoardUnits.Main
+namespace LudoEngine.Board
 {
     public static class BoardNavigation
     {

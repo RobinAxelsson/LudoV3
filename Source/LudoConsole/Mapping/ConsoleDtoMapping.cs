@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoEngine.BoardUnits.Interfaces;
 using LudoEngine.Enum;
+using LudoEngine.GameLogic;
+using LudoEngine.Interfaces;
 using LudoEngine.Models;
 
 namespace LudoConsole.Mapping

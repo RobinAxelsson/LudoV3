@@ -1,9 +1,9 @@
-﻿using LudoEngine.BoardUnits.Interfaces;
+﻿using System.Collections.Generic;
 using LudoEngine.Enum;
-using LudoEngine.Models;
-using System.Collections.Generic;
+using LudoEngine.GameLogic;
+using LudoEngine.Interfaces;
 
-namespace LudoEngine.BoardUnits.Main
+namespace LudoEngine.Board.Square
 {
     public class SquareGoal : IGameSquare
     {

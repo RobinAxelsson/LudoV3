@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 
-namespace LudoEngine.GameLogic.Dice
+namespace LudoEngine.GameLogic
 {
     public class Dice : IDice
     {
@@ -12,7 +12,7 @@ namespace LudoEngine.GameLogic.Dice
         private Random random { get; set; }
         public Dice(int lowest, int highest)
         {
-            Highest = highest+1;
+            Highest = highest + 1;
             Lowest = lowest;
             random = new Random();
         }

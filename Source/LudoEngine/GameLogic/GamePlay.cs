@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoEngine.BoardUnits.Main;
+using LudoEngine.Board;
 using LudoEngine.DbModel;
 using LudoEngine.Enum;
-using LudoEngine.GameLogic.Interfaces;
+using LudoEngine.Interfaces;
 
-namespace LudoConsole.Main
+namespace LudoEngine.GameLogic
 {
     public class GamePlay
     {

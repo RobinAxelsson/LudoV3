@@ -1,12 +1,11 @@
-﻿using LudoEngine.BoardUnits.Main;
-using LudoEngine.Models;
+﻿using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
-using LudoEngine.GameLogic.Dice;
 using System.Collections.Generic;
-using LudoEngine.BoardUnits.Interfaces;
+using LudoEngine.Board;
+using LudoEngine.Interfaces;
 
 namespace LudoTest.AI
 {
@@ -21,7 +20,7 @@ namespace LudoTest.AI
             StaticBoard.Init(@"AI/ai-test-map1.txt");
 
             var stephan = new Stephan(TeamColor.Blue, null);
-            var dice = new RiggedDice(new[] { 2 });
+            var dice = new DiceRigged(new[] { 2 });
 
             var pawn1 = new Pawn(TeamColor.Blue);
             var pawn2 = new Pawn(TeamColor.Blue);
@@ -46,7 +45,7 @@ namespace LudoTest.AI
             StaticBoard.Init(@"AI/ai-test-map1.txt");
             var squares = BoardSquares;
             GameSetup.SetUpPawnsNewGame(squares, new [] { TeamColor.Blue });
-            var dice = new RiggedDice(new[] { 6, 1});
+            var dice = new DiceRigged(new[] { 6, 1});
 
             var stephan = new Stephan(TeamColor.Blue, null);
             stephan.Play(dice);

@@ -1,11 +1,12 @@
-﻿using LudoEngine.BoardUnits.Interfaces;
-using LudoEngine.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using LudoEngine.Board;
+using LudoEngine.Board.Square;
+using LudoEngine.Enum;
+using LudoEngine.Interfaces;
 
-
-namespace LudoEngine.BoardUnits.Main
+namespace LudoEngine.LudoORM
 {
     public static class GameSquareFactory
     {

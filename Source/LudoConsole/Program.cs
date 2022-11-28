@@ -79,7 +79,7 @@ namespace LudoConsole
                         //var savingDto = LudoEngineFacade.GetStageSavingDto(game.Id);
 
                         //var gameBuilder = GameBuilder.StartBuild();
-                        //gameBuilder.MapBoard(@"LudoORM/Map/BoardMap.txt");
+                        //gameBuilder.MapBoard(@"Board/Map/BoardMap.txt");
 
                         //BoardRenderer.StartRender(StaticBoard.BoardSquares);
 
@@ -113,7 +113,7 @@ namespace LudoConsole
         //private static void LoadGame()
         //{
         //    var loadGame = GameBuilder.StartBuild()
-        //        .MapBoard(@"LudoORM/Map/BoardMap.txt")
+        //        .MapBoard(@"Board/Map/BoardMap.txt")
         //        .AddDice(new Dice(1, 6))
 
         //        .LoadGame()
