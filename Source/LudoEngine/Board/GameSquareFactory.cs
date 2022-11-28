@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using LudoEngine.Board;
 using LudoEngine.Board.Square;
 using LudoEngine.Enum;
 using LudoEngine.Interfaces;
 
-namespace LudoEngine.LudoORM
+namespace LudoEngine.Board
 {
     public static class GameSquareFactory
     {
@@ -26,7 +25,7 @@ namespace LudoEngine.LudoORM
             return squares;
         }
 
-        private static IGameSquare MapGameSquare(Char chr, int x, int y)
+        private static IGameSquare MapGameSquare(char chr, int x, int y)
         {
             return chr switch
             {

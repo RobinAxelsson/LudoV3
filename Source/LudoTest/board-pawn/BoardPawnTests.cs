@@ -1,13 +1,12 @@
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
-using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
 using LudoEngine.GameLogic;
 
 namespace LudoTest.board_pawn
 {
-    [Collection(nameof(StaticTestCollection))]
+    [Collection(nameof(LudoXUnitCollection))]
     public class BoardPawnTests
     {
         [Fact]

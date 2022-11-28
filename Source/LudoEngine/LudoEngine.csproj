@@ -5,10 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="LudoORM\Map\BoardAscii.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Include="Board\Map\BoardMap.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
@@ -33,10 +29,6 @@
       <None Update="DbModel\connection.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="LudoORM\Map\" />
     </ItemGroup>
 
 </Project>

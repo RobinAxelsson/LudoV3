@@ -9,7 +9,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoTest.AI
 {
-    [Collection(nameof(StaticTestCollection))]
+    [Collection(nameof(LudoXUnitCollection))]
     public class AiTests
     {
         private List<IGameSquare> BoardSquares => StaticBoard.BoardSquares;

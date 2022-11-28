@@ -1,17 +1,17 @@
 using LudoEngine.Models;
 using LudoEngine.Enum;
 using Xunit;
-using LudoEngine.GameLogic.Dice;
 using LudoEngine.Creation;
 using System.Collections.Generic;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Linq;
 using LudoConsole.Controller;
 using LudoEngine.Board;
+using LudoEngine.GameLogic;
 
 namespace LudoTest.board_pawn
 {
-    [Collection(nameof(StaticTestCollection))]
+    [Collection(nameof(LudoXUnitCollection))]
     public class GameSetupTests
     {
         [Fact]
