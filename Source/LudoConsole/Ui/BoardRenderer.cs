@@ -10,23 +10,15 @@ namespace LudoConsole.Ui
 {
     public class BoardRenderer
     {
-        private readonly IEnumerable<BoardSquareBase> _squareDrawables;
+        private readonly IEnumerable<UiGameSquareBase> _squareDrawables;
 
         public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
         {
-            _squareDrawables = LudoSquareFactory.CreateBoardSquares(gameSquares);
+            _squareDrawables = UiGameSquareFactory.CreateUiGameSquares(gameSquares);
             Pawn.GameOverEvent += OnGameOver;
-            _thread = new Thread(() =>
-            {
-                while (IsRunning)
-                {
-                    ConsoleWriter.UpdateBoard(_squareDrawables.ToList());
-                    Thread.Sleep(200);
-                }
-            });
         }
 
-        private Thread _thread { get; }
+        private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
 
         public static BoardRenderer StartRender(IEnumerable<ConsoleGameSquare> gameSquares)
@@ -40,6 +32,16 @@ namespace LudoConsole.Ui
         {
             UiColor.SetDefault();
             IsRunning = true;
+
+            _thread = new Thread(() =>
+            {
+                while (IsRunning)
+                {
+                    ConsoleWriter.UpdateBoard(_squareDrawables.ToList());
+                    Thread.Sleep(200);
+                }
+            });
+
             _thread.Start();
             InfoDisplay.Init();
         }

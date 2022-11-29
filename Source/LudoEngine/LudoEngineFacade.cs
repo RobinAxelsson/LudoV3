@@ -6,9 +6,6 @@ using LudoEngine.Board;
 using LudoEngine.ClientApi;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
-using LudoEngine.Enum;
-using LudoEngine.Exceptions;
-using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine
 {
@@ -20,12 +17,6 @@ namespace LudoEngine
             return games.Select(x => new GameDto(x.Id, x.LastSaved)).ToArray();
         }
 
-        //public static StartLocalGameSession(ILudoClient client)
-        //{
-            //client.OnNewGame(gameDto);
-            //adding client to game loop
-            //
-        //}
 
         public static StageSavingDto GetStageSavingDto(int id)
         {
@@ -41,12 +32,12 @@ namespace LudoEngine
             };
         }
 
-        public static List<IGameSquare> GetNewGameBoardSquares()
-        {
-            var squares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
-            GameSetup.SetUpPawnsNewGame(squares);
-            return squares;
-        }
+        //public static List<IGameSquare> GetNewGameBoardSquares()
+        //{
+        //    var squares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
+        //    GameSetup.SetUpPawnsNewGame(squares);
+        //    return squares;
+        //}
 
         public static void RunDemo(LudoClientBase ludoClient)
         {

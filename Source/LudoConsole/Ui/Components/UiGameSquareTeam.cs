@@ -6,9 +6,9 @@ using LudoConsole.Ui.Models;
 
 namespace LudoConsole.Ui.Components
 {
-    internal class BoardSquareTeam : BoardSquareBase
+    internal class UiGameSquareTeam : UiGameSquareBase
     {
-        public BoardSquareTeam(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns,
+        public UiGameSquareTeam(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns,
             ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
         {
         }
