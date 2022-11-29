@@ -9,11 +9,11 @@ namespace LudoConsole.Ui.Components
     internal abstract class BoardSquareBase
     {
         protected BoardSquareBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords,
-            List<ConsolePawnDto> Pawns, ConsoleColor color)
+            List<ConsolePawnDto> pawns, ConsoleColor color)
         {
             CharPoints = charPoints;
             PawnCoords = pawnCoords;
-            this.Pawns = Pawns;
+            this.Pawns = pawns;
             Color = color;
         }
 

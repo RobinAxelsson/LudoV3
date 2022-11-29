@@ -50,8 +50,9 @@ namespace LudoEngine
 
         public static void RunDemo(LudoClientBase ludoClient)
         {
-            var gameSquares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
-            ludoClient.OnNewGame(ClientMapper.MapGame(gameSquares));
+            GameBoard.Init();
+            GameSetup.SetUpPawnsNewGame(GameBoard.BoardSquares);
+            ludoClient.OnNewGame(ClientMapper.MapGame(GameBoard.BoardSquares));
         }
     }
 

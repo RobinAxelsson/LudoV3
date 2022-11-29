@@ -32,12 +32,12 @@ namespace LudoEngine.ClientApi
                 };
             }
 
-            return new DtoGameSquare(gameSquare.BoardX, gameSquare.BoardY, MapTeamColor(gameSquare.Color), GetSquareType(gameSquare));
+            return new DtoGameSquare(gameSquare.BoardX, gameSquare.BoardY, MapTeamColor(gameSquare.Color), GetSquareType(gameSquare), MapPawns(gameSquare.Pawns));
         }
 
-        private static DtoPawn MapPawn(Pawn pawn)
+        private static IEnumerable<DtoPawn> MapPawns(IEnumerable<Pawn> pawns)
         {
-            return new DtoPawn(pawn.Id, pawn.CurrentSquare().BoardX, pawn.CurrentSquare().BoardY, pawn.Color);
+            return pawns.Select(pawn => new DtoPawn(pawn.Id, pawn.CurrentSquare().BoardX, pawn.CurrentSquare().BoardY, pawn.Color));
         }
 
         private static LudoColor MapTeamColor(TeamColor? teamColorCore)

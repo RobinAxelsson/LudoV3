@@ -22,7 +22,6 @@ namespace LudoTest
             };
 
             var gamePlay = new GamePlay(aiPlayers, new Dice(1,6));
-
             GameBoard.Init();
             GameSetup.SetUpPawnsNewGame(GameBoard.BoardSquares);
             Assert.Throws<NoPlayersException>(() => gamePlay.Start());

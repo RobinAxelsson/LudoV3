@@ -5,7 +5,6 @@ using System.Threading;
 using LudoConsole.Mapping;
 using LudoConsole.Ui.Components;
 using LudoEngine.GameLogic;
-using LudoEngine.Models;
 
 namespace LudoConsole.Ui
 {

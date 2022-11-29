@@ -14,12 +14,6 @@ namespace LudoConsole.Mapping
         {
             return gameSquares.Select(MapGameSquare);
         }
-
-        public static IEnumerable<ConsoleGameSquare> Map(DtoLudoGame ludoGame)
-        {
-            return ludoGame.GameSquares.Select(MapGameSquare);
-        }
-
         private static ConsoleGameSquare MapGameSquare(IGameSquare square)
         {
             return new ConsoleGameSquare
@@ -32,6 +26,11 @@ namespace LudoConsole.Mapping
             };
         }
 
+        public static IEnumerable<ConsoleGameSquare> Map(DtoLudoGame ludoGame)
+        {
+            return ludoGame.GameSquares.Select(MapGameSquare);
+        }
+
         private static ConsoleGameSquare MapGameSquare(DtoGameSquare square)
         {
             return new ConsoleGameSquare
@@ -40,11 +39,21 @@ namespace LudoConsole.Mapping
                 BoardX = square.BoardX,
                 BoardY = square.BoardY,
                 Color = MapColor(square.Color),
-                Pawns = new List<ConsolePawnDto>(),
+                Pawns = square.Pawns.Select(MapPawn).ToList(),
             };
         }
 
         private static ConsolePawnDto MapPawn(Pawn pawn)
+        {
+            return new ConsolePawnDto
+            {
+                Id = pawn.Id,
+                IsSelected = true,
+                Color = MapColor(pawn.Color)
+            };
+        }
+
+        private static ConsolePawnDto MapPawn(DtoPawn pawn)
         {
             return new ConsolePawnDto
             {
