@@ -46,7 +46,7 @@ namespace LudoTest.board_pawn
                 .LoadGame()
                 .LoadPawns(new List<PawnSavePoint> { savePoint });
 
-            var pawns = BoardPawnFinder.GetTeamPawns(GameBoard.BoardSquares, TeamColor.Blue);
+            var pawns = GameBoard.GetTeamPawns(GameBoard.BoardSquares, TeamColor.Blue);
             Assert.True(pawns.Count == 1);
         }
         [Fact]

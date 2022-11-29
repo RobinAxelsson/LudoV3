@@ -3,7 +3,7 @@ using System.IO;
 using LudoEngine.Enum;
 using LudoEngine.Interfaces;
 
-namespace LudoEngine.LudoORM
+namespace LudoEngine.GameLogic
 {
     public class StephanLog : ILog
     {

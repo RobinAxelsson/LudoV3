@@ -42,7 +42,7 @@ namespace LudoEngine.GameLogic
             while (true)
             {
                 CurrentPlayer().Play(dice);
-                BoardPawnFinder.AllPlayingPawns(GameBoard.BoardSquares).ForEach(x => x.IsSelected = false);
+                GameBoard.AllPlayingPawns(GameBoard.BoardSquares).ForEach(x => x.IsSelected = false);
                 OnPlayerEndsRoundEvent?.Invoke(this);
                 CheckForWinner();
                 NextPlayer();
@@ -53,7 +53,7 @@ namespace LudoEngine.GameLogic
 
         private void CheckForWinner()
         {
-            var pawns = BoardPawnFinder.AllBaseAndPlayingPawns(GameBoard.BoardSquares)
+            var pawns = GameBoard.AllBaseAndPlayingPawns(GameBoard.BoardSquares)
                 .Where(x => x.Color == OrderOfTeams[iCurrentTeam]).ToList();
 
             if (!pawns.Any())
@@ -76,7 +76,7 @@ namespace LudoEngine.GameLogic
         }
         public TeamColor NextPlayerForSave()
         {
-            int i = iCurrentTeam + 1;
+            var i = iCurrentTeam + 1;
             i = i >= Players.Count ? 0 : i;
             return OrderOfTeams[i];
         }

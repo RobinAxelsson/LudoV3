@@ -25,6 +25,29 @@ namespace LudoEngine.Board
             return squares;
         }
 
+        private static List<(char chr, int X, int Y)> ReadCharCoords(string filePath)
+        {
+
+            var charCoord = new List<(char chr, int X, int Y)>();
+            string[] lines = File.ReadAllLines(filePath);
+
+            var x = 0;
+            var y = 0;
+            foreach (var line in lines)
+            {
+                if (line[0] == '/') break;
+                foreach (var chr in line)
+                {
+                    if (chr != ' ')
+                        charCoord.Add((chr, x, y));
+                    x++;
+                }
+                y++;
+                x = 0;
+            }
+            return charCoord;
+        }
+
         private static IGameSquare MapGameSquare(char chr, int x, int y)
         {
             return chr switch
@@ -58,29 +81,6 @@ namespace LudoEngine.Board
 
                 _ => throw new NullReferenceException()
             };
-        }
-
-        private static List<(char chr, int X, int Y)> ReadCharCoords(string filePath)
-        {
-
-            var charCoord = new List<(char chr, int X, int Y)>();
-            string[] lines = File.ReadAllLines(filePath);
-
-            var x = 0;
-            var y = 0;
-            foreach (var line in lines)
-            {
-                if (line[0] == '/') break;
-                foreach (var chr in line)
-                {
-                    if (chr != ' ')
-                        charCoord.Add((chr, x, y));
-                    x++;
-                }
-                y++;
-                x = 0;
-            }
-            return charCoord;
         }
     }
 }

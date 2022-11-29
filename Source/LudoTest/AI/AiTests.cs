@@ -28,7 +28,7 @@ namespace LudoTest.AI
             var squarePawn1 = BoardSquares.Find(x => x.BoardX == 0 && x.BoardY == 1);
             var squarePawn2 = BoardSquares.Find(x => x.BoardX == 1 && x.BoardY == 1);
             var squareEnemy = BoardSquares.Find(x => x.BoardX == 2 && x.BoardY == 1);
-            var enemyBase = BoardNavigation.BaseSquare(BoardSquares, TeamColor.Green);
+            var enemyBase = GameBoard.BaseSquare(BoardSquares, TeamColor.Green);
 
             squarePawn1.Pawns.Add(pawn1);
             squarePawn2.Pawns.Add(pawn2);
@@ -49,7 +49,7 @@ namespace LudoTest.AI
 
             var stephan = new Stephan(TeamColor.Blue, null);
             stephan.Play(dice);
-            var startSquare = BoardNavigation.StartSquare(BoardSquares, TeamColor.Blue);
+            var startSquare = GameBoard.StartSquare(BoardSquares, TeamColor.Blue);
             var pawns = startSquare.Pawns;
             Assert.True(pawns.Count == 2);
         }
