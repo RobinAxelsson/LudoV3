@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoEngine.Enum;
 
 namespace LudoConsole.Ui.Components
 {
-    public static class Menu
+    public static class MainMenu
     {
         private static List<TeamColor> HumanColor { get; } = new();
         private static List<TeamColor> AiColor { get; } = new();

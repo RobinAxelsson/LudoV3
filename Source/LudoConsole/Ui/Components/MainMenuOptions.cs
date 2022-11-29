@@ -1,4 +1,4 @@
-﻿namespace LudoConsole.Mapping
+﻿namespace LudoConsole.Ui.Components
 {
     public enum MainMenuOptions
     {

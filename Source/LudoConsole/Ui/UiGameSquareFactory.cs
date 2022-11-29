@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoConsole.Ui.Components;
 using LudoConsole.Ui.Models;
 
@@ -14,14 +14,14 @@ namespace LudoConsole.Ui
         private const string TeamBaseAsciiArt = Directory + "teambase.txt";
         private const string SquareAsciiArt = Directory + "boardsquare.txt";
 
-        public static IEnumerable<UiGameSquareBase> CreateUiGameSquares(IEnumerable<ConsoleGameSquare> squares)
+        public static IEnumerable<UiGameSquareBase> CreateUiGameSquares(IEnumerable<DtoConsoleGameSquare> squares)
         {
             var squareDrawables = CreateSquareDrawables(squares);
             var teamSquareDrawables = CreateTeamSquareDrawables(squares, squareDrawables);
             return squareDrawables.Concat(teamSquareDrawables).ToList();
         }
 
-        private static IEnumerable<UiGameSquareBase> CreateTeamSquareDrawables(IEnumerable<ConsoleGameSquare> squares,
+        private static IEnumerable<UiGameSquareBase> CreateTeamSquareDrawables(IEnumerable<DtoConsoleGameSquare> squares,
             UiGameSquareBase[] squareDrawables)
         {
             var (boardWidth, boardHeight) = GetBoardMaxPoint(squareDrawables);
@@ -32,14 +32,14 @@ namespace LudoConsole.Ui
             return teamSquareDrawables;
         }
 
-        private static UiGameSquareBase[] CreateSquareDrawables(IEnumerable<ConsoleGameSquare> squares)
+        private static UiGameSquareBase[] CreateSquareDrawables(IEnumerable<DtoConsoleGameSquare> squares)
         {
             var squareDrawables = squares.Where(x => !x.IsBase)
                 .Select(CreateDrawableSquare).ToArray();
             return squareDrawables;
         }
 
-        private static UiGameSquareBase CreateDrawableSquare(ConsoleGameSquare square)
+        private static UiGameSquareBase CreateDrawableSquare(DtoConsoleGameSquare square)
         {
             (int x, int y) squarePoint = (square.BoardX, square.BoardY);
             var lines = File.ReadAllLines(SquareAsciiArt);
@@ -51,7 +51,7 @@ namespace LudoConsole.Ui
                 UiColor.TranslateColor(square.Color));
         }
 
-        private static UiGameSquareBase CreateDrawableTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
+        private static UiGameSquareBase CreateDrawableTeamBase(int boardWidth, int boardHeight, DtoConsoleGameSquare square)
         {
             var lines = File.ReadAllLines(TeamBaseAsciiArt);
             var trueUpLeft = CalculateTeamBaseUpLeftPoint(boardWidth, boardHeight, lines, square.Color);

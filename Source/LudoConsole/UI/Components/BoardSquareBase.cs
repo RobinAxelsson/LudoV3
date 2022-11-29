@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoConsole.Ui.Models;
 
 namespace LudoConsole.Ui.Components
@@ -9,7 +9,7 @@ namespace LudoConsole.Ui.Components
     internal abstract class BoardSquareBase
     {
         protected BoardSquareBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords,
-            List<ConsolePawnDto> Pawns, ConsoleColor color)
+            List<DtoConsolePawn> Pawns, ConsoleColor color)
         {
             CharPoints = charPoints;
             PawnCoords = pawnCoords;
@@ -20,7 +20,7 @@ namespace LudoConsole.Ui.Components
         protected ConsoleColor Color { get; }
         protected List<CharPoint> CharPoints { get; }
         protected List<(int X, int Y)> PawnCoords { get; }
-        protected List<ConsolePawnDto> Pawns { get; }
+        protected List<DtoConsolePawn> Pawns { get; }
 
         public (int X, int Y) MaxCoord()
         {

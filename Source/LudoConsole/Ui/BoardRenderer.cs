@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoConsole.Ui.Components;
 using LudoEngine.GameLogic;
 
@@ -12,7 +12,7 @@ namespace LudoConsole.Ui
     {
         private readonly IEnumerable<UiGameSquareBase> _squareDrawables;
 
-        public BoardRenderer(IEnumerable<ConsoleGameSquare> gameSquares)
+        public BoardRenderer(IEnumerable<DtoConsoleGameSquare> gameSquares)
         {
             _squareDrawables = UiGameSquareFactory.CreateUiGameSquares(gameSquares);
             Pawn.GameOverEvent += OnGameOver;
@@ -21,7 +21,7 @@ namespace LudoConsole.Ui
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
 
-        public static BoardRenderer StartRender(IEnumerable<ConsoleGameSquare> gameSquares)
+        public static BoardRenderer StartRender(IEnumerable<DtoConsoleGameSquare> gameSquares)
         {
             var boardRenderer = new BoardRenderer(gameSquares);
             boardRenderer.Start();

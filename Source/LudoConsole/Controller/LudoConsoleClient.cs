@@ -1,4 +1,4 @@
-﻿using LudoConsole.Mapping;
+﻿using LudoConsole.ServerMapping;
 using LudoConsole.Ui;
 using LudoEngine.ClientApi;
 using LudoEngine.ClientApi.Dto;
@@ -9,7 +9,7 @@ namespace LudoConsole.Controller
     {
         public override void OnNewGame(DtoLudoGame dtoLudoGame)
         {
-            var consoleSquares = ConsoleDtoMapping.Map(dtoLudoGame);
+            var consoleSquares = ConsoleDtoMapper.Map(dtoLudoGame);
             BoardRenderer.StartRender(consoleSquares);
         }
 

@@ -2,7 +2,7 @@
 using System.Globalization;
 using LudoConsole.Controller;
 using LudoConsole.Exceptions;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoConsole.Ui;
 using LudoConsole.Ui.Components;
 using LudoEngine;
@@ -20,7 +20,7 @@ namespace LudoConsole
         {
             while (true)
             {
-                var selectedOption = (MainMenuOptions) Menu.DisplayMainMenuGetSelection();
+                var selectedOption = (MainMenuOptions) MainMenu.DisplayMainMenuGetSelection();
 
                 switch (selectedOption)
                 {

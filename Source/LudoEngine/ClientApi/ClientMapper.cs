@@ -37,7 +37,7 @@ namespace LudoEngine.ClientApi
 
         private static IEnumerable<DtoPawn> MapPawns(IEnumerable<Pawn> pawns)
         {
-            return pawns.Select(pawn => new DtoPawn(pawn.Id, pawn.CurrentSquare().BoardX, pawn.CurrentSquare().BoardY, pawn.Color));
+            return pawns.Select(pawn => new DtoPawn(pawn.Id, pawn.CurrentSquare().BoardX, pawn.CurrentSquare().BoardY, MapTeamColor(pawn.Color)));
         }
 
         private static LudoColor MapTeamColor(TeamColor? teamColorCore)

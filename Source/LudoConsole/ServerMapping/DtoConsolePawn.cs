@@ -1,6 +1,6 @@
-﻿namespace LudoConsole.Mapping
+﻿namespace LudoConsole.ServerMapping
 {
-    public class ConsolePawnDto
+    public class DtoConsolePawn
     {
         public int Id { get; init; }
         public bool IsSelected { get; init; }

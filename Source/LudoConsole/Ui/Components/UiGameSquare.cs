@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 using LudoConsole.Ui.Models;
 
 namespace LudoConsole.Ui.Components
 {
     internal class UiGameSquare : UiGameSquareBase
     {
-        public UiGameSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawnDto> Pawns,
+        public UiGameSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<DtoConsolePawn> Pawns,
             ConsoleColor color) : base(charPoints, pawnCoords, Pawns, color)
         {
         }

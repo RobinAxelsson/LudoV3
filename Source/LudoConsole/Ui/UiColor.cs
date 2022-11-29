@@ -1,5 +1,5 @@
 ﻿using System;
-using LudoConsole.Mapping;
+using LudoConsole.ServerMapping;
 
 namespace LudoConsole.Ui
 {
