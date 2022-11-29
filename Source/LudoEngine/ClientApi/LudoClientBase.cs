@@ -5,11 +5,8 @@ namespace LudoEngine.ClientApi
 {
     public abstract class LudoClientBase
     {
-        public abstract void OnNewGame(DtoGame dtoGame);
-        public abstract void OnReceiveOtherMove();
-        public abstract DtoPawn OnMakeMove(DtoMakeMove dtoMakeMove);
-
-
+        public abstract void OnNewGame(DtoLudoGame dtoLudoGame);
+        public abstract void OnGetMove(DtoMove move);
     }
 
     //public enum TeamColor

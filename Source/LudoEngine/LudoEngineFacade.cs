@@ -3,8 +3,12 @@ using LudoEngine.DbModel;
 using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
+using LudoEngine.ClientApi;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
+using LudoEngine.Enum;
+using LudoEngine.Exceptions;
+using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine
 {
@@ -42,6 +46,12 @@ namespace LudoEngine
             var squares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
             GameSetup.SetUpPawnsNewGame(squares);
             return squares;
+        }
+
+        public static void RunDemo(LudoClientBase ludoClient)
+        {
+            var gameSquares = GameSquareFactory.CreateGameSquares(@"Board/Map/BoardMap.txt");
+            ludoClient.OnNewGame(ClientMapper.MapGame(gameSquares));
         }
     }
 

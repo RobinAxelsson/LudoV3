@@ -1,17 +1,22 @@
 using System;
-using LudoEngine.Board;
+using System.Collections.Generic;
+using System.Linq;
 using LudoEngine.Board.Square;
 using LudoEngine.ClientApi.Dto;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
-using LudoEngine.Models;
 
 namespace LudoEngine.ClientApi
 {
     internal static class ClientMapper
     {
-        public static DtoGameSquare MapGameSquare(IGameSquare gameSquare)
+        public static DtoLudoGame MapGame(List<IGameSquare> boardSquares)
+        {
+            return new DtoLudoGame(boardSquares.Select(MapGameSquare));
+        }
+
+        private static DtoGameSquare MapGameSquare(IGameSquare gameSquare)
         {
             SquareType GetSquareType(IGameSquare square)
             {
@@ -30,7 +35,7 @@ namespace LudoEngine.ClientApi
             return new DtoGameSquare(gameSquare.BoardX, gameSquare.BoardY, MapTeamColor(gameSquare.Color), GetSquareType(gameSquare));
         }
 
-        public static DtoPawn MapPawn(Pawn pawn)
+        private static DtoPawn MapPawn(Pawn pawn)
         {
             return new DtoPawn(pawn.Id, pawn.CurrentSquare().BoardX, pawn.CurrentSquare().BoardY, pawn.Color);
         }

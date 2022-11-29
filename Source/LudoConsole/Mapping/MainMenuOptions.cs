@@ -2,10 +2,11 @@
 {
     public enum MainMenuOptions
     {
-        TestRender = 0,
-        NewGame = 1,
-        LoadGame = 2,
-        Controls = 3,
-        Exit = 4
+        Demo = 0,
+        TestRender = 1,
+        NewGame = 2,
+        LoadGame = 3,
+        Controls = 4,
+        Exit = 5
     }
 }

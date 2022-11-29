@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using LudoConsole.Controller;
 using LudoConsole.Exceptions;
 using LudoConsole.Mapping;
 using LudoConsole.Ui;
@@ -23,11 +24,19 @@ namespace LudoConsole
 
                 switch (selectedOption)
                 {
-                    case MainMenuOptions.TestRender:
+                    case MainMenuOptions.Demo:
                     {
                         Console.Clear();
 
+                        LudoEngineFacade.RunDemo(new LudoConsoleClient());
 
+                        Console.ReadKey();
+                        break;
+                    }
+
+                    case MainMenuOptions.TestRender:
+                    {
+                        Console.Clear();
 
                         var facadeSquares = LudoEngineFacade.GetNewGameBoardSquares();
                         var squares = ConsoleDtoMapping.Map(facadeSquares);

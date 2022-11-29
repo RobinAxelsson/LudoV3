@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoEngine.ClientApi.Dto;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
-using LudoEngine.Models;
 
 namespace LudoConsole.Mapping
 {
@@ -12,10 +12,15 @@ namespace LudoConsole.Mapping
     {
         public static IEnumerable<ConsoleGameSquare> Map(IEnumerable<IGameSquare> gameSquares)
         {
-            return gameSquares.Select(x => MapSingle(x));
+            return gameSquares.Select(MapGameSquare);
         }
 
-        private static ConsoleGameSquare MapSingle(IGameSquare square)
+        public static IEnumerable<ConsoleGameSquare> Map(DtoLudoGame ludoGame)
+        {
+            return ludoGame.GameSquares.Select(MapGameSquare);
+        }
+
+        private static ConsoleGameSquare MapGameSquare(IGameSquare square)
         {
             return new ConsoleGameSquare
             {
@@ -24,6 +29,18 @@ namespace LudoConsole.Mapping
                 BoardY = square.BoardY,
                 Color = MapColor(square.Color),
                 Pawns = square.Pawns.Select(MapPawn).ToList()
+            };
+        }
+
+        private static ConsoleGameSquare MapGameSquare(DtoGameSquare square)
+        {
+            return new ConsoleGameSquare
+            {
+                IsBase = square.SquareType == SquareType.TeamBase,
+                BoardX = square.BoardX,
+                BoardY = square.BoardY,
+                Color = MapColor(square.Color),
+                Pawns = new List<ConsolePawnDto>(),
             };
         }
 
@@ -46,6 +63,19 @@ namespace LudoConsole.Mapping
                 TeamColor.Red => ConsoleTeamColor.Red,
                 TeamColor.Yellow => ConsoleTeamColor.Yellow,
                 TeamColor.Green => ConsoleTeamColor.Green,
+                _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
+            };
+        }
+
+        private static ConsoleTeamColor MapColor(LudoColor color)
+        {
+            return color switch
+            {
+                LudoColor.Blue => ConsoleTeamColor.Blue,
+                LudoColor.Red => ConsoleTeamColor.Red,
+                LudoColor.Yellow => ConsoleTeamColor.Yellow,
+                LudoColor.Green => ConsoleTeamColor.Green,
+                LudoColor.Default => ConsoleTeamColor.Default,
                 _ => throw new ArgumentOutOfRangeException(nameof(color), color, null)
             };
         }

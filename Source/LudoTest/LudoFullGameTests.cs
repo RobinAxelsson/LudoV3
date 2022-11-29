@@ -8,7 +8,7 @@ using Xunit;
 namespace LudoTest
 {
     [Collection(nameof(LudoXUnitCollection))]
-    public class LudoEngineTests
+    public class LudoFullGameTests
     {
         [Fact]
         public void Run_full_game()
