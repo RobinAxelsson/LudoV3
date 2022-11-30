@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace LudoConsole.Ui.Models
+namespace LudoConsole.View.Components.Models
 {
-    public class DrawableCharPoint
+    internal sealed class ConsolePixel
     {
         public int CoordinateX { get; init; }
         public int CoordinateY { get; init; }
@@ -16,7 +16,7 @@ namespace LudoConsole.Ui.Models
         {
             if (obj == null) return false;
             if (obj.GetType() != GetType()) return false;
-            return Equals((DrawableCharPoint) obj);
+            return Equals((ConsolePixel) obj);
         }
 
         public override int GetHashCode()
@@ -24,7 +24,7 @@ namespace LudoConsole.Ui.Models
             return HashCode.Combine(CoordinateX, CoordinateY, Chars, (int) BackgroundColor, (int) ForegroundColor);
         }
 
-        private bool Equals(DrawableCharPoint other)
+        private bool Equals(ConsolePixel other)
         {
             return CoordinateX == other.CoordinateX
                    && CoordinateY == other.CoordinateY
@@ -33,10 +33,10 @@ namespace LudoConsole.Ui.Models
                    && BackgroundColor == other.BackgroundColor;
         }
 
-        public static DrawableCharPoint Square(char chr, (int X, int Y) coord, ConsoleColor backgroundColor,
-            ConsoleColor foreGroundColor = UiColor.DefaultBoardChars)
+        public static ConsolePixel Square(char chr, (int X, int Y) coord, ConsoleColor backgroundColor,
+            ConsoleColor foreGroundColor = ColorManager.DefaultBoardChars)
         {
-            return new DrawableCharPoint
+            return new ConsolePixel
             {
                 CoordinateX = coord.X,
                 CoordinateY = coord.Y,
@@ -46,22 +46,22 @@ namespace LudoConsole.Ui.Models
             };
         }
 
-        public static DrawableCharPoint Pawn((int x, int y) coords, ConsoleColor pawnColor, ConsoleColor? squareColor,
+        public static ConsolePixel Pawn((int x, int y) coords, ConsoleColor pawnColor, ConsoleColor? squareColor,
             char chr = ' ')
         {
-            return new DrawableCharPoint
+            return new ConsolePixel
             {
                 CoordinateX = coords.x,
                 CoordinateY = coords.y,
-                BackgroundColor = pawnColor == squareColor ? UiColor.PawnInverseColor : pawnColor,
-                ForegroundColor = pawnColor == squareColor ? pawnColor : UiColor.DarkAccent,
+                BackgroundColor = pawnColor == squareColor ? ColorManager.PawnInverseColor : pawnColor,
+                ForegroundColor = pawnColor == squareColor ? pawnColor : ColorManager.DarkAccent,
                 Chars = pawnColor == squareColor ? "x" : chr.ToString()
             };
         }
 
-        public static DrawableCharPoint Text(int coordX, int coordY, char chr)
+        public static ConsolePixel Text(int coordX, int coordY, char chr)
         {
-            return new DrawableCharPoint
+            return new ConsolePixel
             {
                 CoordinateX = coordX,
                 CoordinateY = coordY,

@@ -8,15 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Ui\Components\AsciiArt\boardsquare.txt" />
-      <None Remove="Ui\Components\AsciiArt\teambase.txt" />
+      <None Remove="View\Components\AsciiArt\boardsquare.txt" />
+      <None Remove="View\Components\AsciiArt\teambase.txt" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Ui\Components\AsciiArt\teambase.txt">
+      <Content Include="View\Components\AsciiArt\teambase.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Include="Ui\Components\AsciiArt\boardsquare.txt">
+      <Content Include="View\Components\AsciiArt\boardsquare.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

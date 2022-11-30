@@ -2,42 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using LudoConsole.ServerMapping;
-using LudoConsole.Ui.Components;
+using LudoConsole.View.Components;
 using LudoEngine.GameLogic;
 
-namespace LudoConsole.Ui
+namespace LudoConsole.View
 {
-    public class BoardRenderer
+    internal class BoardRenderer
     {
-        private readonly IEnumerable<UiGameSquareBase> _squareDrawables;
+        private readonly IReadOnlyList<ViewGameSquareBase> _uiGameSquares;
 
-        public BoardRenderer(IEnumerable<DtoConsoleGameSquare> gameSquares)
+        public BoardRenderer(IReadOnlyList<ViewGameSquareBase> uiGameSquares)
         {
-            _squareDrawables = UiGameSquareFactory.CreateUiGameSquares(gameSquares);
+            _uiGameSquares = uiGameSquares;
             Pawn.GameOverEvent += OnGameOver;
         }
 
         private Thread _thread { get; set; }
         private bool IsRunning { get; set; }
 
-        public static BoardRenderer StartRender(IEnumerable<DtoConsoleGameSquare> gameSquares)
+        public static BoardRenderer StartRender(IReadOnlyList<ViewGameSquareBase> uiGameSquares)
         {
-            var boardRenderer = new BoardRenderer(gameSquares);
+            var boardRenderer = new BoardRenderer(uiGameSquares);
             boardRenderer.Start();
             return boardRenderer;
         }
 
         public void Start()
         {
-            UiColor.SetDefault();
+            ColorManager.SetDefault();
             IsRunning = true;
 
             _thread = new Thread(() =>
             {
                 while (IsRunning)
                 {
-                    ConsoleWriter.UpdateBoard(_squareDrawables.ToList());
+                    ConsoleWriter.UpdateBoard(_uiGameSquares.ToList());
                     Thread.Sleep(200);
                 }
             });

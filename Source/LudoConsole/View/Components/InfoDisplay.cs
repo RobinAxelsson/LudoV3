@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using LudoConsole.Ui.Models;
+using LudoConsole.View.Components.Models;
 using LudoEngine.Enum;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
 using LudoEngine.Interfaces;
-using LudoEngine.Models;
 
-namespace LudoConsole.Ui.Components
+namespace LudoConsole.View.Components
 {
     public class InfoDisplay
     {
@@ -29,7 +28,7 @@ namespace LudoConsole.Ui.Components
             Pawn.GameOverEvent += MessageGameOver;
         }
 
-        private List<DrawableCharPoint> drawables { get; } = new();
+        private List<ConsolePixel> drawables { get; } = new();
         private int X { get; }
         private int Y { get; }
 
@@ -120,7 +119,7 @@ namespace LudoConsole.Ui.Components
             var x = 0;
             foreach (var chr in newString)
             {
-                drawables.Add(DrawableCharPoint.Text(X + x, Y, chr));
+                drawables.Add(ConsolePixel.Text(X + x, Y, chr));
                 x++;
             }
 

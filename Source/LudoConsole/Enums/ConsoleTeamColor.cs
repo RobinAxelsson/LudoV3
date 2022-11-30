@@ -1,4 +1,4 @@
-﻿namespace LudoConsole.ServerMapping
+﻿namespace LudoConsole.Enums
 {
     public enum ConsoleTeamColor
     {

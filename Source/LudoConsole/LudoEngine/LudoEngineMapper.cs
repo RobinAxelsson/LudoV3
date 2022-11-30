@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LudoConsole.Enums;
+using LudoConsole.Model;
 using LudoEngine.ClientApi.Dto;
 
-namespace LudoConsole.ServerMapping
+namespace LudoConsole.LudoEngine
 {
-    internal static class ConsoleDtoMapper
+    internal static class LudoEngineMapper
     {
-        public static IEnumerable<DtoConsoleGameSquare> Map(DtoLudoGame ludoGame)
+        public static IEnumerable<ConsoleGameSquare> Map(DtoLudoGame ludoGame)
         {
             return ludoGame.GameSquares.Select(MapGameSquare);
         }
 
-        private static DtoConsoleGameSquare MapGameSquare(DtoGameSquare square)
+        private static ConsoleGameSquare MapGameSquare(DtoGameSquare square)
         {
-            return new DtoConsoleGameSquare
+            return new ConsoleGameSquare
             {
                 IsBase = square.SquareType == SquareType.TeamBase,
                 BoardX = square.BoardX,
@@ -24,12 +26,13 @@ namespace LudoConsole.ServerMapping
             };
         }
 
-        private static DtoConsolePawn MapPawn(DtoPawn pawn)
+        private static ConsolePawn MapPawn(DtoPawn pawn)
         {
-            return new DtoConsolePawn
+            return new ConsolePawn
             {
                 Id = pawn.Id,
-                IsSelected = true,
+                //IsSelected = true,
+                IsSelected = false,
                 Color = MapColor(pawn.Color)
             };
         }

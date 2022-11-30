@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LudoConsole.Ui.Components
+namespace LudoConsole.Controller
 {
     public static class ConsoleInfo
     {

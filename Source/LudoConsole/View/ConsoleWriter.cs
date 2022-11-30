@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.Ui.Components;
-using LudoConsole.Ui.Models;
+using LudoConsole.View.Components;
+using LudoConsole.View.Components.Models;
 
-namespace LudoConsole.Ui
+namespace LudoConsole.View
 {
     internal static class ConsoleWriter
     {
-        private static readonly List<DrawableCharPoint> ScreenMemory = new();
+        private static readonly List<ConsolePixel> ScreenMemory = new();
 
-        public static void TryAppend(List<UiGameSquareBase> squares)
+        public static void TryAppend(List<ViewGameSquareBase> squares)
         {
             var drawables = squares.Select(x => x.Refresh()).SelectMany(x => x);
             TryAppend(drawables.ToList());
         }
 
-        public static void TryAppend(DrawableCharPoint tryUnit)
+        public static void TryAppend(ConsolePixel tryUnit)
         {
             if (IsInScreenMemory(tryUnit)) return;
 
@@ -29,12 +29,12 @@ namespace LudoConsole.Ui
             ScreenMemory.Add(tryUnit);
         }
 
-        public static void TryAppend(List<DrawableCharPoint> drawables)
+        public static void TryAppend(List<ConsolePixel> drawables)
         {
             drawables.ForEach(x => TryAppend(x));
         }
 
-        public static void UpdateBoard(List<UiGameSquareBase> squareDrawables)
+        public static void UpdateBoard(List<ViewGameSquareBase> squareDrawables)
         {
             TryAppend(squareDrawables);
             Update();
@@ -42,7 +42,7 @@ namespace LudoConsole.Ui
 
         public static void Update()
         {
-            var toRemove = new List<DrawableCharPoint>();
+            var toRemove = new List<ConsolePixel>();
             var countedMemory = ScreenMemory.Count;
 
             for (var i = 0; i < countedMemory; i++)
@@ -74,7 +74,7 @@ namespace LudoConsole.Ui
             ScreenMemory.FindAll(x => x.CoordinateY >= first && x.CoordinateY <= last).ForEach(x => x.DoErase = true);
         }
 
-        private static bool IsInScreenMemory(DrawableCharPoint drawableCharPoint)
+        private static bool IsInScreenMemory(ConsolePixel consolePixel)
         {
             var countedMemory = ScreenMemory.Count;
 
@@ -82,32 +82,32 @@ namespace LudoConsole.Ui
             {
                 if (countedMemory < ScreenMemory.Count) countedMemory = ScreenMemory.Count;
                 var drawableCompare = ScreenMemory[i];
-                if (drawableCharPoint.Equals(drawableCompare))
+                if (consolePixel.Equals(drawableCompare))
                     return true;
             }
 
             return false;
         }
 
-        private static void Write(DrawableCharPoint drawableCharPoint)
+        private static void Write(ConsolePixel consolePixel)
         {
-            Console.ForegroundColor = drawableCharPoint.ForegroundColor;
-            Console.BackgroundColor = drawableCharPoint.BackgroundColor;
-            Console.SetCursorPosition(drawableCharPoint.CoordinateX, drawableCharPoint.CoordinateY);
-            Console.Write(drawableCharPoint.Chars);
-            drawableCharPoint.IsDrawn = true;
-            Console.ForegroundColor = UiColor.DefaultForegroundColor;
-            Console.BackgroundColor = UiColor.DefaultBackgroundColor;
+            Console.ForegroundColor = consolePixel.ForegroundColor;
+            Console.BackgroundColor = consolePixel.BackgroundColor;
+            Console.SetCursorPosition(consolePixel.CoordinateX, consolePixel.CoordinateY);
+            Console.Write(consolePixel.Chars);
+            consolePixel.IsDrawn = true;
+            Console.ForegroundColor = ColorManager.DefaultForegroundColor;
+            Console.BackgroundColor = ColorManager.DefaultBackgroundColor;
         }
 
-        private static void Erase(DrawableCharPoint drawableCharPoint)
+        private static void Erase(ConsolePixel consolePixel)
         {
-            Console.BackgroundColor = UiColor.DefaultBackgroundColor;
-            Console.SetCursorPosition(drawableCharPoint.CoordinateX, drawableCharPoint.CoordinateY);
+            Console.BackgroundColor = ColorManager.DefaultBackgroundColor;
+            Console.SetCursorPosition(consolePixel.CoordinateX, consolePixel.CoordinateY);
             Console.Write(" ");
-            Console.ForegroundColor = UiColor.DefaultForegroundColor;
-            drawableCharPoint.IsDrawn = false;
-            drawableCharPoint.DoErase = false;
+            Console.ForegroundColor = ColorManager.DefaultForegroundColor;
+            consolePixel.IsDrawn = false;
+            consolePixel.DoErase = false;
         }
     }
 }

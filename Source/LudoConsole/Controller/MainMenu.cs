@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LudoConsole.ServerMapping;
+using LudoConsole.Enums;
 using LudoEngine.Enum;
 
-namespace LudoConsole.Ui.Components
+namespace LudoConsole.Controller
 {
     public static class MainMenu
     {
@@ -134,7 +134,7 @@ namespace LudoConsole.Ui.Components
         public static int AskForNumberOfHumanPlayers()
         {
             Console.Clear();
-            var playerCount = ShowMenu("How many players are you: ", new[] {"1", "2", "3", "4"}) + 1;
+            var playerCount = ShowMenu("How many players are you: ", new[] { "1", "2", "3", "4" }) + 1;
             return playerCount;
         }
 

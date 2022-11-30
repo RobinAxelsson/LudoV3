@@ -1,6 +1,8 @@
-﻿namespace LudoConsole.ServerMapping
+﻿using LudoConsole.Enums;
+
+namespace LudoConsole.Model
 {
-    public class DtoConsolePawn
+    public class ConsolePawn
     {
         public int Id { get; init; }
         public bool IsSelected { get; init; }

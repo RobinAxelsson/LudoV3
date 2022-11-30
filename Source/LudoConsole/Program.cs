@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using LudoConsole.Controller;
+using LudoConsole.Enums;
 using LudoConsole.Exceptions;
-using LudoConsole.ServerMapping;
-using LudoConsole.Ui;
-using LudoConsole.Ui.Components;
+using LudoConsole.LudoEngine;
 using LudoEngine;
 
 namespace LudoConsole
@@ -28,7 +27,7 @@ namespace LudoConsole
                     {
                         Console.Clear();
 
-                        LudoEngineFacade.RunDemo(new LudoConsoleClient());
+                        LudoEngineFacade.RunDemo(new LudoEngineClient());
 
                         Console.ReadKey();
                         break;

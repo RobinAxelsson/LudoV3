@@ -1,9 +1,9 @@
 ﻿using System;
-using LudoConsole.ServerMapping;
+using LudoConsole.Enums;
 
-namespace LudoConsole.Ui
+namespace LudoConsole.View
 {
-    internal static class UiColor
+    internal static class ColorManager
     {
         internal const ConsoleColor LightAccent = ConsoleColor.Gray;
         internal const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
