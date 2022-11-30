@@ -3,11 +3,10 @@ using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
 using LudoEngine.Enum;
-using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public class Pawn
+    internal class Pawn
     {
         private static int highestId { get; set; }
         public Pawn(TeamColor color)
@@ -29,7 +28,7 @@ namespace LudoEngine.GameLogic
         public static event Action GameOverEvent;
         public static event Action<Pawn> OnSafeZoneEvent;
 
-        public IGameSquare CurrentSquare() => GameBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
+        public SquareBase CurrentSquare() => GameBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
         public bool Based() => GameBoard.PawnsInBase(GameBoard.BoardSquares, Color).Contains(this);
         public void Move(int dice)
         {

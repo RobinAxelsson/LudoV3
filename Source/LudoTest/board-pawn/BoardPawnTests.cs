@@ -92,7 +92,7 @@ namespace LudoTest.board_pawn
             var startSquare = GameBoard.StartSquare(GameBoard.BoardSquares, TeamColor.Red);
             startSquare.Pawns.Add(redPawn);
 
-            var squarse = GameBoard.BoardSquares;
+            var squares = GameBoard.BoardSquares;
             redPawn.Move(4);
             var expectedSquare = GameBoard.BoardSquares[2];
 

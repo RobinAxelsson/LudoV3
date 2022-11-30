@@ -7,11 +7,11 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board
 {
-    public static class GameSquareFactory
+    internal static class GameSquareFactory
     {
-        public static List<IGameSquare> CreateGameSquares(string filePath)
+        public static List<SquareBase> CreateGameSquares(string filePath)
         {
-            var squares = new List<IGameSquare>();
+            var squares = new List<SquareBase>();
             var charCoords = ReadCharCoords(filePath);
 
             foreach (var charCoord in charCoords)
@@ -48,7 +48,7 @@ namespace LudoEngine.Board
             return charCoord;
         }
 
-        private static IGameSquare MapGameSquare(char chr, int x, int y)
+        private static SquareBase MapGameSquare(char chr, int x, int y)
         {
             return chr switch
             {

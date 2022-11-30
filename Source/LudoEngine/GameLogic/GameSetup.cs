@@ -11,7 +11,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public static class GameSetup
+    internal static class GameSetup
     { 
         public static void LoadSavedPawns(List<PawnSavePoint> savePoints)
         {
@@ -22,14 +22,14 @@ namespace LudoEngine.GameLogic
                 squareToPut.Pawns.Add(new Pawn(sp.Color));
             }
         }
-        public static List<TeamColor> Load(List<IGameSquare> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
+        public static List<TeamColor> Load(List<SquareBase> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
                 gameSquares.Find(x => x.BoardX == teamCoord.position.X && x.BoardY == teamCoord.position.Y).Pawns.Add(new Pawn(teamCoord.color));
 
             return teamCoords.Select(x => x.color).Distinct().ToList();;
         }
-        public static void SetUpPawnsNewGame(List<IGameSquare> gameSquares, TeamColor[] colors = null)
+        public static void SetUpPawnsNewGame(List<SquareBase> gameSquares, TeamColor[] colors = null)
         {
             colors ??= new [] { TeamColor.Blue, TeamColor.Red, TeamColor.Green, TeamColor.Yellow };
 

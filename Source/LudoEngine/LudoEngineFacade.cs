@@ -18,19 +18,19 @@ namespace LudoEngine
         }
 
 
-        public static StageSavingDto GetStageSavingDto(int id)
-        {
-            var game = DatabaseManagement.GetGames().Single(x =>x.Id == id);
+        //public static StageSavingDto GetStageSavingDto(int id)
+        //{
+        //    var game = DatabaseManagement.GetGames().Single(x =>x.Id == id);
 
-            return new StageSavingDto()
-            {
-                CurrentTeam = StageSaving.CurrentTeam,
-                Pawns = StageSaving.Pawns,
-                Game = game,
-                Players = StageSaving.Players,
-                TeamPosition = DatabaseManagement.GetPawnPositionsInGame(game)
-            };
-        }
+        //    return new StageSavingDto()
+        //    {
+        //        CurrentTeam = StageSaving.CurrentTeam,
+        //        Pawns = StageSaving.Pawns,
+        //        Game = game,
+        //        Players = StageSaving.Players,
+        //        TeamPosition = DatabaseManagement.GetPawnPositionsInGame(game)
+        //    };
+        //}
 
         //public static List<IGameSquare> GetNewGameBoardSquares()
         //{

@@ -11,14 +11,14 @@ namespace LudoEngine.ClientApi
 {
     internal static class ClientMapper
     {
-        public static DtoLudoGame MapGame(List<IGameSquare> boardSquares)
+        public static DtoLudoGame MapGame(List<SquareBase> boardSquares)
         {
             return new DtoLudoGame(boardSquares.Select(MapGameSquare));
         }
 
-        private static DtoGameSquare MapGameSquare(IGameSquare gameSquare)
+        private static DtoGameSquare MapGameSquare(SquareBase gameSquare)
         {
-            SquareType GetSquareType(IGameSquare square)
+            SquareType GetSquareType(SquareBase square)
             {
                 return square switch
                 {

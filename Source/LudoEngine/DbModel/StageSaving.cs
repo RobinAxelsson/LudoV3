@@ -4,7 +4,7 @@ using LudoEngine.GameLogic;
 
 namespace LudoEngine.DbModel
 {
-    public static class StageSaving {
+    internal static class StageSaving {
         public static List<Pawn> Pawns { get; set;}
 
         public static Game Game { get; set; }
@@ -16,7 +16,7 @@ namespace LudoEngine.DbModel
         public static int CurrentTeam { get; set; }
     }
 
-    public sealed class StageSavingDto
+    internal sealed class StageSavingDto
     {
         public  List<Pawn> Pawns { get; init; }
 

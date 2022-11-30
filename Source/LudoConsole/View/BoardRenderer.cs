@@ -14,7 +14,7 @@ namespace LudoConsole.View
         public BoardRenderer(IReadOnlyList<ViewGameSquareBase> uiGameSquares)
         {
             _uiGameSquares = uiGameSquares;
-            Pawn.GameOverEvent += OnGameOver;
+            //Pawn.GameOverEvent += OnGameOver;
         }
 
         private Thread _thread { get; set; }

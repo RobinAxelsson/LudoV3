@@ -1,23 +1,14 @@
-﻿using System.Collections.Generic;
-using LudoEngine.Enum;
-using LudoEngine.GameLogic;
-using LudoEngine.Interfaces;
-
+﻿using LudoEngine.Enum;
 namespace LudoEngine.Board.Square
 {
-    internal sealed class SquareGoal : IGameSquare
+    internal sealed class SquareGoal : SquareBase
     {
         public SquareGoal(int boardX, int boardY)
         {
             BoardX = boardX;
             BoardY = boardY;
         }
-        public int BoardX { get; set; }
-        public int BoardY { get; set; }
-        public TeamColor? Color { get; set; } = null;
-        public List<Pawn> Pawns { get; set; } = new List<Pawn>();
-        public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColor Color)
+        public override BoardDirection DirectionNext(TeamColor color)
         {
                 return
                    Color == TeamColor.Yellow ? BoardDirection.Up :

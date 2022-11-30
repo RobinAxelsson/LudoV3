@@ -1,13 +1,12 @@
 ﻿using LudoEngine.DbModel;
 using LudoEngine.Enum;
-using LudoEngine.Models;
 using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
 
 namespace LudoEngine.GameLogic
 {
-    public static class GameRules
+    internal static class GameRules
     {
         public static List<Pawn> SelectablePawns(TeamColor color, int dieRoll)
         {

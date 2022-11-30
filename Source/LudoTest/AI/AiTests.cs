@@ -5,6 +5,7 @@ using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Collections.Generic;
 using LudoEngine.Board;
+using LudoEngine.Board.Square;
 using LudoEngine.Interfaces;
 
 namespace LudoTest.AI
@@ -12,7 +13,7 @@ namespace LudoTest.AI
     [Collection(nameof(LudoXUnitCollection))]
     public class AiTests
     {
-        private List<IGameSquare> BoardSquares => GameBoard.BoardSquares;
+        private List<SquareBase> BoardSquares => GameBoard.BoardSquares;
 
         [Fact]
         public void Stephan_Choices_AssertErradicate()

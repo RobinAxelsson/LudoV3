@@ -5,7 +5,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board.Square
 {
-    internal sealed class SquareStandard : IGameSquare
+    internal sealed class SquareStandard : SquareBase
     {
         public SquareStandard(int boardX, int boardY, BoardDirection direction)
         {
@@ -14,11 +14,6 @@ namespace LudoEngine.Board.Square
             DefaultDirection = direction;
         }
 
-        public TeamColor? Color { get; set; } = null;
-        public int BoardX { get; set; }
-        public int BoardY { get; set; }
-        public List<Pawn> Pawns { get; set; } = new List<Pawn>();
-        public BoardDirection DefaultDirection { get; set; }
-        public BoardDirection DirectionNext(TeamColor Color) => DefaultDirection;
+        public override BoardDirection DirectionNext(TeamColor color) => DefaultDirection;
     }
 }

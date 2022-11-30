@@ -19,13 +19,13 @@ namespace LudoConsole.View.Components
             HumanPlayer.HumanThrowEvent += UpdateDiceRoll;
             HumanPlayer.OnTakeOutTwoPossibleEvent += MessageTakeOutTwoPossible;
             Stephan.StephanThrowEvent += UpdateDiceRoll;
-            Pawn.OnAllTeamPawnsOutEvent += MessageOnAllTeamPawnsOut;
-            Pawn.OnBounceEvent += MessageOnBounce;
-            Pawn.OnEradicationEvent += MessageOnEradication;
-            Pawn.OnGoalEvent += MessageOnGoal;
-            Pawn.OnSafeZoneEvent += MessageOnSafeZone;
-            Pawn.GameLoserEvent += LoserMessage;
-            Pawn.GameOverEvent += MessageGameOver;
+            //Pawn.OnAllTeamPawnsOutEvent += MessageOnAllTeamPawnsOut;
+            //Pawn.OnBounceEvent += MessageOnBounce;
+            //Pawn.OnEradicationEvent += MessageOnEradication;
+            //Pawn.OnGoalEvent += MessageOnGoal;
+            //Pawn.OnSafeZoneEvent += MessageOnSafeZone;
+            //Pawn.GameLoserEvent += LoserMessage;
+            //Pawn.GameOverEvent += MessageGameOver;
         }
 
         private List<ConsolePixel> drawables { get; } = new();
@@ -38,48 +38,48 @@ namespace LudoConsole.View.Components
             Thread.Sleep(1000);
         }
 
-        public void MessageOnSafeZone(Pawn pawn)
-        {
-            Update($"Close one {pawn.Color}!");
-            Thread.Sleep(1000);
-            Update("Pawn is safe.");
-            Thread.Sleep(1000);
-        }
+        //public void MessageOnSafeZone(Pawn pawn)
+        //{
+        //    Update($"Close one {pawn.Color}!");
+        //    Thread.Sleep(1000);
+        //    Update("Pawn is safe.");
+        //    Thread.Sleep(1000);
+        //}
 
         public void MessageGameOver()
         {
             Update("Game Over");
         }
 
-        public void MessageOnGoal(Pawn pawn, int pawnsInPlay)
-        {
-            Update($"{pawn.Color} scored!");
-            Thread.Sleep(1000);
-            Update($"{pawnsInPlay} to go...");
-            Thread.Sleep(1000);
-        }
+        //public void MessageOnGoal(Pawn pawn, int pawnsInPlay)
+        //{
+        //    Update($"{pawn.Color} scored!");
+        //    Thread.Sleep(1000);
+        //    Update($"{pawnsInPlay} to go...");
+        //    Thread.Sleep(1000);
+        //}
 
-        public void MessageOnEradication(Pawn pawn, TeamColor enemyColor, int eradicatedEnemies)
-        {
-            Update($"{pawn.Color} kills...");
-            Thread.Sleep(1000);
-            Update($"{eradicatedEnemies} {enemyColor}!");
-            Thread.Sleep(1000);
-        }
+        //public void MessageOnEradication(Pawn pawn, TeamColor enemyColor, int eradicatedEnemies)
+        //{
+        //    Update($"{pawn.Color} kills...");
+        //    Thread.Sleep(1000);
+        //    Update($"{eradicatedEnemies} {enemyColor}!");
+        //    Thread.Sleep(1000);
+        //}
 
-        public void MessageOnBounce(Pawn pawn)
-        {
-            Update($"Bad luck {pawn.Color}!");
-            Thread.Sleep(1000);
-        }
+        //public void MessageOnBounce(Pawn pawn)
+        //{
+        //    Update($"Bad luck {pawn.Color}!");
+        //    Thread.Sleep(1000);
+        //}
 
-        public void MessageOnAllTeamPawnsOut(Pawn pawn)
-        {
-            Update($"Nice {pawn.Color}!");
-            Thread.Sleep(1000);
-            Update("All Scored!");
-            Thread.Sleep(1000);
-        }
+        //public void MessageOnAllTeamPawnsOut(Pawn pawn)
+        //{
+        //    Update($"Nice {pawn.Color}!");
+        //    Thread.Sleep(1000);
+        //    Update("All Scored!");
+        //    Thread.Sleep(1000);
+        //}
 
         public void MessageTakeOutTwoPossible(IGamePlayer player)
         {
