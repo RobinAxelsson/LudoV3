@@ -5,7 +5,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board.Square
 {
-    public class SquareSafeZone : IGameSquare
+    internal sealed class SquareSafeZone : IGameSquare
     {
         public SquareSafeZone(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {

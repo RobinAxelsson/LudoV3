@@ -5,7 +5,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board.Square
 {
-    public class SquareTeamBase : IGameSquare
+    internal sealed class SquareTeamBase : IGameSquare
     {
         public SquareTeamBase(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {

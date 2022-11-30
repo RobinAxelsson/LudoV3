@@ -5,7 +5,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board.Square
 {
-    public class SquareStandard : IGameSquare
+    internal sealed class SquareStandard : IGameSquare
     {
         public SquareStandard(int boardX, int boardY, BoardDirection direction)
         {
