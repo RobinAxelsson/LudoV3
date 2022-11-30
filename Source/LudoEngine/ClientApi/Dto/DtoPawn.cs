@@ -1,4 +1,4 @@
-﻿using LudoEngine.Enum;
+﻿using LudoEngine.ClientApi.Enums;
 
 namespace LudoEngine.ClientApi.Dto
 {

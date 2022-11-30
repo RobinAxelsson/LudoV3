@@ -1,4 +1,4 @@
-﻿namespace LudoEngine.Enum
+﻿namespace LudoEngine.Enums
 {
     public enum TeamColor
     {

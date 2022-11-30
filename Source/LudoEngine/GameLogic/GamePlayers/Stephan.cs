@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic.GamePlayers
@@ -177,7 +177,7 @@ namespace LudoEngine.GameLogic.GamePlayers
             foreach (var square in GameBoard.TeamPath(GameBoard.BoardSquares,Color)
                          .Where(square => square.Pawns.Count > 0 &&
                         square.Pawns[0].Color == Color &&
-                        square.GetType() != typeof(SquareGoal))) { pawn = square.Pawns[0]; }
+                        square.GetType() != typeof(GameSquareGoal))) { pawn = square.Pawns[0]; }
             return pawn;
         }
         #endregion
@@ -198,7 +198,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                     //squarePosition = GameBoard.GetNext(Board.BoardSquares, squarePosition, Color);
                     squarePosition = GameBoard.GetNext(GameBoard.BoardSquares, squarePosition, Color);
                 }
-                if (squarePosition is SquareStart && squarePosition.Color != Color)
+                if (squarePosition is GameSquareStart && squarePosition.Color != Color)
                 {
                     Result = true;
                     PawnsNotToMove.Add(pawn);
@@ -254,7 +254,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 for (var i = 0; i <= dice; i++)
                 {
                     squarePositionCalc = GameBoard.GetNext(GameBoard.BoardSquares, squarePositionCalc, Color);
-                    if (squarePositionCalc.GetType() != typeof(SquareSafeZone)) continue;
+                    if (squarePositionCalc.GetType() != typeof(GameSquareSafeZone)) continue;
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanReachSafezone] Can reach a Safezone-square. Returning move";
                     if (squarePosition != null) return squarePosition.Pawns.Find(pawn => pawn.Color == Color);
                 }
@@ -271,7 +271,7 @@ namespace LudoEngine.GameLogic.GamePlayers
                 for (var i = 0; i <= dice; i++)
                 {
                     squarePositionCalc = GameBoard.GetNext(GameBoard.BoardSquares, squarePositionCalc, Color);
-                    if (squarePositionCalc.GetType() != typeof(SquareGoal)) continue;
+                    if (squarePositionCalc.GetType() != typeof(GameSquareGoal)) continue;
                     LoggerMessage += $"\n{DateTime.Now.ToShortTimeString()}: [Method: CheckIfPawnCanReachGoal] Can reach a Goal-square. Returning move";
                     if (squarePosition != null) return squarePosition.Pawns.Find(pawn => pawn.Color == Color);
                 }

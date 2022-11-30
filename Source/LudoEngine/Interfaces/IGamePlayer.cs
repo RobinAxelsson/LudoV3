@@ -1,4 +1,4 @@
-﻿using LudoEngine.Enum;
+﻿using LudoEngine.Enums;
 
 namespace LudoEngine.Interfaces
 { 

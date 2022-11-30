@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.GameLogic;
 
 namespace LudoEngine.Board.Square
 {
-    internal abstract class SquareBase
+    internal abstract class GameSquareBase
     {
         public int BoardX { get; init; }
         public int BoardY { get; init; }

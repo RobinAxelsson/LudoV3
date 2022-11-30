@@ -1,5 +1,5 @@
-﻿using LudoEngine.Enum;
-using System;
+﻿using System;
+using LudoEngine.Enums;
 
 namespace LudoEngine.Models
 {

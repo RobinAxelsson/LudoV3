@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using LudoEngine.Enum;
-using LudoEngine.GameLogic;
-using LudoEngine.Interfaces;
+﻿using LudoEngine.Enums;
 
 namespace LudoEngine.Board.Square
 {
-    internal sealed class SquareStandard : SquareBase
+    internal sealed class GameSquareStandard : GameSquareBase
     {
-        public SquareStandard(int boardX, int boardY, BoardDirection direction)
+        public GameSquareStandard(int boardX, int boardY, BoardDirection direction)
         {
             BoardX = boardX;
             BoardY = boardY;

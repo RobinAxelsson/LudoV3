@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LudoEngine.ClientApi.Enums;
 
 namespace LudoEngine.ClientApi.Dto
 {

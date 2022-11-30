@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.DbModel;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Exceptions;
 using LudoEngine.Interfaces;
 

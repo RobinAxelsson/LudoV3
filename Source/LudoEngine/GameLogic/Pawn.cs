@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 
 namespace LudoEngine.GameLogic
 {
@@ -28,66 +29,78 @@ namespace LudoEngine.GameLogic
         public static event Action GameOverEvent;
         public static event Action<Pawn> OnSafeZoneEvent;
 
-        public SquareBase CurrentSquare() => GameBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
+        public GameSquareBase CurrentSquare() => GameBoard.BoardSquares.Find(x => x.Pawns.Contains(this));
         public bool Based() => GameBoard.PawnsInBase(GameBoard.BoardSquares, Color).Contains(this);
         public void Move(int dice)
         {
+            IsSelected = false;
+            var landingSquare = GetLandingSquare(dice);
+
+            if (EnemiesExists(landingSquare))
+                EradicateEnemies(landingSquare);
+
+            if (landingSquare is GameSquareGoal)
+            {
+                ScorePawn();
+                return;
+            }
+            
+            CurrentSquare().Pawns.Remove(this);
+            landingSquare.Pawns.Add(this);
+        }
+
+        private void ScorePawn()
+        {
+            CurrentSquare().Pawns.Remove(this);
+
+            if (GameBoard.GetTeamPawns(GameBoard.BoardSquares, Color).Count == 0)
+                OnAllTeamPawnsOutEvent?.Invoke(this);
+            else
+                OnGoalEvent?.Invoke(this, GameBoard.GetTeamPawns(GameBoard.BoardSquares, Color).Count);
+
+            bool onlyOneTeamLeft = GameBoard.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList().Count == 1;
+
+            if (onlyOneTeamLeft)
+            {
+                GameLoserEvent?.Invoke(GameBoard.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList()[0]);
+                GameOverEvent?.Invoke();
+            }
+        }
+
+        private GameSquareBase GetLandingSquare(int dice)
+        {
             var tempSquare = CurrentSquare();
-            bool startingSquareIsSafeZoneSquare = tempSquare is SquareSafeZone;
-            tempSquare.Pawns.Remove(this);
 
-            bool lastIteration;
-            bool bounced = false;
-
+            var bounced = false;
             for (var i = 0; i < dice; i++)
             {
-                lastIteration = i == dice - 1;
-
-                if (tempSquare is SquareGoal || bounced == true)
+                if (tempSquare is GameSquareGoal || bounced)
                 {
                     tempSquare = GameBoard.GetBack(GameBoard.BoardSquares, tempSquare, Color);
                     bounced = true;
+                    continue;
                 }
-                else
-                {
-                    tempSquare = GameBoard.GetNext(GameBoard.BoardSquares, tempSquare, Color);
-                }
-                if (lastIteration == true && tempSquare is SquareGoal)
-                {
-                    this.IsSelected = false;
 
-                    if (GameBoard.GetTeamPawns(GameBoard.BoardSquares, Color).Count == 0)
-                        OnAllTeamPawnsOutEvent?.Invoke(this);
-                    else
-                        OnGoalEvent?.Invoke(this, GameBoard.GetTeamPawns(GameBoard.BoardSquares, Color).Count);
-
-                    bool onlyOneTeamLeft = GameBoard.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList().Count == 1;
-                    if (onlyOneTeamLeft)
-                    {
-                        GameLoserEvent?.Invoke(GameBoard.AllPlayingPawns(GameBoard.BoardSquares).Select(x => x.Color).ToList()[0]);
-                        GameOverEvent?.Invoke();
-                    }
-                    return;
-                }
+                tempSquare = GameBoard.GetNext(GameBoard.BoardSquares, tempSquare, Color);
             }
 
-            TeamColor? enemyColor = null;
-            int pawnsToEradicate = 0;
-            if (tempSquare.Pawns.Count != 0 && tempSquare.Pawns[0].Color != Color)
-            {
-                enemyColor = tempSquare.Pawns[0].Color;
-                pawnsToEradicate = tempSquare.Pawns.Count;
-                var eradicateBase = GameBoard.BaseSquare(GameBoard.BoardSquares, (TeamColor)enemyColor);
-                eradicateBase.Pawns.AddRange(tempSquare.Pawns);
-                tempSquare.Pawns.Clear();
-            }
+            return tempSquare;
+        }
 
-            if(pawnsToEradicate != 0) OnEradicationEvent?.Invoke(this, (TeamColor)enemyColor, pawnsToEradicate);
-            tempSquare.Pawns.Add(this);
-            if (bounced == true) OnBounceEvent?.Invoke(this);
-            if (tempSquare is SquareSafeZone && startingSquareIsSafeZoneSquare == false) OnSafeZoneEvent?.Invoke(this);
+        private void EradicateEnemies(GameSquareBase tempGameSquare)
+        {
+            var enemies = tempGameSquare.Pawns.ToArray();
+            var enemyColor = tempGameSquare.Pawns[0].Color;
+            var eradicateBase = GameBoard.BaseSquare(GameBoard.BoardSquares, enemyColor);
+            eradicateBase.Pawns.AddRange(tempGameSquare.Pawns);
+            tempGameSquare.Pawns.Clear();
 
-            this.IsSelected = false;
+            OnEradicationEvent?.Invoke(this, enemies.ToArray()[0].Color, enemies.Count());
+        }
+
+        private bool EnemiesExists(GameSquareBase tempGameSquare)
+        {
+            return tempGameSquare.Pawns.Any() && tempGameSquare.Pawns[0].Color != Color;
         }
     }
 }

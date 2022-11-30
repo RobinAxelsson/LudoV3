@@ -1,6 +1,6 @@
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using Xunit;
 using LudoEngine.GameLogic;
 
@@ -20,7 +20,7 @@ namespace LudoTest.board_pawn
             bluePawn.Move(7);
             var current = bluePawn.CurrentSquare();
 
-            Assert.IsType<SquareExit>(current);
+            Assert.IsType<GameSquareExit>(current);
         }
         [Fact]
         public void MoveToFinish_AndRemoveFromBoard_AssertTrue()
@@ -58,7 +58,7 @@ namespace LudoTest.board_pawn
 
             redPawn.Move(1);
             var square = GameBoard.FindPawnSquare(GameBoard.BoardSquares, redPawn);
-            Assert.IsType<SquareExit>(square);
+            Assert.IsType<GameSquareExit>(square);
         }
         [Fact]
         public void RedSafeZoneSquare_AssertTrue()
@@ -70,7 +70,7 @@ namespace LudoTest.board_pawn
 
             redPawn.Move(2);
             var square = GameBoard.FindPawnSquare(GameBoard.BoardSquares, redPawn);
-            Assert.IsType<SquareSafeZone>(square);
+            Assert.IsType<GameSquareSafeZone>(square);
         }
         [Fact]
         public void RedGoal_AssertTrue()
@@ -124,7 +124,7 @@ namespace LudoTest.board_pawn
             redPawn.Move(7);
             var current = redPawn.CurrentSquare();
 
-            Assert.IsType<SquareStandard>(current);
+            Assert.IsType<GameSquareStandard>(current);
         }
         [Fact]
         public void ErradicateOne_AssertBaseSquare()
@@ -142,7 +142,7 @@ namespace LudoTest.board_pawn
             bluePawn.Move(1);
             var current = redPawn.CurrentSquare();
 
-            Assert.IsType<SquareTeamBase>(current);
+            Assert.IsType<GameSquareTeamBase>(current);
         }
         [Fact]
         public void ErradicateTwo_AssertTwoInBase()

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using LudoEngine.Board.Square;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board
 {
     internal static class GameSquareFactory
     {
-        public static List<SquareBase> CreateGameSquares(string filePath)
+        public static List<GameSquareBase> CreateGameSquares(string filePath)
         {
-            var squares = new List<SquareBase>();
+            var squares = new List<GameSquareBase>();
             var charCoords = ReadCharCoords(filePath);
 
             foreach (var charCoord in charCoords)
@@ -48,36 +48,36 @@ namespace LudoEngine.Board
             return charCoord;
         }
 
-        private static SquareBase MapGameSquare(char chr, int x, int y)
+        private static GameSquareBase MapGameSquare(char chr, int x, int y)
         {
             return chr switch
             {
-                '0' => new SquareStandard(x, y, BoardDirection.Up),
-                '1' => new SquareStandard(x, y, BoardDirection.Right),
-                '2' => new SquareStandard(x, y, BoardDirection.Down),
-                '3' => new SquareStandard(x, y, BoardDirection.Left),
+                '0' => new GameSquareStandard(x, y, BoardDirection.Up),
+                '1' => new GameSquareStandard(x, y, BoardDirection.Right),
+                '2' => new GameSquareStandard(x, y, BoardDirection.Down),
+                '3' => new GameSquareStandard(x, y, BoardDirection.Left),
 
-                'a' => new SquareSafeZone(x, y, TeamColor.Red, BoardDirection.Down),
-                'b' => new SquareSafeZone(x, y, TeamColor.Blue, BoardDirection.Right),
-                'c' => new SquareSafeZone(x, y, TeamColor.Yellow, BoardDirection.Up),
-                'd' => new SquareSafeZone(x, y, TeamColor.Green, BoardDirection.Left),
+                'a' => new GameSquareSafeZone(x, y, TeamColor.Red, BoardDirection.Down),
+                'b' => new GameSquareSafeZone(x, y, TeamColor.Blue, BoardDirection.Right),
+                'c' => new GameSquareSafeZone(x, y, TeamColor.Yellow, BoardDirection.Up),
+                'd' => new GameSquareSafeZone(x, y, TeamColor.Green, BoardDirection.Left),
 
-                'e' => new SquareExit(x, y, TeamColor.Red, BoardDirection.Right),
-                'f' => new SquareExit(x, y, TeamColor.Blue, BoardDirection.Up),
-                'g' => new SquareExit(x, y, TeamColor.Yellow, BoardDirection.Left),
-                'h' => new SquareExit(x, y, TeamColor.Green, BoardDirection.Down),
+                'e' => new GameSquareExit(x, y, TeamColor.Red, BoardDirection.Right),
+                'f' => new GameSquareExit(x, y, TeamColor.Blue, BoardDirection.Up),
+                'g' => new GameSquareExit(x, y, TeamColor.Yellow, BoardDirection.Left),
+                'h' => new GameSquareExit(x, y, TeamColor.Green, BoardDirection.Down),
 
-                'r' => new SquareStart(x, y, TeamColor.Red, BoardDirection.Down),
-                'l' => new SquareStart(x, y, TeamColor.Blue, BoardDirection.Right),
-                'y' => new SquareStart(x, y, TeamColor.Yellow, BoardDirection.Up),
-                'n' => new SquareStart(x, y, TeamColor.Green, BoardDirection.Left),
+                'r' => new GameSquareStart(x, y, TeamColor.Red, BoardDirection.Down),
+                'l' => new GameSquareStart(x, y, TeamColor.Blue, BoardDirection.Right),
+                'y' => new GameSquareStart(x, y, TeamColor.Yellow, BoardDirection.Up),
+                'n' => new GameSquareStart(x, y, TeamColor.Green, BoardDirection.Left),
 
-                '4' => new SquareTeamBase(x, y, TeamColor.Red, BoardDirection.Left),
-                '5' => new SquareTeamBase(x, y, TeamColor.Blue, BoardDirection.Down),
-                '6' => new SquareTeamBase(x, y, TeamColor.Yellow, BoardDirection.Right),
-                '7' => new SquareTeamBase(x, y, TeamColor.Green, BoardDirection.Up),
+                '4' => new GameSquareTeamBase(x, y, TeamColor.Red, BoardDirection.Left),
+                '5' => new GameSquareTeamBase(x, y, TeamColor.Blue, BoardDirection.Down),
+                '6' => new GameSquareTeamBase(x, y, TeamColor.Yellow, BoardDirection.Right),
+                '7' => new GameSquareTeamBase(x, y, TeamColor.Green, BoardDirection.Up),
 
-                's' => new SquareGoal(x, y),
+                's' => new GameSquareGoal(x, y),
 
                 _ => throw new NullReferenceException()
             };

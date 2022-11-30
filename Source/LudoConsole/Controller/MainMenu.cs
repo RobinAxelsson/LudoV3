@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using LudoConsole.Enums;
-using LudoEngine.Enum;
+//using LudoEngine.Enums;
 
 namespace LudoConsole.Controller
 {
     public static class MainMenu
     {
-        private static List<TeamColor> HumanColor { get; } = new();
-        private static List<TeamColor> AiColor { get; } = new();
+        //private static List<TeamColor> HumanColor { get; } = new();
+        //private static List<TeamColor> AiColor { get; } = new();
 
         public static int DisplayMainMenuGetSelection()
         {
@@ -101,35 +100,35 @@ namespace LudoConsole.Controller
         //    }
         //}
 
-        public static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
-        {
-            foreach (var item in availableColors)
-            {
-                var colorAdd = item == "blue" ? TeamColor.Blue :
-                    item == "Red" ? TeamColor.Red :
-                    item == "Green" ? TeamColor.Green :
-                    TeamColor.Yellow;
-                AiColor.Add(colorAdd);
-            }
-        }
+        //public static void AddRemainingColorsAsAi(int numberOfAis, string[] availableColors)
+        //{
+        //    foreach (var item in availableColors)
+        //    {
+        //        var colorAdd = item == "blue" ? TeamColor.Blue :
+        //            item == "Red" ? TeamColor.Red :
+        //            item == "Green" ? TeamColor.Green :
+        //            TeamColor.Yellow;
+        //        AiColor.Add(colorAdd);
+        //    }
+        //}
 
-        public static (IEnumerable<TeamColor> human, IEnumerable<TeamColor> ai) SetColorSelection(int playerCount)
-        {
-            var selectableColors = Enum.GetValues<TeamColor>().ToList();
+        //public static (IEnumerable<TeamColor> human, IEnumerable<TeamColor> ai) SetColorSelection(int playerCount)
+        //{
+        //    var selectableColors = Enum.GetValues<TeamColor>().ToList();
 
-            for (var i = 0; i < playerCount; i++)
-            {
-                var colorIndex = ShowMenu("Select player color: \n",
-                    selectableColors.Select(x => x.ToString()).ToArray());
-                var color = selectableColors[colorIndex];
-                HumanColor.Add(color);
-                selectableColors.Remove(color);
-            }
+        //    for (var i = 0; i < playerCount; i++)
+        //    {
+        //        var colorIndex = ShowMenu("Select player color: \n",
+        //            selectableColors.Select(x => x.ToString()).ToArray());
+        //        var color = selectableColors[colorIndex];
+        //        HumanColor.Add(color);
+        //        selectableColors.Remove(color);
+        //    }
 
-            AiColor.AddRange(selectableColors);
+        //    AiColor.AddRange(selectableColors);
 
-            return (HumanColor, AiColor);
-        }
+        //    return (HumanColor, AiColor);
+        //}
 
         public static int AskForNumberOfHumanPlayers()
         {

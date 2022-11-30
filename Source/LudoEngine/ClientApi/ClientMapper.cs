@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board.Square;
 using LudoEngine.ClientApi.Dto;
-using LudoEngine.Enum;
+using LudoEngine.ClientApi.Enums;
+using LudoEngine.Enums;
 using LudoEngine.GameLogic;
 using LudoEngine.Interfaces;
 
@@ -11,28 +12,28 @@ namespace LudoEngine.ClientApi
 {
     internal static class ClientMapper
     {
-        public static DtoLudoGame MapGame(List<SquareBase> boardSquares)
+        public static DtoLudoGame MapGame(List<GameSquareBase> boardSquares)
         {
             return new DtoLudoGame(boardSquares.Select(MapGameSquare));
         }
 
-        private static DtoGameSquare MapGameSquare(SquareBase gameSquare)
+        private static DtoGameSquare MapGameSquare(GameSquareBase gameGameSquare)
         {
-            SquareType GetSquareType(SquareBase square)
+            SquareType GetSquareType(GameSquareBase square)
             {
                 return square switch
                 {
-                    SquareExit => SquareType.Exit,
-                    SquareGoal => SquareType.Goal,
-                    SquareSafeZone => SquareType.SafeZone,
-                    SquareStandard => SquareType.Standard,
-                    SquareStart  => SquareType.Start,
-                    SquareTeamBase => SquareType.TeamBase,
+                    GameSquareExit => SquareType.Exit,
+                    GameSquareGoal => SquareType.Goal,
+                    GameSquareSafeZone => SquareType.SafeZone,
+                    GameSquareStandard => SquareType.Standard,
+                    GameSquareStart  => SquareType.Start,
+                    GameSquareTeamBase => SquareType.TeamBase,
                     _ => throw new ArgumentOutOfRangeException(nameof(square))
                 };
             }
 
-            return new DtoGameSquare(gameSquare.BoardX, gameSquare.BoardY, MapTeamColor(gameSquare.Color), GetSquareType(gameSquare), MapPawns(gameSquare.Pawns));
+            return new DtoGameSquare(gameGameSquare.BoardX, gameGameSquare.BoardY, MapTeamColor(gameGameSquare.Color), GetSquareType(gameGameSquare), MapPawns(gameGameSquare.Pawns));
         }
 
         private static IEnumerable<DtoPawn> MapPawns(IEnumerable<Pawn> pawns)

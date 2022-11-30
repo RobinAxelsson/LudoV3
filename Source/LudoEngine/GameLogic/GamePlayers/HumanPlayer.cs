@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LudoEngine.Board;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Interfaces;
 using LudoEngine.Models;
 

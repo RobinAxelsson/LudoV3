@@ -1,5 +1,5 @@
 ﻿using LudoEngine.Board;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Exceptions;
 using LudoEngine.GameLogic;
 using LudoEngine.GameLogic.GamePlayers;

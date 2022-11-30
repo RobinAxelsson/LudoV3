@@ -1,5 +1,4 @@
-﻿using LudoEngine.Enum;
-using LudoEngine.Models;
+﻿using LudoEngine.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LudoEngine.Board;
 using LudoEngine.Board.Square;
+using LudoEngine.Enums;
 using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
@@ -22,21 +22,21 @@ namespace LudoEngine.GameLogic
                 squareToPut.Pawns.Add(new Pawn(sp.Color));
             }
         }
-        public static List<TeamColor> Load(List<SquareBase> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
+        public static List<TeamColor> Load(List<GameSquareBase> gameSquares, List<(TeamColor color, (int X, int Y) position)> teamCoords)
         {
             foreach (var teamCoord in teamCoords)
                 gameSquares.Find(x => x.BoardX == teamCoord.position.X && x.BoardY == teamCoord.position.Y).Pawns.Add(new Pawn(teamCoord.color));
 
             return teamCoords.Select(x => x.color).Distinct().ToList();;
         }
-        public static void SetUpPawnsNewGame(List<SquareBase> gameSquares, TeamColor[] colors = null)
+        public static void SetUpPawnsNewGame(List<GameSquareBase> gameSquares, TeamColor[] colors = null)
         {
             colors ??= new [] { TeamColor.Blue, TeamColor.Red, TeamColor.Green, TeamColor.Yellow };
 
             //var teamCoords = new List<(TeamColor color, (int X, int Y) position)>();
             int pawnsCount = colors == null ? 16 : 4 * colors.Count();
             
-            List<SquareTeamBase> bases = gameSquares.FindAll(x => x.GetType() == typeof(SquareTeamBase)).Select(x => (SquareTeamBase)x).ToList();
+            List<GameSquareTeamBase> bases = gameSquares.FindAll(x => x.GetType() == typeof(GameSquareTeamBase)).Select(x => (GameSquareTeamBase)x).ToList();
 
             int iTeam = 0;
             for (int i = 1; i <= pawnsCount; i++)

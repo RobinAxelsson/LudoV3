@@ -1,8 +1,8 @@
 ﻿using LudoEngine.DbModel;
-using LudoEngine.Enum;
 using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
+using LudoEngine.Enums;
 
 namespace LudoEngine.GameLogic
 {

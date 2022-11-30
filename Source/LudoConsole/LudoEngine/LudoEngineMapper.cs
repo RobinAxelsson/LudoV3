@@ -4,6 +4,7 @@ using System.Linq;
 using LudoConsole.Enums;
 using LudoConsole.Model;
 using LudoEngine.ClientApi.Dto;
+using LudoEngine.ClientApi.Enums;
 
 namespace LudoConsole.LudoEngine
 {

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using LudoEngine.Enum;
+using LudoEngine.Enums;
 using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic

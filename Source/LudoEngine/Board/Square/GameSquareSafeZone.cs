@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using LudoEngine.Enum;
-using LudoEngine.GameLogic;
-using LudoEngine.Interfaces;
+﻿using LudoEngine.Enums;
 
 namespace LudoEngine.Board.Square
 {
-    internal sealed class SquareStart : SquareBase
+    internal sealed class GameSquareSafeZone : GameSquareBase
     {
-        public SquareStart(int boardX, int boardY, TeamColor color, BoardDirection direction)
+        public GameSquareSafeZone(int boardX, int boardY, TeamColor color, BoardDirection direction)
         {
             Color = color;
             BoardX = boardX;
