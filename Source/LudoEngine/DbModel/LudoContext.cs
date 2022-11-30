@@ -1,10 +1,9 @@
 using LudoEngine.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LudoEngine.DbModel
 {
-    public class LudoContext : DbContext
+    internal sealed class LudoContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LudoEngine.Interfaces
+namespace LudoEngine.ClientApi
 {
     public interface IController
     {

@@ -12,7 +12,7 @@ using LudoEngine.GameLogic.GamePlayers;
 
 namespace LudoEngine.DbModel
 {
-    public static class DatabaseManagement
+    internal static class DatabaseManagement
     {
         public static string ConnectionString { get; private set; }
         public static Thread SaveThread;

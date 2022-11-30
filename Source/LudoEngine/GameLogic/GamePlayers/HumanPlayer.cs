@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using LudoEngine.Board;
+using LudoEngine.ClientApi;
 using LudoEngine.Enums;
 using LudoEngine.Interfaces;
-using LudoEngine.Models;
 
 namespace LudoEngine.GameLogic.GamePlayers
 {
-    public class HumanPlayer : IGamePlayer
+    internal sealed class HumanPlayer : IGamePlayer
     {
         private IController Controller { get; set; }
         public static event Action<IGamePlayer, int> HumanThrowEvent;

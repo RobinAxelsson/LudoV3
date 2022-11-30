@@ -8,7 +8,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic.GamePlayers
 {
-    public class Stephan : IGamePlayer
+    internal sealed class Stephan : IGamePlayer
     {
         public TeamColor Color { get; set; }
         public static event Action<Stephan, int> StephanThrowEvent;

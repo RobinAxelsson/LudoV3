@@ -9,7 +9,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public class GamePlay
+    internal sealed class GamePlay
     {
         private IDice dice { get; set; }
         private int iCurrentTeam { get; set; }

@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using LudoEngine.Board;
 using LudoEngine.Enums;
+using LudoEngine.ClientApi;
 
 namespace LudoEngine.Creation
 {
-    public class GameBuilder
+    internal sealed class GameBuilder
     {
         private IDice _dice { get; set; }
         private List<TeamColor> _teamColors { get; set; } = new();

@@ -3,7 +3,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public class Dice : IDice
+    internal sealed class Dice : IDice
     {
         private int Highest { get; set; }
         private int Lowest { get; set; }

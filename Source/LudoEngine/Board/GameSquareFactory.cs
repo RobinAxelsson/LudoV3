@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using LudoEngine.Board.Square;
 using LudoEngine.Enums;
-using LudoEngine.Interfaces;
 
 namespace LudoEngine.Board
 {

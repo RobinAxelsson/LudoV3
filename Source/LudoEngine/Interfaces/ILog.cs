@@ -1,6 +1,6 @@
 ﻿namespace LudoEngine.Interfaces
 {
-    public interface ILog
+    internal interface ILog
     {
         void Log(string input);
     }

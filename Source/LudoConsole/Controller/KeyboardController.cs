@@ -1,5 +1,5 @@
 ﻿using System;
-using LudoEngine.Interfaces;
+using LudoEngine.ClientApi;
 
 namespace LudoConsole.Controller
 {

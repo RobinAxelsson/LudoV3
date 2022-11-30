@@ -5,7 +5,7 @@ using LudoEngine.Interfaces;
 
 namespace LudoEngine.GameLogic
 {
-    public class StephanLog : ILog
+    internal class StephanLog : ILog
     {
         private StreamWriter Logger;
         public StephanLog(TeamColor color)

@@ -2,7 +2,7 @@
 
 namespace LudoEngine.Interfaces
 { 
-    public interface IGamePlayer
+    internal interface IGamePlayer
     {
         public TeamColor Color { get; set; }
         public void Play(IDice dice);

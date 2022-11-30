@@ -1,6 +1,6 @@
 ﻿namespace LudoEngine.Enums
 {
-    public enum BoardDirection
+    internal enum BoardDirection
     {
         Up,
         Right,
