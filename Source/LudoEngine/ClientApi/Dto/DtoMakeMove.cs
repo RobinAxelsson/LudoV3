@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using LudoEngine.Enums;
+using LudoEngine.ClientApi.Enums;
 
 namespace LudoEngine.ClientApi.Dto
 {
-    public record DtoMakeMove(int DiceRoll, IEnumerable<DtoPawn> MovablePawns, TeamColor Color);
+    public record DtoMakeMove(int DiceRoll, IEnumerable<DtoPawn> MovablePawns, LudoColor Color);
 }

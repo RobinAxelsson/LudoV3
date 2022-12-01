@@ -2,7 +2,7 @@
 
 namespace LudoEngine.Models
 {
-    public class PlayerGame
+    internal class PlayerGame
     {
         public int PlayerId { get; set; }
         public ICollection<Player> Player { get; set; }

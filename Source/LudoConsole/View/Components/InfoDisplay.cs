@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using LudoConsole.View.Components.Models;
-using LudoEngine.Enums;
-using LudoEngine.GameLogic;
-using LudoEngine.GameLogic.GamePlayers;
-using LudoEngine.Interfaces;
-
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Threading;
+//using LudoConsole.View.Components.Models;
+//using LudoEngine.GameLogic.GamePlayers;
 namespace LudoConsole.View.Components
 {
     public class InfoDisplay
     {
         public InfoDisplay(int x, int y)
         {
-            X = x;
-            Y = y;
+            //X = x;
+            //Y = y;
 
-            HumanPlayer.HumanThrowEvent += UpdateDiceRoll;
-            HumanPlayer.OnTakeOutTwoPossibleEvent += MessageTakeOutTwoPossible;
-            Stephan.StephanThrowEvent += UpdateDiceRoll;
+            //HumanPlayer.HumanThrowEvent += UpdateDiceRoll;
+            //HumanPlayer.OnTakeOutTwoPossibleEvent += MessageTakeOutTwoPossible;
+            //Stephan.StephanThrowEvent += UpdateDiceRoll;
             //Pawn.OnAllTeamPawnsOutEvent += MessageOnAllTeamPawnsOut;
             //Pawn.OnBounceEvent += MessageOnBounce;
             //Pawn.OnEradicationEvent += MessageOnEradication;
@@ -28,15 +24,15 @@ namespace LudoConsole.View.Components
             //Pawn.GameOverEvent += MessageGameOver;
         }
 
-        private List<ConsolePixel> drawables { get; } = new();
-        private int X { get; }
-        private int Y { get; }
+        //private List<ConsolePixel> drawables { get; } = new();
+        //private int X { get; }
+        //private int Y { get; }
 
-        public void LoserMessage(TeamColor loser)
-        {
-            Update($"{loser} lost it all!");
-            Thread.Sleep(1000);
-        }
+        //public void LoserMessage(TeamColor loser)
+        //{
+        //    Update($"{loser} lost it all!");
+        //    Thread.Sleep(1000);
+        //}
 
         //public void MessageOnSafeZone(Pawn pawn)
         //{
@@ -46,10 +42,10 @@ namespace LudoConsole.View.Components
         //    Thread.Sleep(1000);
         //}
 
-        public void MessageGameOver()
-        {
-            Update("Game Over");
-        }
+        //public void MessageGameOver()
+        //{
+        //    Update("Game Over");
+        //}
 
         //public void MessageOnGoal(Pawn pawn, int pawnsInPlay)
         //{
@@ -81,54 +77,54 @@ namespace LudoConsole.View.Components
         //    Thread.Sleep(1000);
         //}
 
-        public void MessageTakeOutTwoPossible(IGamePlayer player)
-        {
-            Update("'x' to takeout two.");
-        }
+        //public void MessageTakeOutTwoPossible(IGamePlayer player)
+        //{
+        //    Update("'x' to takeout two.");
+        //}
 
-        public void UpdateDiceRoll(IGamePlayer player, int result)
-        {
-            Update($"{player.Color}, throw dice");
-            Console.ReadKey(true);
-            Update($"{player.Color} throws...");
-            Thread.Sleep(1000);
-            Update($"{player.Color} got a {result}");
-            Thread.Sleep(1000);
-        }
+        //public void UpdateDiceRoll(IGamePlayer player, int result)
+        //{
+        //    Update($"{player.Color}, throw dice");
+        //    Console.ReadKey(true);
+        //    Update($"{player.Color} throws...");
+        //    Thread.Sleep(1000);
+        //    Update($"{player.Color} got a {result}");
+        //    Thread.Sleep(1000);
+        //}
 
-        public void UpdateDiceRoll(Stephan stephan, int diceRoll)
-        {
-            Update($"{stephan.Color}, throw dice");
-            Thread.Sleep(1000);
-            Update($"{stephan.Color} throws...");
-            Thread.Sleep(1000);
-            Update($"{stephan.Color} got a {diceRoll}");
-            Thread.Sleep(1000);
-        }
+        //public void UpdateDiceRoll(Stephan stephan, int diceRoll)
+        //{
+        //    Update($"{stephan.Color}, throw dice");
+        //    Thread.Sleep(1000);
+        //    Update($"{stephan.Color} throws...");
+        //    Thread.Sleep(1000);
+        //    Update($"{stephan.Color} got a {diceRoll}");
+        //    Thread.Sleep(1000);
+        //}
 
-        public void Update(string newString)
-        {
-            if (drawables.Count > newString.Length)
-            {
-                var iStart = newString.Length - 1;
-                var end = drawables.Count;
-                for (var i = iStart; i < end; i++) drawables[i].DoErase = true;
-            }
+        //public void Update(string newString)
+        //{
+        //    if (drawables.Count > newString.Length)
+        //    {
+        //        var iStart = newString.Length - 1;
+        //        var end = drawables.Count;
+        //        for (var i = iStart; i < end; i++) drawables[i].DoErase = true;
+        //    }
 
-            drawables.Clear();
-            var x = 0;
-            foreach (var chr in newString)
-            {
-                drawables.Add(ConsolePixel.Text(X + x, Y, chr));
-                x++;
-            }
+        //    drawables.Clear();
+        //    var x = 0;
+        //    foreach (var chr in newString)
+        //    {
+        //        drawables.Add(ConsolePixel.Text(X + x, Y, chr));
+        //        x++;
+        //    }
 
-            ConsoleWriter.TryAppend(drawables);
-        }
+        //    ConsoleWriter.TryAppend(drawables);
+        //}
 
-        public static void Init()
-        {
-            _ = new InfoDisplay(0, 9);
-        }
+        //public static void Init()
+        //{
+        //    _ = new InfoDisplay(0, 9);
+        //}
     }
 }

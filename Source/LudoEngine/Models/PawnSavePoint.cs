@@ -7,7 +7,7 @@ using LudoEngine.Enums;
 
 namespace LudoEngine.Models
 {
-    public class PawnSavePoint
+    internal class PawnSavePoint
     {
         public int Id { get; set; }
         public Game Game { get; set; }

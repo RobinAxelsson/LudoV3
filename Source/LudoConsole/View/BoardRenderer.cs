@@ -42,7 +42,7 @@ namespace LudoConsole.View
             });
 
             _thread.Start();
-            InfoDisplay.Init();
+            //InfoDisplay.Init();
         }
 
         public void OnGameOver()

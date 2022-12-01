@@ -3,7 +3,7 @@ using LudoEngine.Enums;
 
 namespace LudoEngine.Models
 {
-    public class Game
+    internal class Game
     {
         public int Id { get; set; }
         public TeamColor CurrentTurn { get; set; }
