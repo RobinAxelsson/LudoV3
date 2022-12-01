@@ -4,7 +4,6 @@ using LudoEngine.Creation;
 using System.Collections.Generic;
 using LudoEngine.GameLogic.GamePlayers;
 using System.Linq;
-using LudoConsole.Controller;
 using LudoEngine.Board;
 using LudoEngine.Enums;
 using LudoEngine.GameLogic;
@@ -90,7 +89,7 @@ namespace LudoTest.board_pawn
             
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint })
-            .LoadPlayers(new KeyboardController())
+            .LoadPlayers(null!)
             .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
@@ -129,10 +128,9 @@ namespace LudoTest.board_pawn
             var game = GameBuilder.StartBuild()
             .MapBoard(@"board-pawn/test-copy_BoardMap.txt")
             .AddDice(new Dice(1, 6))
-            
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePoint, savePoint2, savePoint3, savePoint4 })
-            .LoadPlayers(new KeyboardController())
+            .LoadPlayers(null!)
             .StartingColor(TeamColor.Blue)
             .DisableSaving()
             .ToGamePlay();
@@ -167,7 +165,7 @@ namespace LudoTest.board_pawn
             
             .LoadGame()
             .LoadPawns(new List<PawnSavePoint> { savePointHuman, savePointStephan })
-            .LoadPlayers(new KeyboardController())
+            .LoadPlayers(null!)
             .StartingColor(TeamColor.Blue)
             .EnableSavingToDb()
             .ToGamePlay();

@@ -22,7 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
+      <ProjectReference Include="..\LudoV3.LudoEngine\LudoV3.LudoEngine.csproj" />
     </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -25,13 +25,13 @@
     <Content Include="board-pawn\test-map-2p.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="board-pawn\test-map4.txt">
+    <Content Include="board-pawn\test-map1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="board-pawn\test-map3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="board-pawn\test-map1.txt">
+    <Content Include="board-pawn\test-map4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -50,8 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LudoConsole\LudoConsole.csproj" />
-    <ProjectReference Include="..\LudoEngine\LudoEngine.csproj" />
+    <!--<ProjectReference Include="..\..\src\LudoV3.LudoConsole\LudoV3.LudoConsole.csproj" />-->
+    <ProjectReference Include="..\..\src\LudoV3.LudoEngine\LudoV3.LudoEngine.csproj" />
   </ItemGroup>
-
 </Project>

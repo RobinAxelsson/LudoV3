@@ -22,9 +22,13 @@ namespace LudoEngine.GameLogic.GamePlayers
         {
             Controller = eventController;
             Color = color;
-            Controller.SelectionDownEvent += ChangeSelectionDown;
-            Controller.SelectionUpEvent += ChangeSelectionUp;
-            Controller.OnConfirmEvent += MoveSelectedPawn;
+
+            if(Controller != null)
+            {
+                Controller.SelectionDownEvent += ChangeSelectionDown;
+                Controller.SelectionUpEvent += ChangeSelectionUp;
+                Controller.OnConfirmEvent += MoveSelectedPawn;
+            }
         }
         public void Play(IDice dice)
         {
