@@ -15,11 +15,11 @@ namespace LudoConsole.View
         private const string TeamBaseAsciiArt = Directory + "teambase.txt";
         private const string SquareAsciiArt = Directory + "boardsquare.txt";
 
-        public static IEnumerable<ViewGameSquareBase> CreateUiGameSquares(IEnumerable<ConsoleGameSquare> squares)
+        public static IEnumerable<ViewGameSquareBase> CreateViewGameSquares(IEnumerable<ConsoleGameSquare> squares)
         {
-            var squareDrawables = CreateSquareDrawables(squares);
-            var teamSquareDrawables = CreateTeamSquareDrawables(squares, squareDrawables);
-            return squareDrawables.Concat(teamSquareDrawables).ToList();
+            var viewGameSquare = CreateViewGameSquareStandard(squares);
+            var teamSquareDrawables = CreateTeamSquareDrawables(squares, viewGameSquare);
+            return viewGameSquare.Concat(teamSquareDrawables).ToList();
         }
 
         private static IEnumerable<ViewGameSquareBase> CreateTeamSquareDrawables(IEnumerable<ConsoleGameSquare> squares,
@@ -33,7 +33,7 @@ namespace LudoConsole.View
             return teamSquareDrawables;
         }
 
-        private static ViewGameSquareBase[] CreateSquareDrawables(IEnumerable<ConsoleGameSquare> squares)
+        private static ViewGameSquareBase[] CreateViewGameSquareStandard(IEnumerable<ConsoleGameSquare> squares)
         {
             var squareDrawables = squares.Where(x => !x.IsBase)
                 .Select(CreateDrawableSquare).ToArray();
@@ -48,7 +48,7 @@ namespace LudoConsole.View
             var charPoints = GetCharPoints(lines, truePoint).ToList();
             var pawnCoords = FindCharXY(charPoints, 'X').ToList();
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ').ToList();
-            return new ViewGameSquare(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
+            return new ViewGameSquareStandard(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
                 ColorManager.TranslateColor(square.Color));
         }
 

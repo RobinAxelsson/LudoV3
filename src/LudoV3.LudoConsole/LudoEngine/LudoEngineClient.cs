@@ -17,7 +17,7 @@ namespace LudoConsole.LudoEngine
         {
             var consoleSquares = LudoEngineMapper.Map(dtoLudoGame).ToList();
             _pawns = consoleSquares.SelectMany(x => x.Pawns).ToList();
-            var uiGameSquares = ViewGameSquareFactory.CreateUiGameSquares(consoleSquares).ToArray();
+            var uiGameSquares = ViewGameSquareFactory.CreateViewGameSquares(consoleSquares).ToArray();
             _gameSquares = uiGameSquares;
             BoardRenderer.StartRender(uiGameSquares);
         }
