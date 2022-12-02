@@ -18,29 +18,28 @@ namespace LudoConsole.View
         public static IEnumerable<ViewGameSquareBase> CreateViewGameSquares(IEnumerable<ConsoleGameSquare> squares)
         {
             var viewGameSquare = CreateViewGameSquareStandard(squares);
-            var teamSquareDrawables = CreateTeamSquareDrawables(squares, viewGameSquare);
+            var teamSquareDrawables = CreateViewTeamSquares(squares, viewGameSquare);
             return viewGameSquare.Concat(teamSquareDrawables).ToList();
         }
 
-        private static IEnumerable<ViewGameSquareBase> CreateTeamSquareDrawables(IEnumerable<ConsoleGameSquare> squares,
+        private static IEnumerable<ViewGameSquareBase> CreateViewTeamSquares(IEnumerable<ConsoleGameSquare> squares,
             ViewGameSquareBase[] squareDrawables)
         {
             var (boardWidth, boardHeight) = GetBoardMaxPoint(squareDrawables);
 
             var teamSquareDrawables = squares
                 .Where(x => x.IsBase)
-                .Select(square => CreateDrawableTeamBase(boardWidth, boardHeight, square));
+                .Select(square => CreateViewGameSquareTeam(boardWidth, boardHeight, square));
             return teamSquareDrawables;
         }
 
         private static ViewGameSquareBase[] CreateViewGameSquareStandard(IEnumerable<ConsoleGameSquare> squares)
         {
-            var squareDrawables = squares.Where(x => !x.IsBase)
-                .Select(CreateDrawableSquare).ToArray();
+            var squareDrawables = squares.Where(x => !x.IsBase).Select(CreateViewGameSquareStandard).ToArray();
             return squareDrawables;
         }
 
-        private static ViewGameSquareBase CreateDrawableSquare(ConsoleGameSquare square)
+        private static ViewGameSquareBase CreateViewGameSquareStandard(ConsoleGameSquare square)
         {
             (int x, int y) squarePoint = (square.BoardX, square.BoardY);
             var lines = File.ReadAllLines(SquareAsciiArt);
@@ -48,19 +47,29 @@ namespace LudoConsole.View
             var charPoints = GetCharPoints(lines, truePoint).ToList();
             var pawnCoords = FindCharXY(charPoints, 'X').ToList();
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ').ToList();
-            return new ViewGameSquareStandard(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
-                ColorManager.TranslateColor(square.Color));
+            
+            return new ViewGameSquareStandard(
+                charPoints.ToList(), 
+                pawnCoords.ToList(), 
+                square.Pawns.ToList(),
+                ColorManager.TranslateColor(square.Color)
+                );
         }
 
-        private static ViewGameSquareBase CreateDrawableTeamBase(int boardWidth, int boardHeight, ConsoleGameSquare square)
+        private static ViewGameSquareBase CreateViewGameSquareTeam(int boardWidth, int boardHeight, ConsoleGameSquare square)
         {
             var lines = File.ReadAllLines(TeamBaseAsciiArt);
             var trueUpLeft = CalculateTeamBaseUpLeftPoint(boardWidth, boardHeight, lines, square.Color);
             var charPoints = GetCharPoints(lines, trueUpLeft).ToList();
             var pawnCoords = FindCharXY(charPoints, 'X');
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ').ToList();
-            return new ViewGameSquareTeam(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
-                ColorManager.TranslateColor(square.Color));
+            
+            return new ViewGameSquareTeam(
+                    charPoints.ToList(), 
+                    pawnCoords.ToList(), 
+                    square.Pawns.ToList(),
+                    ColorManager.TranslateColor(square.Color)
+                );
         }
 
         private static (int x, int y) GetBoardMaxPoint(IEnumerable<ViewGameSquareBase> drawableSquares)
@@ -76,11 +85,15 @@ namespace LudoConsole.View
             var xMax = lines.ToList().Select(x => x.Length).Max();
             var yMax = lines.Count;
 
-            (int X, int Y) trueUpLeft = teamColor == ConsoleTeamColor.Red ? (boardWidth - xMax + 1, 0) :
-                teamColor == ConsoleTeamColor.Blue ? (0, 0) :
-                teamColor == ConsoleTeamColor.Green ? (boardWidth - xMax + 1, boardHeight - yMax + 1) :
-                teamColor == ConsoleTeamColor.Yellow ? (0, boardHeight - yMax + 1) :
-                throw new Exception("Base must have a team color.");
+            (int X, int Y) trueUpLeft = teamColor switch
+            {
+                ConsoleTeamColor.Red => (boardWidth - xMax + 1, 0),
+                ConsoleTeamColor.Blue => (0, 0),
+                ConsoleTeamColor.Yellow => (0, boardHeight - yMax + 1),
+                ConsoleTeamColor.Green => (boardWidth - xMax + 1, boardHeight - yMax + 1),
+                ConsoleTeamColor.Default => throw new Exception("Base must have a team color.")
+            };
+
             return trueUpLeft;
         }
 
