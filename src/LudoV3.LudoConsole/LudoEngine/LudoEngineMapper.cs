@@ -10,7 +10,7 @@ namespace LudoConsole.LudoEngine
 {
     internal static class LudoEngineMapper
     {
-        public static IEnumerable<ConsoleGameSquare> Map(DtoLudoGame ludoGame)
+        public static IEnumerable<ConsoleGameSquare> Map(DtoGameBoard ludoGame)
         {
             return ludoGame.GameSquares.Select(MapGameSquare);
         }

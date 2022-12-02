@@ -6,9 +6,9 @@ using LudoConsole.View.Components.Models;
 
 namespace LudoConsole.View.Components
 {
-    internal sealed class ViewGameSquare : ViewGameSquareBase
+    internal sealed class ViewGameSquareStandard : ViewGameSquareBase
     {
-        public ViewGameSquare(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawn> consolePawns,
+        public ViewGameSquareStandard(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords, List<ConsolePawn> consolePawns,
             ConsoleColor color) : base(charPoints, pawnCoords, consolePawns, color)
         {
         }

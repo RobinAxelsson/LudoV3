@@ -6,15 +6,14 @@ using LudoEngine.ClientApi.Dto;
 using LudoEngine.ClientApi.Enums;
 using LudoEngine.Enums;
 using LudoEngine.GameLogic;
-using LudoEngine.Interfaces;
 
 namespace LudoEngine.ClientApi
 {
     internal static class ClientMapper
     {
-        public static DtoLudoGame MapGame(List<GameSquareBase> boardSquares)
+        public static DtoGameBoard MapDtoGameBoard(List<GameSquareBase> boardSquares)
         {
-            return new DtoLudoGame(boardSquares.Select(MapGameSquare));
+            return new DtoGameBoard(boardSquares.Select(MapGameSquare));
         }
 
         private static DtoGameSquare MapGameSquare(GameSquareBase gameGameSquare)

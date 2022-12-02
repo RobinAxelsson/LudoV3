@@ -11,7 +11,7 @@ namespace LudoEngine.Board
         public static List<GameSquareBase> CreateGameSquares(string filePath)
         {
             var squares = new List<GameSquareBase>();
-            var charCoords = ReadCharCoords(filePath);
+            var charCoords = CharCoordsParse(filePath);
 
             foreach (var charCoord in charCoords)
             {
@@ -24,7 +24,7 @@ namespace LudoEngine.Board
             return squares;
         }
 
-        private static List<(char chr, int X, int Y)> ReadCharCoords(string filePath)
+        private static List<(char chr, int X, int Y)> CharCoordsParse(string filePath)
         {
 
             var charCoord = new List<(char chr, int X, int Y)>();
