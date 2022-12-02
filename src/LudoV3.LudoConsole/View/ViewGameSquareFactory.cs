@@ -48,7 +48,7 @@ namespace LudoConsole.View
             var charPoints = GetCharPoints(lines, truePoint).ToList();
             var pawnCoords = FindCharXY(charPoints, 'X').ToList();
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ').ToList();
-            return new ViewGameSquare(charPoints.ToList(), pawnCoords.ToList(), square.Pawns,
+            return new ViewGameSquare(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
                 ColorManager.TranslateColor(square.Color));
         }
 
@@ -59,7 +59,7 @@ namespace LudoConsole.View
             var charPoints = GetCharPoints(lines, trueUpLeft).ToList();
             var pawnCoords = FindCharXY(charPoints, 'X');
             charPoints = ReplaceCharPoints(charPoints, 'X', ' ').ToList();
-            return new ViewGameSquareTeam(charPoints.ToList(), pawnCoords.ToList(), square.Pawns,
+            return new ViewGameSquareTeam(charPoints.ToList(), pawnCoords.ToList(), square.Pawns.ToList(),
                 ColorManager.TranslateColor(square.Color));
         }
 

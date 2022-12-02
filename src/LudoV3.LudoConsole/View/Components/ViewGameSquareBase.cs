@@ -8,18 +8,21 @@ namespace LudoConsole.View.Components
 {
     internal abstract class ViewGameSquareBase
     {
-        protected ViewGameSquareBase(List<CharPoint> charPoints, List<(int X, int Y)> pawnCoords,
-            List<ConsolePawn> consolePawns, ConsoleColor color)
+        protected ViewGameSquareBase(
+            IEnumerable<CharPoint> charPoints,
+            IEnumerable<(int X, int Y)> pawnCoords,
+            IEnumerable<ConsolePawn> consolePawns,
+            ConsoleColor color)
         {
-            CharPoints = charPoints;
-            PawnCoords = pawnCoords;
-            ConsolePawns = consolePawns;
+            CharPoints = charPoints.ToArray();
+            PawnCoords = pawnCoords.ToArray();
+            ConsolePawns = consolePawns.ToList();
             Color = color;
         }
 
         protected ConsoleColor Color { get; }
-        protected List<CharPoint> CharPoints { get; }
-        protected List<(int X, int Y)> PawnCoords { get; }
+        protected CharPoint[] CharPoints { get; }
+        protected (int X, int Y)[] PawnCoords { get; }
         protected List<ConsolePawn> ConsolePawns { get; }
 
         public (int X, int Y) MaxCoord()

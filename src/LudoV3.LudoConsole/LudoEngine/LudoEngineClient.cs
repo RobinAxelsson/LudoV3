@@ -13,7 +13,7 @@ namespace LudoConsole.LudoEngine
         private List<ConsolePawn> _pawns;
         private IReadOnlyList<ViewGameSquareBase> _gameSquares;
 
-        public override void OnNewGame(DtoLudoGame dtoLudoGame)
+        public override void OnNewGame(DtoGameBoard dtoLudoGame)
         {
             var consoleSquares = LudoEngineMapper.Map(dtoLudoGame).ToList();
             _pawns = consoleSquares.SelectMany(x => x.Pawns).ToList();
@@ -22,10 +22,14 @@ namespace LudoConsole.LudoEngine
             BoardRenderer.StartRender(uiGameSquares);
         }
 
-        public override void OnGetMove(DtoMove move)
+        public override void OnUpdate(DtoPawnCollection allPlayingPawns)
         {
-            //var first = _pawns[0];
-            //var square = _gameSquares.Single()
+            throw new System.NotImplementedException();
+        }
+
+        private void UpdatePawn(DtoPawn pawn)
+        {
+            
         }
     }
 }

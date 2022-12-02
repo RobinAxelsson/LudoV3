@@ -42,7 +42,10 @@ namespace LudoEngine
         {
             GameBoard.Init();
             GameSetup.SetUpPawnsNewGame(GameBoard.BoardSquares);
-            ludoClient.OnNewGame(ClientMapper.MapGame(GameBoard.BoardSquares));
+            var dtoGameBoard = ClientMapper.MapDtoGameBoard(GameBoard.BoardSquares);
+            
+            ludoClient.OnNewGame(dtoGameBoard);
+
         }
     }
 

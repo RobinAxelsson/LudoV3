@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using LudoEngine.ClientApi.Dto;
+﻿using LudoEngine.ClientApi.Dto;
 
 namespace LudoEngine.ClientApi
 {
     public abstract class LudoClientBase
     {
-        public abstract void OnNewGame(DtoLudoGame dtoLudoGame);
-        public abstract void OnGetMove(DtoMove move);
+        public abstract void OnNewGame(DtoGameBoard dtoLudoGame);
+        public abstract void OnUpdate(DtoPawnCollection allPawns);
     }
 
     //public enum TeamColor

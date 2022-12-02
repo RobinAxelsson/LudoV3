@@ -50,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--<ProjectReference Include="..\..\src\LudoV3.LudoConsole\LudoV3.LudoConsole.csproj" />-->
     <ProjectReference Include="..\..\src\LudoV3.LudoEngine\LudoV3.LudoEngine.csproj" />
   </ItemGroup>
 </Project>

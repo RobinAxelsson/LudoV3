@@ -2,5 +2,5 @@
 
 namespace LudoEngine.ClientApi.Dto
 {
-    public record DtoLudoGame(IEnumerable<DtoGameSquare> GameSquares);
+    public record DtoPawnCollection(IEnumerable<DtoPawn> AllPlayingPawns);
 }
